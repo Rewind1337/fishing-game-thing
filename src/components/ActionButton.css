@@ -1,0 +1,16 @@
+button.actionbutton[disabled] {
+    color: rgb(45, 45, 45);
+    border-radius: 6px;
+    padding: 4px 6px;
+    margin: 2px 1px;
+    font-size: 22px;
+    line-height: 1;
+}
+
+button.actionbutton:not([disabled]) {
+    border-radius: 6px;
+    padding: 4px 6px;
+    margin: 2px 1px;
+    font-size: 22px;
+    line-height: 1;
+}

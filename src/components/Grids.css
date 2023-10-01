@@ -1,0 +1,77 @@
+/* https://cssgrid-generator.netlify.app/ */
+
+#grid-gathering {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+}
+
+#grid-gathering > .grid-top-left { grid-area: 1 / 1 / 3 / 2; }
+#grid-gathering > .grid-top-right { grid-area: 1 / 2 / 2 / 4; }
+#grid-gathering > .grid-bottom-right { grid-area: 2 / 2 / 4 / 4; }
+#grid-gathering > .grid-bottom-left { grid-area: 3 / 1 / 4 / 2; } 
+
+
+
+#grid-fishing {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+}
+
+#grid-fishing > .grid-top-left {grid-area: 1 / 1 / 3 / 2;}
+#grid-fishing > .grid-top-middle {grid-area: 1 / 2 / 2 / 6;}
+#grid-fishing > .grid-top-right {grid-area: 1 / 6 / 3 / 7;}
+#grid-fishing > .grid-center {grid-area: 2 / 2 / 5 / 6;}
+#grid-fishing > .grid-bottom-left {grid-area: 3 / 1 / 7 / 2;}
+#grid-fishing > .grid-bottom-middle {grid-area: 5 / 2 / 7 / 6;}
+#grid-fishing > .grid-bottom-right {grid-area: 3 / 6 / 7 / 7;}
+
+
+
+#grid-adventure {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+}
+    
+#grid-adventure > .grid-top-left { grid-area: 1 / 1 / 3 / 2; }
+#grid-adventure > .grid-top-middle { grid-area: 1 / 2 / 3 / 4; }
+#grid-adventure > .grid-top-right { grid-area: 1 / 4 / 3 / 5; }
+#grid-adventure > .grid-center-left { grid-area: 3 / 1 / 5 / 3; }
+#grid-adventure > .grid-center-right { grid-area: 3 / 3 / 5 / 5; }
+#grid-adventure > .grid-bottom-row { grid-area: 5 / 1 / 6 / 5; } 
+
+
+
+#grid-queen {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+}
+    
+#grid-queen > .grid-top-row { grid-area: 1 / 1 / 2 / 6; }
+#grid-queen > .grid-center { grid-area: 2 / 1 / 5 / 5; } 
+#grid-queen > .grid-bottom-left { grid-area: 5 / 1 / 6 / 3; }
+#grid-queen > .grid-bottom-right { grid-area: 5 / 3 / 6 / 5; } 
+
+#grid-default {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 4px;
+}
+    
+#grid-default > .grid-top-left { grid-area: 1 / 1 / 2 / 3; }
+#grid-default > .grid-right-side { grid-area: 1 / 3 / 3 / 4; }
+#grid-default > .grid-bottom-left { grid-area: 2 / 1 / 3 / 2; }
+#grid-default > .grid-bottom-center { grid-area: 2 / 2 / 3 / 3; } 
