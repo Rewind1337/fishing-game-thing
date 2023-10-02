@@ -106,7 +106,7 @@ function Sidebar() {
             <SidebarItem bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor="hsl(30deg, 100%, 90%)" link='/adventure'/>
           </SidebarFolder>
           <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
-            <SidebarItem bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor="hsl(30deg, 100%, 90%)" link='/queen'/>
+            <SidebarItem bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor="hsl(0deg, 100%, 90%)" link='/queen'/>
           </SidebarFolder>
           <SidebarFolder id={3} flex height={50} text="Other">
             <SidebarItem bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor="hsl(270deg, 100%, 90%)" link='/help'/>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@mui/material/styles';
-import Theme from '../assets/Theme.jsx';
+import Theme from '../styles/Theme.jsx';
 
 import '../components/UI.css'
 import '../components/Grids.css'

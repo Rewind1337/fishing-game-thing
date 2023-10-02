@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import SaveContext from '../components/SaveContext';
-import PageCore from './PageCore';
+import SaveContext from '../../components/SaveContext';
+import PageCore from '../PageCore';
 
 function PageAdventureZone() {
 

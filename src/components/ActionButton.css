@@ -1,6 +1,7 @@
 button.actionbutton[disabled] {
     color: rgb(45, 45, 45);
-    border-radius: 6px;
+    border: rgba(255, 255, 255, 0.4) !important;
+    outline: rgba(255, 255, 255, 0.4) !important;
     padding: 4px 6px;
     margin: 2px 1px;
     font-size: 22px;
@@ -8,7 +9,7 @@ button.actionbutton[disabled] {
 }
 
 button.actionbutton:not([disabled]) {
-    border-radius: 6px;
+    border-radius: 0;
     padding: 4px 6px;
     margin: 2px 1px;
     font-size: 22px;
