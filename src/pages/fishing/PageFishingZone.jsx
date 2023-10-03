@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
 
-
 GridCell.propTypes = {
   gridPosition: PropTypes.string.isRequired,
   children: PropTypes.array,
@@ -17,7 +16,6 @@ function GridCell({gridPosition, children}) {
     </div>
   </div>);
 }
-
 
 function PageFishingZone() {
   const _context = useContext(SaveContext);

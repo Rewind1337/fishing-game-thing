@@ -2,6 +2,9 @@ import { createContext } from 'react';
 
 let data = {
     save: {
+        gathering: {
+            food: 0
+        },
         sidebar: {
             states: []
         }
@@ -9,7 +12,7 @@ let data = {
     setSave : (s) => {
         data.save = Object.assign({}, data.save, s);
         localStorage.setItem("game-save", JSON.stringify(data.save));
-    },
+    }
 };
 
 if (localStorage.getItem("game-save") != null) {
