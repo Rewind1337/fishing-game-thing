@@ -4,13 +4,13 @@ import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
 import GridCell from '../../components/grid/GridCell';
 
-function PageHelp() {
+function PageInventory() {
 
   const _context = useContext(SaveContext);
   _context; // to prevent the no-unused-vars, remove if actually used somewhere else
 
   return (
-    <PageCore title="Help / Tutorial" contentClasses={'help'}>
+    <PageCore title="Ranch" contentClasses={'inventory'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='right-side'></GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>
@@ -19,4 +19,4 @@ function PageHelp() {
   )
 }
 
-export default PageHelp;
+export default PageInventory;

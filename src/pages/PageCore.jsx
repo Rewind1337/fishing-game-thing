@@ -9,19 +9,20 @@ import Sidebar from '../components/Sidebar'
 
 PageCore.propTypes = {
     title: PropTypes.string.isRequired,
+    contentClasses: PropTypes.string,
     gridId: PropTypes.string,
     children: PropTypes.array,
 };
 
-function PageCore({title, gridId = 'grid-default', children}) {
+function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
 
     return (
       <ThemeProvider theme={Theme}>
         <div id="wrapper">
           <Sidebar></Sidebar>
-          <div id="content">
+          <div id="content" className={contentClasses}>
             <div id="content-top">
-              <h1>{title}</h1>
+              <h1 className='title-blur'>{title}</h1>
             </div>
             <div id="content-main">
               <div id={gridId} className="content-grid">
@@ -29,7 +30,7 @@ function PageCore({title, gridId = 'grid-default', children}) {
               </div>
             </div>
             <div id="content-bottom">
-              <div>core bottom</div>
+              <div className='title-blur'>core bottom</div>
             </div>
           </div>
         </div>

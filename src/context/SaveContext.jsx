@@ -2,11 +2,8 @@ import { createContext } from 'react';
 
 let data = {
     save: {
-        gathering: {
-            food: 0
-        },
         sidebar: {
-            states: []
+            states: [true, true, true]
         }
     },
     setSave : (s) => {

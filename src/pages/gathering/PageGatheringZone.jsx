@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
+import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';
 
 import CircularProgress from '@mui/material/CircularProgress';
@@ -43,15 +44,15 @@ function PageGatheringZone() {
   }, [pageTick])
 
   return (
-    <PageCore title="Gathering Zone" gridId="grid-gathering">
-      <div className="grid-top-left">
+    <PageCore title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
+      <GridCell gridPosition='top-left'>
         <span>worms: {worms} percentage: {wormProgress / wormProgressMax * 100}</span><br/>
         <CircularProgress color="gathering" thickness={8} variant="determinate" value={wormProgress / wormProgressMax * 100} /><br/>
         <ActionButton disabled={(isDigging ? true : false)} color="gathering" variant="contained" text='Look for Worms' func={() => {setDigging(true)}}></ActionButton>
-      </div>
-      <div className="grid-top-right">top-right</div>
-      <div className="grid-bottom-left">bottom-left</div>
-      <div className="grid-bottom-right">bottom-right</div>
+      </GridCell>
+      <GridCell gridPosition='top-right'></GridCell>
+      <GridCell gridPosition='bottom-left'></GridCell>
+      <GridCell gridPosition='bottom-right'></GridCell>
     </PageCore>
   )
 }

@@ -1,24 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
+import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';
 
 import LinearProgress from '@mui/material/LinearProgress';
-
-GridCell.propTypes = {
-  gridPosition: PropTypes.string.isRequired,
-  children: PropTypes.array,
-};
-
-function GridCell({gridPosition, children}) {
-  return (<div className={"grid-cell grid-" + gridPosition}>
-    <div className="grid-cell-content">
-      {children}
-    </div>
-  </div>);
-}
 
 function PageFishingZone() {
   const _context = useContext(SaveContext)
@@ -75,19 +62,19 @@ function PageFishingZone() {
   }, [pageTick])
 
   return (
-    <PageCore title="Fishing Zone" gridId="grid-fishing">
+    <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
       <GridCell gridPosition='top-left'>worms: {worms}</GridCell>
       <GridCell gridPosition='top-middle'>
         <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
       </GridCell>
-      <GridCell gridPosition='top-right'>top-right</GridCell>
+      <GridCell gridPosition='top-right'></GridCell>
       <GridCell gridPosition='center'>
         <ActionButton disabled={(isFishing ? true : false)} color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={startFishing}/>
         <ActionButton disabled={(isFishing ? false : true)} color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch()}}/>
       </GridCell>
-      <GridCell gridPosition='bottom-left'>bottom-left</GridCell>
-      <GridCell gridPosition='bottom-middle'>bottom-middle</GridCell>
-      <GridCell gridPosition='bottom-right'>bottom-right</GridCell>
+      <GridCell gridPosition='bottom-left'></GridCell>
+      <GridCell gridPosition='bottom-middle'></GridCell>
+      <GridCell gridPosition='bottom-right'></GridCell>
     </PageCore>
   )
 }

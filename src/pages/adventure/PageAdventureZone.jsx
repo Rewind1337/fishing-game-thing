@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
+import GridCell from '../../components/grid/GridCell';
 
 function PageAdventureZone() {
 
@@ -9,13 +10,13 @@ function PageAdventureZone() {
   _context; // to prevent the no-unused-vars, remove if actually used somewhere else
 
   return (
-    <PageCore title="Adventure Zone" gridId="grid-adventure">
-      <div className="grid-top-left">top-left</div>
-      <div className="grid-top-middle">top-middle</div>
-      <div className="grid-top-right">top-right</div>
-      <div className="grid-center-left">center-left</div>
-      <div className="grid-center-right">center-right</div>
-      <div className="grid-bottom-row">bottom-row</div>
+    <PageCore title="Adventure Zone" gridId="grid-adventure" contentClasses={'adventure'}>
+      <GridCell gridPosition='top-left'></GridCell>
+      <GridCell gridPosition='top-middle'></GridCell>
+      <GridCell gridPosition='top-right'></GridCell>
+      <GridCell gridPosition='center-left'></GridCell>
+      <GridCell gridPosition='center-right'></GridCell>
+      <GridCell gridPosition='bottom-row'></GridCell>
     </PageCore>
   )
 }
