@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import SaveContext from '../../components/SaveContext';
+import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
 
 

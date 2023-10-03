@@ -85,7 +85,7 @@
     transition: left 0.25s ease;
 }
 .sidebar-item:hover {
-    left: 15px;
+    left: 5px;
     background-color: rgba(255, 255, 255, 0.5);
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);

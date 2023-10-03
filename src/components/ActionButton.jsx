@@ -9,6 +9,7 @@ import './ActionButton.css'
 
 
 ActionButton.propTypes = {
+    sx: PropTypes.object,
     link: PropTypes.string,
     disabled: PropTypes.bool,
     id: PropTypes.string,
@@ -22,12 +23,16 @@ ActionButton.propTypes = {
     func: PropTypes.func,
 }
 
-function ActionButton({ link, disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = 'placeholder', func = () => {}}) {
+function ActionButton({ sx = {}, link, disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = 'placeholder', func = () => {}}) {
 
     const handleClick = () => {func()}
 
     const [disabledState, ] = useState(disabled)
     const classes = 'actionbutton '
+
+    if (variant == "contained") {
+        sx.border = "1px solid white";
+    }
 
     if (onlyIcon) {
         return (<IconButton color={color} disabled={disabledState} id={id} variant={variant} onClick={handleClick}>{icon}</IconButton>)
@@ -36,14 +41,14 @@ function ActionButton({ link, disabled = false, id, startIcon, endIcon, onlyIcon
     if (link) {
         return (
             <Link to={link}>
-                <Button color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabledState} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
+                <Button sx={sx} color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabledState} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
             </Link>
         )
     }
     
     return (
         <>
-            <Button color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabledState} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
+            <Button sx={sx} color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabledState} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
         </>
     )
     
