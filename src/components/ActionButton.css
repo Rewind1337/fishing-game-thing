@@ -1,5 +1,6 @@
 button.actionbutton[disabled] {
     color: rgb(45, 45, 45);
+    border-radius: 0;
     border: rgba(255, 255, 255, 0.4) !important;
     outline: rgba(255, 255, 255, 0.4) !important;
     padding: 4px 6px;

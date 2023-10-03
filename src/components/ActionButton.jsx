@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
@@ -27,7 +26,6 @@ function ActionButton({ sx = {}, link, disabled = false, id, startIcon, endIcon,
 
     const handleClick = () => {func()}
 
-    const [disabledState, ] = useState(disabled)
     const classes = 'actionbutton '
 
     if (variant == "contained") {
@@ -35,20 +33,20 @@ function ActionButton({ sx = {}, link, disabled = false, id, startIcon, endIcon,
     }
 
     if (onlyIcon) {
-        return (<IconButton color={color} disabled={disabledState} id={id} variant={variant} onClick={handleClick}>{icon}</IconButton>)
+        return (<IconButton color={color} disabled={disabled} id={id} variant={variant} onClick={handleClick}>{icon}</IconButton>)
     }
 
     if (link) {
         return (
             <Link to={link}>
-                <Button sx={sx} color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabledState} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
+                <Button sx={sx} color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabled} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
             </Link>
         )
     }
     
     return (
         <>
-            <Button sx={sx} color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabledState} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
+            <Button sx={sx} color={color} startIcon={startIcon} endIcon={endIcon} disabled={disabled} id={id} variant={variant} className={classes} onClick={handleClick}>{text}</Button>
         </>
     )
     
