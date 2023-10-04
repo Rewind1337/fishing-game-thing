@@ -2,8 +2,12 @@ import { createContext } from 'react';
 
 let data = {
     save: {
+        resources: {},
+        fishing: {},
+        gathering: {},
         sidebar: {
-            states: [true, true, true]
+            states: [true, true, true],
+            unlocks: [true, false, false, true, true, false, false, true],
         }
     },
     setSave : (s) => {

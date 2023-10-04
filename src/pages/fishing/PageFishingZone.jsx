@@ -3,13 +3,19 @@ import { useContext, useState, useEffect } from 'react';
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
 import GridCell from '../../components/grid/GridCell';
+import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
+
+import ResourceCard from '../../components/ResourceCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 
 import LinearProgress from '@mui/material/LinearProgress';
 
 function PageFishingZone() {
   const _context = useContext(SaveContext)
   
+  const [fish, setFish] = useState(_context.save.resources.fish || 0)
   const [worms, setWorms] = useState(_context.save.resources.worms || 0)
   const [isFishing, setFishing] = useState(_context.save.fishing.isFishing || false)
   
@@ -29,6 +35,7 @@ function PageFishingZone() {
   const attemptCatch = () => {
     if (fishProgress >= tickRange.min && fishProgress <= tickRange.max) {
       alert("ayy");
+      setFish(fish + 1);
       stopFishing();
       return;
     }
@@ -57,23 +64,28 @@ function PageFishingZone() {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fishProgress, worms, isFishing, tickRange]);
+  }, [worms, fish, isFishing, fishProgress, tickRange]);
 
   useEffect(() => {
-    _context.setSave({resources: {worms: worms}, fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}})
+    _context.setSave({resources: {worms: worms, fish: fish}, fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}})
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageTick])
 
   return (
     <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
-      <GridCell gridPosition='top-left'>worms: {worms}</GridCell>
+      <GridCell gridPosition='top-left'>
+        <FlexList mode="list" maxHeight={192}>
+          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
+          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
+        </FlexList>
+      </GridCell>
       <GridCell gridPosition='top-middle'>
         <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
       </GridCell>
       <GridCell gridPosition='top-right'></GridCell>
       <GridCell gridPosition='center'>
-        <ActionButton disabled={(isFishing ? true : false)} color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={startFishing}/>
-        <ActionButton disabled={(isFishing ? false : true)} color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch()}}/>
+        <ActionButton disabled={(isFishing ? true : false)} color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={startFishing}/><br/>
+        <ActionButton disabled={(!isFishing ? true : false)} color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch()}}/>
       </GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>
       <GridCell gridPosition='bottom-middle'></GridCell>

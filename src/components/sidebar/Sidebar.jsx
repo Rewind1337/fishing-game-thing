@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import SaveContext from '../context/SaveContext';
+import SaveContext from '../../context/SaveContext';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
@@ -18,6 +18,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import './Sidebar.css'
+import { styled } from '@mui/material/styles';
+import { Badge } from '@mui/material';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
@@ -28,6 +30,9 @@ function Sidebar() {
 
   const savedFolderStates = _context.save.sidebar.states;
   const [folderStates, setFolderStates] = useState(savedFolderStates);
+
+  const savedSidebarUnlocks = _context.save.sidebar.unlocks;
+  const [sidebarUnlocks, ] = useState(savedSidebarUnlocks);
 
   const setSave = _context.setSave;
 
@@ -56,7 +61,6 @@ function Sidebar() {
       setSave({sidebar: {states: newState}});
     }
     
-
     if (canToggle) {
       return (
         <>
@@ -77,6 +81,8 @@ function Sidebar() {
   }
 
   SidebarItem.propTypes = {
+    isUnlocked: PropTypes.bool.isRequired,
+    badgeData: PropTypes.number,
     bigText: PropTypes.string.isRequired,
     smallText: PropTypes.string.isRequired,
     icon: PropTypes.element,
@@ -84,16 +90,35 @@ function Sidebar() {
     link: PropTypes.string.isRequired,
   };
 
-  function SidebarItem({ bigText, smallText, icon, hoverColor, link}) {
+  function SidebarItem({ isUnlocked, badgeData = 0, bigText, smallText, icon, hoverColor, link}) {
     const [mouseOverItem, setMouseOverItem] = useState(false);
 
-    let classes = 'sidebar-item' + (mouseOver ? ' expanded' : '')
+    let classes = 'sidebar-item' + (mouseOver ? ' expanded' : '') + (isUnlocked ? '' : ' disabled')
     let text = (mouseOver ? bigText : smallText)
-    let iconColor = (mouseOverItem ? {color: hoverColor} : {color: "white"});
+    let iconColor = (isUnlocked ? (mouseOverItem ? {color: hoverColor} : {color: "white"}) : {color: 'gray'});
+
+    const StyledBadge = styled(Badge)(() => ({
+      '& .MuiBadge-badge': {
+        right: (mouseOver ? -16 : -4),
+        top: (mouseOver ? 12 : 5),
+        backgroundColor: (mouseOver ? 'transparent' : hoverColor),
+        border: `3px solid ${hoverColor}`,
+        color: (mouseOverItem ? hoverColor : 'white'),
+      },
+    }));
+    
     return (
-      <Link to={link} className={'sidebar-item-link' + (mouseOverItem ? ' hover' : '')}>
+      <Link to={(isUnlocked ? link : '')} className={'sidebar-item-link' + (mouseOverItem ? ' hover' : '')} style={(isUnlocked ? {cursor: 'pointer'} : {cursor: 'default'})}>
         <div className={classes} onMouseEnter={(event) => {event.stopPropagation(); setMouseOverItem(true)}} onMouseLeave={(event) => {event.stopPropagation(); setMouseOverItem(false)}}>
-          <div className='sidebar-item--image' style={iconColor}>{icon ? icon : ""}</div>
+          <div className='sidebar-item--image' style={iconColor}>
+            {(isUnlocked ? (mouseOver ? 
+              <StyledBadge badgeContent={badgeData}>{icon ? icon : ''}</StyledBadge> : 
+              (badgeData != 0 ? 
+                <StyledBadge variant='dot' showZero>{icon ? icon : ''}</StyledBadge> : 
+                <StyledBadge>{icon ? icon : ''}</StyledBadge>
+              )) : ''
+            )}
+            </div>
           <div className='sidebar-item--text' style={iconColor}>{text}</div>
         </div>
       </Link>
@@ -105,20 +130,20 @@ function Sidebar() {
         <div className="sidebar-header">{sidebarHeaderText}</div>
         <div className="sidebar-items-container">
           <SidebarFolder id={0} isToggled={folderStates[0]} canToggle height={25} text="Home">
-            <SidebarItem unlocked={true} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor="white" link='/home'/>
-            <SidebarItem unlocked={true} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor="hsl(50deg, 100%, 90%)" link='/storage'/>
-            <SidebarItem unlocked={true} bigText='Ranch' smallText='R' icon={<PetsIcon/>} hoverColor="hsl(280deg, 100%, 90%)" link='/pets'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[0]} badgeData={0} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor="white" link='/home'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[1]} badgeData={0} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor="hsl(50deg, 100%, 90%)" link='/storage'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[2]} badgeData={0} bigText='Ranch' smallText='R' icon={<PetsIcon/>} hoverColor="hsl(280deg, 100%, 90%)" link='/pets'/>
           </SidebarFolder>
           <SidebarFolder id={1} isToggled={folderStates[1]} canToggle height={50} text="Zones">
-            <SidebarItem unlocked={true} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor="hsl(220deg, 100%, 90%)" link='/fishing'/>
-            <SidebarItem unlocked={true} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor="hsl(120deg, 100%, 90%)" link='/gathering'/>
-            <SidebarItem unlocked={true} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor="hsl(30deg, 100%, 90%)" link='/adventure'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[3]} badgeData={0} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor="hsl(220deg, 100%, 90%)" link='/fishing'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[4]} badgeData={0} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor="hsl(120deg, 100%, 90%)" link='/gathering'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[5]} badgeData={0} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor="hsl(30deg, 100%, 90%)" link='/adventure'/>
           </SidebarFolder>
           <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
-            <SidebarItem unlocked={true} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor="hsl(0deg, 100%, 90%)" link='/queen'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[6]} badgeData={0} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor="hsl(0deg, 100%, 90%)" link='/queen'/>
           </SidebarFolder>
           <SidebarFolder id={3} flex height={50} text="Other">
-            <SidebarItem unlocked={true} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor="hsl(270deg, 100%, 90%)" link='/help'/>
+            <SidebarItem isUnlocked={sidebarUnlocks[7]} badgeData={0} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor="hsl(270deg, 100%, 90%)" link='/help'/>
           </SidebarFolder>
           <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
         </div>

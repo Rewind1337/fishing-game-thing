@@ -1,0 +1,33 @@
+.flexlist {
+    display: flex;
+    overflow-x: none;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.flexlist > * {
+    /* visualisation, remove if not needed anymore */
+    border-radius: 4px;
+    border: 1px solid gray;
+    /* */
+}
+
+.flexlist-list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.flexlist-list > * {
+    flex-basis: 100%;
+    width: 100%;
+    height: auto;
+}
+
+.flexlist-flex {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.flexlist-flex > * {
+    width: 50%;
+}

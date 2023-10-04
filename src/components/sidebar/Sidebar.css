@@ -5,7 +5,12 @@
     line-height: 36px;
     padding: 0;
     
-    background-image: url('../assets/bg-fishing.png');
+    background-image: url('../../assets/statue.png');
+    background-position: left;
+    background-origin: border-box;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
 
     color: white;
 
@@ -86,7 +91,7 @@
 
     transition: left 0.25s ease;
 }
-.sidebar-item:hover {
+.sidebar-item:not(.disabled):hover {
     left: 5px;
     background-color: rgba(0, 0, 0, 0.5);
     border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -95,13 +100,29 @@
 
     transition: left 0.25s ease;
 }
+.sidebar-item.disabled {
+    height: 22px;
+    pointer-events: none !important;
+    clip-path: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.sidebar-item.disabled .sidebar-item--text {
+    filter: none !important;
+    color: rgba(255, 255, 255, 0.225) !important;
+}
+.sidebar-item.disabled .sidebar-item--image {
+    padding-left: 0px !important;
+    scale: 1 !important;
+    filter: none !important;
+}
 
 .sidebar-item--text {
     flex-grow: 1;
     padding-right: 12px;
 }
 .sidebar-item:hover > .sidebar-item--text {
-    filter: drop-shadow(0 0 5px black)
+    filter: drop-shadow(0 0 5px black);
 }
 
 .sidebar-item--image {

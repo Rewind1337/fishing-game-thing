@@ -2,7 +2,13 @@ import PropTypes from 'prop-types';
 
 import '../components/UI.css'
 import '../components/grid/Grid.css'
-import { Paper } from '@mui/material';
+import ActionButton from '../components/ActionButton';
+
+import { Paper, Stack } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import FlagDE from '../assets/flag-de';
+import FlagNL from '../assets/flag-nl';
+import FlagUS from '../assets/flag-us';
 
 PaperItem.propTypes = {
   elevation: PropTypes.number,
@@ -33,13 +39,18 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
           <div id="content" className={contentClasses}>
             <div id="content-top">
               <div id="content-top-left">
-                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}><h2>hello</h2></PaperItem>
+                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></PaperItem>
               </div>
               <div id="content-top-center">
                 <PaperItem elevation={3} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}><h1>{title}</h1></PaperItem>
               </div>
               <div id="content-top-right">
-                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}><h2>world</h2></PaperItem>
+                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
+                  <ActionButton color="queen" variant="contained" text='Reset LocalStorage' sx={{height: "80%"}} func={() => {
+                    localStorage.clear();
+                    location.reload();
+                  }}/>
+                </PaperItem>
               </div>
             </div>
             <div id="content-main">
@@ -49,13 +60,25 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
             </div>
             <div id="content-bottom">
               <div id="content-bottom-left">
-                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}><h4>i</h4></PaperItem>
+                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></PaperItem>
               </div>
               <div id="content-bottom-center">
-                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}><h4>am</h4></PaperItem>
+                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></PaperItem>
               </div>
               <div id="content-bottom-right">
-                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}><h4>cool</h4></PaperItem>
+                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
+                  <Stack direction={'row'}>
+                    <IconButton color="secondary" aria-label="add an alarm">
+                      <FlagDE />
+                    </IconButton>
+                    <IconButton color="secondary" aria-label="add an alarm">
+                      <FlagNL />
+                    </IconButton>
+                    <IconButton color="secondary" aria-label="add an alarm">
+                      <FlagUS />
+                    </IconButton>
+                  </Stack>
+                </PaperItem>
               </div>
             </div>
           </div>
