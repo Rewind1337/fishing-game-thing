@@ -18,6 +18,10 @@ function PageGatheringZone() {
   let wormProgressPerTick = 1;
   let wormProgressMax = 10;
 
+  const startDigging = () => {
+    setDigging(true)
+  }
+
   const pageTick = () => {
     if (isDigging == true) {
       if (wormProgress >= wormProgressMax-1) {
@@ -46,9 +50,9 @@ function PageGatheringZone() {
   return (
     <PageCore title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
       <GridCell gridPosition='top-left'>
-        <span>worms: {worms} percentage: {wormProgress / wormProgressMax * 100}</span><br/>
-        <CircularProgress color="gathering" thickness={8} variant="determinate" value={wormProgress / wormProgressMax * 100} /><br/>
-        <ActionButton disabled={(isDigging ? true : false)} color="gathering" variant="contained" text='Look for Worms' func={() => {setDigging(true)}}></ActionButton>
+        <span>worms: {worms} <br/>percentage: {wormProgress / wormProgressMax * 100}</span><br/>
+        <CircularProgress color="gathering" size={48} thickness={8} variant="determinate" value={wormProgress / wormProgressMax * 100} /><br/>
+        <ActionButton disabled={(isDigging ? true : false)} color="gathering" variant="contained" text='Look for Worms' func={startDigging}></ActionButton>
       </GridCell>
       <GridCell gridPosition='top-right'></GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>

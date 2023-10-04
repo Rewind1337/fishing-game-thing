@@ -17,6 +17,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
+import './Sidebar.css'
+
 function Sidebar() {
   const _context = useContext(SaveContext);
 

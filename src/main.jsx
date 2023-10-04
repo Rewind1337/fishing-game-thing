@@ -1,5 +1,6 @@
 //  import React from 'react'
 import ReactDOM from 'react-dom/client'
+import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import PageHome from './pages/home/PageHome.jsx'
@@ -15,16 +16,18 @@ import PageQueen from './pages/queen/PageQueen.jsx';
 import PageDebugStyles from './pages/PageDebugStyles.jsx';
 import PageHelp from './pages/help/PageHelp.jsx';
 import './index.css'
+import Layout from './pages/Layout.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 //  <React.StrictMode>
       <Router>
+        <CssBaseline enableColorScheme />
         <Routes>
-          <Route index path='/home' element={<PageHome/>} />
+          <Route index path='/home' element={<Layout><PageHome/></Layout>} />
           <Route path='/inventory' element={<PageInventory/>} />
           <Route path='/pets' element={<PagePets/>} />
 
-          <Route path='/fishing' element={<PageFishingZone/>} />
+          <Route path='/fishing' element={<Layout><PageFishingZone/></Layout>} />
           <Route path='/gathering' element={<PageGatheringZone/>} />
           <Route path='/adventure' element={<PageAdventureZone/>} />
           

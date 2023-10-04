@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const Theme = createTheme(
   {
     palette: {
+      mode: 'dark',
       fishing: {
         main: '#005792',
         dark: '#4081ad',

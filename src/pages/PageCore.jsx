@@ -5,8 +5,6 @@ import Theme from '../styles/Theme.jsx';
 import '../components/UI.css'
 import '../components/Grids.css'
 
-import Sidebar from '../components/Sidebar'
-
 PageCore.propTypes = {
     title: PropTypes.string.isRequired,
     contentClasses: PropTypes.string,
@@ -19,7 +17,6 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
     return (
       <ThemeProvider theme={Theme}>
         <div id="wrapper">
-          <Sidebar></Sidebar>
           <div id="content" className={contentClasses}>
             <div id="content-top">
               <h1 className='title-blur'>{title}</h1>
