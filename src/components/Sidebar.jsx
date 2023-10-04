@@ -105,20 +105,20 @@ function Sidebar() {
         <div className="sidebar-header">{sidebarHeaderText}</div>
         <div className="sidebar-items-container">
           <SidebarFolder id={0} isToggled={folderStates[0]} canToggle height={25} text="Home">
-            <SidebarItem bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor="white" link='/home'/>
-            <SidebarItem bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor="hsl(50deg, 100%, 90%)" link='/storage'/>
-            <SidebarItem bigText='Ranch' smallText='R' icon={<PetsIcon/>} hoverColor="hsl(280deg, 100%, 90%)" link='/pets'/>
+            <SidebarItem unlocked={true} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor="white" link='/home'/>
+            <SidebarItem unlocked={true} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor="hsl(50deg, 100%, 90%)" link='/storage'/>
+            <SidebarItem unlocked={true} bigText='Ranch' smallText='R' icon={<PetsIcon/>} hoverColor="hsl(280deg, 100%, 90%)" link='/pets'/>
           </SidebarFolder>
           <SidebarFolder id={1} isToggled={folderStates[1]} canToggle height={50} text="Zones">
-            <SidebarItem bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor="hsl(220deg, 100%, 90%)" link='/fishing'/>
-            <SidebarItem bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor="hsl(120deg, 100%, 90%)" link='/gathering'/>
-            <SidebarItem bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor="hsl(30deg, 100%, 90%)" link='/adventure'/>
+            <SidebarItem unlocked={true} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor="hsl(220deg, 100%, 90%)" link='/fishing'/>
+            <SidebarItem unlocked={true} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor="hsl(120deg, 100%, 90%)" link='/gathering'/>
+            <SidebarItem unlocked={true} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor="hsl(30deg, 100%, 90%)" link='/adventure'/>
           </SidebarFolder>
           <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
-            <SidebarItem bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor="hsl(0deg, 100%, 90%)" link='/queen'/>
+            <SidebarItem unlocked={true} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor="hsl(0deg, 100%, 90%)" link='/queen'/>
           </SidebarFolder>
           <SidebarFolder id={3} flex height={50} text="Other">
-            <SidebarItem bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor="hsl(270deg, 100%, 90%)" link='/help'/>
+            <SidebarItem unlocked={true} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor="hsl(270deg, 100%, 90%)" link='/help'/>
           </SidebarFolder>
           <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
         </div>

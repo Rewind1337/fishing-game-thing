@@ -91,23 +91,23 @@
 }
 
 #content.gathering {
-    background-image: url('../assets/bg-gathering.png');
+    background-image: url('../../assets/bg-gathering.png');
 }
 
 #content.fishing {
-    background-image: url('../assets/bg-fishing.png');
+    background-image: url('../../assets/bg-fishing.png');
 }
 
 #content.queen {
-    background-image: url('../assets/bg-queen.png');
+    background-image: url('../../assets/bg-queen.png');
 }
 
 #content.adventure {
-    background-image: url('../assets/bg-adventure.png');
+    background-image: url('../../assets/bg-adventure.png');
 }
 
 #content.home {
-    background-image: url('../assets/bg-home.png');
+    background-image: url('../../assets/bg-home.png');
 }
 
 #content.help {
@@ -115,7 +115,7 @@
 }
 
 #content.pets {
-    background-image: url('../assets/bg-pets.png');
+    background-image: url('../../assets/bg-pets.png');
 }
 
 .grid-cell {

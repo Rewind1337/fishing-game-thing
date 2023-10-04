@@ -24,17 +24,17 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <CssBaseline enableColorScheme />
         <Routes>
           <Route index path='/home' element={<Layout><PageHome/></Layout>} />
-          <Route path='/inventory' element={<PageInventory/>} />
-          <Route path='/pets' element={<PagePets/>} />
+          <Route path='/inventory' element={<Layout><PageInventory/></Layout>} />
+          <Route path='/pets' element={<Layout><PagePets/></Layout>} />
 
           <Route path='/fishing' element={<Layout><PageFishingZone/></Layout>} />
-          <Route path='/gathering' element={<PageGatheringZone/>} />
-          <Route path='/adventure' element={<PageAdventureZone/>} />
+          <Route path='/gathering' element={<Layout><PageGatheringZone/></Layout>} />
+          <Route path='/adventure' element={<Layout><PageAdventureZone/></Layout>} />
           
-          <Route path='/queen' element={<PageQueen/>} />
+          <Route path='/queen' element={<Layout><PageQueen/></Layout>} />
 
-          <Route path='/help' element={<PageHelp/>} />
-          <Route path='/debugstyles' element={<PageDebugStyles/>} />
+          <Route path='/help' element={<Layout><PageHelp/></Layout>} />
+          <Route path='/debugstyles' element={<Layout><PageDebugStyles/></Layout>} />
           <Route path='*' element={<Navigate to="/home" />} />
         </Routes>
       </Router>

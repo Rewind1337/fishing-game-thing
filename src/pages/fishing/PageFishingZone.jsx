@@ -19,6 +19,7 @@ function PageFishingZone() {
   let fishProgressMax = 60
 
   const startFishing = () => {
+    if (worms == 0) return;
     setFishing(true)
     setWorms(worms - 1);
     let tickMiddle = 10 + Math.round(Math.random() * 40);
@@ -29,7 +30,9 @@ function PageFishingZone() {
     if (fishProgress >= tickRange.min && fishProgress <= tickRange.max) {
       alert("ayy");
       stopFishing();
+      return;
     }
+    stopFishing();
   }
 
   const stopFishing = () => {
