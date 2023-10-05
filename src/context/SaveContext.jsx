@@ -7,12 +7,18 @@ let data = {
         gathering: {},
         sidebar: {
             states: [true, true, true],
-            unlocks: [true, false, false, true, true, false, false, true],
+            unlocks: [true, false, false, true, false, false, false, true],
         }
     },
     setSave : (s) => {
         data.save = Object.assign({}, data.save, s);
         localStorage.setItem("game-save", JSON.stringify(data.save));
+    },
+    refs: {
+        sidebar: {}
+    },
+    setRefs : (r) => {
+        data.refs = Object.assign({}, data.refs, r);
     }
 };
 

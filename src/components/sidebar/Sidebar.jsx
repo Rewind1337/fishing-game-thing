@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import SaveContext from '../../context/SaveContext';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
@@ -32,7 +32,7 @@ function Sidebar() {
   const [folderStates, setFolderStates] = useState(savedFolderStates);
 
   const savedSidebarUnlocks = _context.save.sidebar.unlocks;
-  const [sidebarUnlocks, ] = useState(savedSidebarUnlocks);
+  const [sidebarUnlocks, setSidebarUnlocks] = useState(savedSidebarUnlocks);
 
   const setSave = _context.setSave;
 
@@ -49,6 +49,22 @@ function Sidebar() {
     ])
   };
 
+  function unlockSidebar(id, unlocked) {
+    let unlocks = _context.save.sidebar.unlocks;
+    unlocks[id] = unlocked;
+
+    let newSidebar = _context.save.sidebar;
+    newSidebar['unlocks'] = unlocks;
+    _context.setSave({sidebar : newSidebar});
+    setSidebarUnlocks(unlocks);
+  }
+
+  useEffect(() => {
+    _context.refs.sidebar = {'unlocker' : unlockSidebar};
+    return () => {}
+  }, [])
+  
+
   function SidebarFolder({ id, isToggled, height = 0, text, flex, canToggle, children }) {
     const [visible, setVisible] = useState(isToggled);
 
@@ -58,7 +74,10 @@ function Sidebar() {
       let newState = oldState
       setVisible(!visible); 
       setFolderStates(newState);
-      setSave({sidebar: {states: newState}});
+
+      let newSidebar = _context.save.sidebar;
+      newSidebar['states'] = newState;
+      setSave({sidebar: newSidebar});
     }
     
     if (canToggle) {
