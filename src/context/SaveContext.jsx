@@ -1,5 +1,7 @@
 import { createContext } from 'react';
 
+function componentLoadError (name) {console.error("Reference " + name + " failed to load.");}
+
 let data = {
     save: {
         resources: {},
@@ -15,7 +17,7 @@ let data = {
         localStorage.setItem("game-save", JSON.stringify(data.save));
     },
     refs: {
-        sidebar: {}
+        sidebar: {unlocker: componentLoadError.bind('unlocker')},
     },
     setRefs : (r) => {
         data.refs = Object.assign({}, data.refs, r);

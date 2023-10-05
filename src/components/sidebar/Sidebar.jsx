@@ -35,6 +35,7 @@ function Sidebar() {
   const [sidebarUnlocks, setSidebarUnlocks] = useState(savedSidebarUnlocks);
 
   const setSave = _context.setSave;
+  const setRefs = _context.setRefs;
 
   SidebarFolder.propTypes = {
     id: PropTypes.number.isRequired,
@@ -55,12 +56,12 @@ function Sidebar() {
 
     let newSidebar = _context.save.sidebar;
     newSidebar['unlocks'] = unlocks;
-    _context.setSave({sidebar : newSidebar});
+    setSave({sidebar : newSidebar});
     setSidebarUnlocks(unlocks);
   }
 
   useEffect(() => {
-    _context.refs.sidebar = {'unlocker' : unlockSidebar};
+    setRefs({sidebar : {'unlocker' : unlockSidebar}});
     return () => {}
   }, [])
   

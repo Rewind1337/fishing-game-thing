@@ -12,12 +12,17 @@ function PageHome() {
 
   const [canExplore, setExplore] = useState(true);
   const [unlockedGathering, unlockGathering] = useState(_context.save.sidebar.unlocks[4] || false);
+  const [unlockedQueen, unlockQueen] = useState(_context.save.sidebar.unlocks[6] || false);
 
   const rollExploreLocation = () => {
     if (!unlockedGathering) {
       unlockGathering(true);
-      _context.save.sidebar.unlocks[4] = true;
       _context.refs.sidebar['unlocker'](4, true);
+      return;
+    }
+    if (!unlockedQueen && _context.save.resources.fish > 0) {
+      unlockQueen(true);
+      _context.refs.sidebar['unlocker'](6, true);
       return;
     }
   }
