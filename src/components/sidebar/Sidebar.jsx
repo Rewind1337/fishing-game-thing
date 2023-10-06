@@ -37,11 +37,17 @@ function Sidebar() {
   const setRefs = _context.setRefs;
 
   useEffect(() => {
-    setRefs({'setSidebarUnlocks' : setSidebarUnlocks});
+    setRefs({sidebar: {'setSidebarUnlocks' : setSidebarUnlocks}});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  
   const setSave = _context.setSave;
+
+  useEffect(() => {
+    return () => {
+      setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks}});
+    }
+  }, [sidebarUnlocks, setSidebarUnlocks, folderStates, setFolderStates, setSave])
 
   SidebarFolder.propTypes = {
     id: PropTypes.number.isRequired,
@@ -65,7 +71,6 @@ function Sidebar() {
       let newState = oldState
       setVisible(!visible); 
       setFolderStates(newState);
-      setSave({sidebar: {states: newState, unlocks: sidebarUnlocks}});
     }
     
     if (canToggle) {

@@ -15,10 +15,11 @@ let data = {
         localStorage.setItem("game-save", JSON.stringify(data.save));
     },
     refs: {
-        sidebar: {}
+        sidebar: {setSidebarUnlocks: () => {console.log("not in here yet lmao")}}
     },
     setRefs : (r) => {
         data.refs = Object.assign({}, data.refs, r);
+        console.log(data.refs);
     }
 };
 
