@@ -74,12 +74,12 @@ function PageFishingZone() {
   return (
     <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
       <GridCell gridPosition='top-left'>
-        <FlexList mode="list" maxHeight={192}>
+        <FlexList headerText="Resources" mode="list" maxHeight={192}>
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
         </FlexList>
       </GridCell>
-      <GridCell gridPosition='top-middle'>
+      <GridCell gridPosition='top-middle' noFlexOverride>
         <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
       </GridCell>
       <GridCell gridPosition='top-right'></GridCell>

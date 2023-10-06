@@ -13,6 +13,12 @@ let data = {
     setSave : (s) => {
         data.save = Object.assign({}, data.save, s);
         localStorage.setItem("game-save", JSON.stringify(data.save));
+    },
+    refs: {
+        sidebar: {}
+    },
+    setRefs : (r) => {
+        data.refs = Object.assign({}, data.refs, r);
     }
 };
 

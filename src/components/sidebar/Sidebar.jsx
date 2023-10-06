@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import SaveContext from '../../context/SaveContext';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
@@ -14,8 +14,8 @@ import GrassIcon from '@mui/icons-material/Grass';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import AdbIcon from '@mui/icons-material/Adb';
 
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import './Sidebar.css'
 import { styled } from '@mui/material/styles';
@@ -32,7 +32,14 @@ function Sidebar() {
   const [folderStates, setFolderStates] = useState(savedFolderStates);
 
   const savedSidebarUnlocks = _context.save.sidebar.unlocks;
-  const [sidebarUnlocks, ] = useState(savedSidebarUnlocks);
+  const [sidebarUnlocks, setSidebarUnlocks] = useState(savedSidebarUnlocks);
+
+  const setRefs = _context.setRefs;
+
+  useEffect(() => {
+    setRefs({'setSidebarUnlocks' : setSidebarUnlocks});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const setSave = _context.setSave;
 
@@ -58,14 +65,14 @@ function Sidebar() {
       let newState = oldState
       setVisible(!visible); 
       setFolderStates(newState);
-      setSave({sidebar: {states: newState}});
+      setSave({sidebar: {states: newState, unlocks: sidebarUnlocks}});
     }
     
     if (canToggle) {
       return (
         <>
           <div className={'sidebar-folder' + (flex ? " flex-grow" : "")} style={{height: height + "px"}}>
-            <div onClick={() => {handleChange(id)}} className='sidebar-folder-toggle' style={{cursor: "pointer"}}>{(visible ? <VisibilityIcon className='sidebar-folder-eye'/> : <VisibilityOffIcon className='sidebar-folder-eye'/>)} <div>{text}</div></div>
+            <div onClick={() => {handleChange(id)}} className='sidebar-folder-toggle' style={{cursor: "pointer"}}>{(visible ? <KeyboardArrowDownIcon className='sidebar-folder-icon'/> : <KeyboardArrowRightIcon className='sidebar-folder-icon'/>)} <div>{text}</div></div>
           </div>
           {visible && children}
         </>

@@ -15,7 +15,7 @@ h1, h2, h3, h4, h5, h6, .sidebar-header, .font-special {
   font-family: 'Young Serif', serif;
 }
 
-.sidebar-folder-text > div, .font-tooltips {
+.sidebar-folder-toggle > div, .font-tooltips {
   font-family: 'Geo', sans-serif;
 }
 

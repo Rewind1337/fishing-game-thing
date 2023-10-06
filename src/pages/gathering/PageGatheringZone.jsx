@@ -65,12 +65,14 @@ function PageGatheringZone() {
   return (
     <PageCore title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
       <GridCell gridPosition='top-left'>
-        <FlexList mode="list" maxHeight={192}>
+        <FlexList headerText="Resources" mode="list" maxHeight={192}>
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
         </FlexList>
-        <CircularProgress sx={{marginTop: "15px"}} color="gathering" size={100} thickness={8} variant="determinate" value={wormProgress / wormProgressMax * 100} /><br/>
-        <ActionButton disabled={(isDigging ? true : false)} color="gathering" variant="contained" text='Dig for Worms' func={startDigging}></ActionButton><br/>
-        <ActionButton disabled={(!canCollectWorms ? true : false)} color="gathering" variant="contained" text='Collect' func={collectWorms}></ActionButton>
+        <CircularProgress sx={{padding: "5px", border: "1px solid " + (canCollectWorms ? '#3c8d42' : 'white')}} color="gathering" size={100} thickness={8} variant="determinate" value={wormProgress / wormProgressMax * 100} />
+        <div>
+          <ActionButton disabled={(isDigging ? true : false)} color="gathering" variant="contained" text='Dig for Worms' func={startDigging}></ActionButton>
+          <ActionButton disabled={(!canCollectWorms ? true : false)} color="gathering" variant="contained" text='Collect' func={collectWorms}></ActionButton>
+        </div>
       </GridCell>
       <GridCell gridPosition='top-right'></GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>
