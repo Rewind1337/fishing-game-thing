@@ -90,6 +90,10 @@
     max-height: 100%;
 }
 
+#content {
+    background-image: url('../../assets/bg-gathering.png');
+}
+
 #content.gathering {
     background-image: url('../../assets/bg-gathering.png');
 }

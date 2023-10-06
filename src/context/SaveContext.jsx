@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 let data = {
     save: {
+        pageTimestamps: {},
         resources: {},
         fishing: {},
         gathering: {},

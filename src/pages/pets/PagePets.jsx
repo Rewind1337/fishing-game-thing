@@ -10,7 +10,7 @@ function PagePets() {
   _context; // to prevent the no-unused-vars, remove if actually used somewhere else
 
   return (
-    <PageCore title="Ranch" contentClasses={'pets'}>
+    <PageCore title="Pets" contentClasses={'pets'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='right-side'></GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>

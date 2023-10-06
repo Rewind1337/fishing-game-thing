@@ -12,6 +12,10 @@
     background-repeat: no-repeat;
     background-attachment: scroll;
 
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;  
+
     color: white;
 
     text-align: center;
@@ -64,6 +68,10 @@
 
     transition: backdrop-filter 0.25s ease;
 }
+
+.sidebar-items-top {order: 0;}
+.sidebar-items-center {order: 1; flex-grow: 1; overflow-y: auto; overflow-x: hidden}
+.sidebar-items-bottom {order: 2;}
 
 .sidebar-item {
     position: relative;

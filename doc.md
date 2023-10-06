@@ -40,6 +40,7 @@
 - Resource Zones
     - Fishing - Related
     - Mining - Related
+    - Archaeology - Related
 - Battles
 - Loot (Resources, Items)
 - Events (Temporary Stat Changes)

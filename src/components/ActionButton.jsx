@@ -22,7 +22,7 @@ ActionButton.propTypes = {
     func: PropTypes.func,
 }
 
-function ActionButton({ sx = {}, link, disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = 'placeholder', func = () => {}}) {
+function ActionButton({ sx = {}, link, disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = color, func = () => {}}) {
 
     const handleClick = () => {func()}
 

@@ -1,17 +1,12 @@
-button.actionbutton[disabled] {
-    color: rgb(45, 45, 45);
+button.actionbutton {
     border-radius: 0;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     padding: 4px 6px;
     margin: 2px 1px;
     font-size: 22px;
     line-height: 1;
 }
 
-button.actionbutton:not([disabled]) {
-    border-radius: 0;
-    padding: 4px 6px;
-    margin: 2px 1px;
-    font-size: 22px;
-    line-height: 1;
+button.actionbutton[disabled] {
+    color: rgb(45, 45, 45);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }

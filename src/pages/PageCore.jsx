@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import FlagDE from '../assets/flag-de';
 import FlagNL from '../assets/flag-nl';
 import FlagUS from '../assets/flag-us';
+import WeatherClock from '../components/weatherclock/WeatherClock';
 
 PaperItem.propTypes = {
   elevation: PropTypes.number,
@@ -44,10 +45,7 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
             <div id="content-top">
               <div id="content-top-left">
                 <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
-                  <ActionButton color="tutorial" variant="contained" text='Unlock Sidebar' sx={{height: "80%"}} func={() => {
-                    let modifiedUnlocks = [true, true, true, true, true, true, true, true]
-                    _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
-                  }}/>
+                  <WeatherClock/>
                   </PaperItem>
               </div>
               <div id="content-top-center">
@@ -55,10 +53,6 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
               </div>
               <div id="content-top-right">
                 <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
-                  <ActionButton color="queen" variant="contained" text='Reset LocalStorage' sx={{height: "80%"}} func={() => {
-                    localStorage.clear();
-                    location.reload();
-                  }}/>
                 </PaperItem>
               </div>
             </div>
@@ -72,7 +66,16 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
                 <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></PaperItem>
               </div>
               <div id="content-bottom-center">
-                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></PaperItem>
+                <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
+                  <ActionButton color="tutorial" variant="contained" text='Unlock Sidebar' sx={{height: "80%"}} func={() => {
+                    let modifiedUnlocks = [true, true, true, true, true, true, true, true]
+                    _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
+                  }}/>
+                  <ActionButton color="queen" variant="contained" text='Reset LocalStorage' sx={{height: "80%"}} func={() => {
+                    localStorage.clear();
+                    location.reload();
+                  }}/>
+                </PaperItem>
               </div>
               <div id="content-bottom-right">
                 <PaperItem elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>

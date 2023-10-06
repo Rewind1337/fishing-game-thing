@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../PageCore';
@@ -13,12 +13,15 @@ import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 import LinearProgress from '@mui/material/LinearProgress';
 
 function PageFishingZone() {
+
   const _context = useContext(SaveContext)
+  let _currentTimestamp = useRef(_context.save.pageTimestamps.gathering || Date.now())
   
   const [fish, setFish] = useState(_context.save.resources.fish || 0)
   const [worms, setWorms] = useState(_context.save.resources.worms || 0)
+  const [artifacts, setArtifacts] = useState(_context.save.resources.artifacts || 0)  // eslint-disable-line no-unused-vars
+
   const [isFishing, setFishing] = useState(_context.save.fishing.isFishing || false)
-  
   const [fishProgress, setFishProgress] = useState(_context.save.fishing.fishProgress || false)
   const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: -1, max: -1})
   let fishProgressPerTick = 1
@@ -57,19 +60,35 @@ function PageFishingZone() {
   }
 
   useEffect(() => {
-    const timer = setInterval(pageTick, 800);
+    pageTick()
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(pageTick, 500);
 
     return () => {
       clearInterval(timer);
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [worms, fish, isFishing, fishProgress, tickRange]);
+  }, [worms, fish, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    _context.setSave({resources: {worms: worms, fish: fish}, fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}})
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageTick])
+    _context.setSave({pageTimestamps: {fishing: _currentTimestamp.current},resources: {worms: worms, fish: fish, artifacts: artifacts}, fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}})
+    _currentTimestamp.current = Date.now();
+  }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Catch up the Ticks
+  useEffect(() => {
+    let _lastTimestamp = _context.save.pageTimestamps.fishing;
+    let deltaTimeInMs = _currentTimestamp.current - _lastTimestamp;
+    let flooredToSec = ~~(deltaTimeInMs/1000);
+
+    for (let i = 0; i < flooredToSec; i++) {
+      if (isFishing) {
+        pageTick();
+      }
+    }
+  })
 
   return (
     <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>

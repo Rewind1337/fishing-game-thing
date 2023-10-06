@@ -10,7 +10,42 @@
 
 * {
     scrollbar-width: thin;
+
+    animation-duration: 60s;
+    animation-name: rainbowScrollbar;
+    animation-iteration-count: infinite;
 }
+
+@keyframes rainbowScrollbar {
+    0% {
+        scrollbar-color: hsl(0deg, 100%, 50%) transparent;
+    }
+    12.5% {
+        scrollbar-color: hsl(45deg, 100%, 50%) transparent;
+    }
+    25% {
+        scrollbar-color: hsl(90deg, 100%, 50%) transparent;
+    }
+    37.5% {
+        scrollbar-color: hsl(135deg, 100%, 50%) transparent;
+    }
+    50% {
+        scrollbar-color: hsl(180deg, 100%, 50%) transparent;
+    }
+    62.5% {
+        scrollbar-color: hsl(225deg, 100%, 50%) transparent;
+    }
+    75% {
+        scrollbar-color: hsl(270deg, 100%, 50%) transparent;
+    }
+    75% {
+        scrollbar-color: hsl(315deg, 100%, 50%) transparent;
+    }
+    100% {
+        scrollbar-color: hsl(360deg, 100%, 50%) transparent;
+    }
+  }
+  
 
 .flex-grow {
     flex-grow: 1;
@@ -149,4 +184,13 @@
     margin: 5px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid white;
+}
+
+.MuiCircularProgress-circle {
+    transition: stroke-dashoffset 0.5s linear !important;
+}
+
+.MuiLinearProgress-bar {
+    transition: transform 0.5s linear !important;
 }

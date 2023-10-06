@@ -2,8 +2,10 @@ import { useContext } from 'react';
 
 import SaveContext from '../context/SaveContext';
 import PageCore from './PageCore';
+import GridCell from '../components/grid/GridCell';
 import ActionButton from '../components/ActionButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FlexList from '../components/flexlist/FlexList';
 
 function PageDebugStyles() {
 
@@ -12,22 +14,22 @@ function PageDebugStyles() {
 
   return (
     <PageCore title="Debug Stuff">
-    <div className="grid-top-left">
-      <ActionButton startIcon={<DeleteIcon />} color="fishing" variant="contained" text='fishing'></ActionButton>
-      <br/>
-      <ActionButton endIcon={<DeleteIcon />} color="gathering" variant="contained" text='gathering'></ActionButton>
-      <br/>
-      <ActionButton color="adventure" variant="contained" text='adventure'></ActionButton>
-      <br/>
-      <ActionButton color="queen" variant="contained" text='queen'></ActionButton>
-      <br/>
-      <ActionButton color="home" variant="contained" text='home'></ActionButton>
-      <br/>
-      <ActionButton color="tutorial" variant="contained" text='tutorial'></ActionButton>
-    </div>
-    <div className="grid-right-side">right-side</div>
-    <div className="grid-bottom-left">bottom-left</div>
-    <div className="grid-bottom-center">bottom-center</div>
+      <GridCell gridPosition='top-left'>
+        <FlexList mode='flex'>
+          <ActionButton startIcon={<DeleteIcon />} color="fishing" variant="contained"></ActionButton>
+          <ActionButton endIcon={<DeleteIcon />} color="gathering" variant="contained"></ActionButton>
+          <ActionButton color="adventure" variant="contained"></ActionButton>
+          <ActionButton color="queen" variant="contained"></ActionButton>
+          <ActionButton color="home" variant="contained"></ActionButton>
+          <ActionButton color="tutorial" variant="contained"></ActionButton>
+          <ActionButton color="archaeology" variant="contained"></ActionButton>
+          <ActionButton color="pets" variant="contained"></ActionButton>
+          <ActionButton color="inventory" variant="contained"></ActionButton>
+        </FlexList>
+      </GridCell>
+      <GridCell gridPosition='right-side'></GridCell>
+      <GridCell gridPosition='bottom-left'></GridCell>
+      <GridCell gridPosition='bottom-right'></GridCell>
     </PageCore>
   )
 }

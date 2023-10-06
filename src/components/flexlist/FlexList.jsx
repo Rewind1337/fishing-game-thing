@@ -11,7 +11,7 @@ FlexList.propTypes = {
 function FlexList({headerText = 'header', mode, maxHeight, children}) {
   return (
   <div className={"flexlist flexlist-" + mode} style={{maxHeight: maxHeight}}>
-    <h5 style={{textAlign: 'left', textIndent: '8px'}}>{headerText}</h5>
+    <h5 style={{textAlign: 'left', textIndent: '8px', width: "100%"}}>{headerText}</h5>
     {children}
   </div>
   );
