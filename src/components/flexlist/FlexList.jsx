@@ -4,16 +4,20 @@ import './FlexList.css'
 FlexList.propTypes = {
   headerText: PropTypes.string,
   mode: PropTypes.string.isRequired,
+  minHeight: PropTypes.number,
   maxHeight: PropTypes.number,
+  gap: PropTypes.number,
   children: PropTypes.array,
 };
   
-function FlexList({headerText = 'header', mode, maxHeight, children}) {
+function FlexList({headerText = 'header', mode, minHeight, maxHeight, gap = 0, children}) {
   return (
-  <div className={"flexlist flexlist-" + mode} style={{maxHeight: maxHeight}}>
-    <h5 style={{textAlign: 'left', textIndent: '8px', width: "100%"}}>{headerText}</h5>
-    {children}
-  </div>
+    <div className={"flex-list-wrapper " + mode}>
+      <h5 className={"flexlist-header"} style={{marginTop: gap + "px"}}>{headerText}</h5>
+      <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
+        {children}
+      </div>
+    </div>
   );
 }
 

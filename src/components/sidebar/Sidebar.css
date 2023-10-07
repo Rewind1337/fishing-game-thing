@@ -4,6 +4,7 @@
     font-size: 12px;
     line-height: 36px;
     padding: 0;
+    z-index: 100;
     
     background-image: url('../../assets/statue.png');
     background-position: left;

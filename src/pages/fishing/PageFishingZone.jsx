@@ -1,12 +1,14 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 
 import SaveContext from '../../context/SaveContext';
+import GLOBALS from '../../globals/Globals';
+
 import PageCore from '../PageCore';
 import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
-
 import ResourceCard from '../../components/ResourceCard';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,8 +26,7 @@ function PageFishingZone() {
   const [isFishing, setFishing] = useState(_context.save.fishing.isFishing || false)
   const [fishProgress, setFishProgress] = useState(_context.save.fishing.fishProgress || false)
   const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: -1, max: -1})
-  let fishProgressPerTick = 1
-  let fishProgressMax = 60
+  let fishProgressMax = GLOBALS.FISHING.TIME
 
   const startFishing = () => {
     if (worms == 0) return;
@@ -55,7 +56,7 @@ function PageFishingZone() {
       if (fishProgress >= fishProgressMax-1) {
         setFishing(false)
       }
-      setFishProgress((old) => (old >= (fishProgressMax-1) ? 0 : old + fishProgressPerTick));
+      setFishProgress((old) => (old >= (fishProgressMax-1) ? 0 : old + 1));
     }
   }
 
@@ -94,8 +95,8 @@ function PageFishingZone() {
     <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
       <GridCell gridPosition='top-left'>
         <FlexList headerText="Resources" mode="list" maxHeight={192}>
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
-          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
+          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconColor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
+          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconColor="hsl(235deg, 100%, 90%)" name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
         </FlexList>
       </GridCell>
       <GridCell gridPosition='top-middle' noFlexOverride>

@@ -119,6 +119,16 @@
 #content-bottom-center {justify-content: center;}
 #content-bottom-right {justify-content: flex-end;}
 
+#content-top > * > *, #content-bottom > * > * {
+    height: 100%;
+    min-width: 64px;
+
+    padding: 0px;
+
+    align-items: center;
+    display: grid;
+}
+
 #content-main {
     flex-grow: 1;
     width: 100%;
@@ -150,10 +160,13 @@
 }
 
 .resource-card-icon > svg {
-    height: 32px !important;
-    width: 48px !important;
+    height: 40px !important;
+    width: 40px !important;
     flex-basis: 40px;
-    vertical-align: -7.5px !important;
+    vertical-align: -9.5px !important;
+    scale: 0.8;
+    position: relative;
+    left: -1px;
 }
 
 .resource-card-name {
@@ -181,7 +194,8 @@
 }
 
 .MuiCircularProgress-root {
-    margin: 5px;
+    margin: 4px;
+    margin-bottom: 0px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.3);
     border: 1px solid white;

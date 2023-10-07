@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton';
 
 import './ActionButton.css'
 
-
 ActionButton.propTypes = {
     sx: PropTypes.object,
     link: PropTypes.string,

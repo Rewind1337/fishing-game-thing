@@ -5,7 +5,7 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Theme from '../styles/Theme.jsx';
 
 Layout.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.object,
 };
 
 function Layout({children}) {

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 GridCell.propTypes = {
   gridPosition: PropTypes.string.isRequired,
   noFlexOverride: PropTypes.bool,
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ])
 };
   
 function GridCell({gridPosition, noFlexOverride = false, children}) {

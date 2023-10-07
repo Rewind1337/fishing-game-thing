@@ -40,8 +40,8 @@ function Sidebar() {
 
   useEffect(() => {
     setRefs({sidebar: {'setSidebarUnlocks' : setSidebarUnlocks}});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    setMouseOver(false);
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
   const setSave = _context.setSave;
 

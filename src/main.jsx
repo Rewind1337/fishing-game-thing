@@ -16,27 +16,28 @@ import PageQueen from './pages/queen/PageQueen.jsx';
 import PageDebugStyles from './pages/PageDebugStyles.jsx';
 import PageHelp from './pages/help/PageHelp.jsx';
 import './index.css'
+import RouterWrapper from './RouterWrapper.jsx';
 import Layout from './pages/Layout.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-//  <React.StrictMode>
-      <Router>
-        <CssBaseline enableColorScheme />
-        <Routes>
-          <Route index path='/home' element={<Layout><PageHome/></Layout>} />
-          <Route path='/inventory' element={<Layout><PageInventory/></Layout>} />
-          <Route path='/pets' element={<Layout><PagePets/></Layout>} />
+  <RouterWrapper>
+    <CssBaseline enableColorScheme />
+    <Router>
+      <Routes>
+        <Route index path='/home' element={<Layout><PageHome/></Layout>} />
+        <Route path='/inventory' element={<Layout><PageInventory/></Layout>} />
+        <Route path='/pets' element={<Layout><PagePets/></Layout>} />
 
-          <Route path='/fishing' element={<Layout><PageFishingZone/></Layout>} />
-          <Route path='/gathering' element={<Layout><PageGatheringZone/></Layout>} />
-          <Route path='/adventure' element={<Layout><PageAdventureZone/></Layout>} />
-          
-          <Route path='/queen' element={<Layout><PageQueen/></Layout>} />
+        <Route path='/fishing' element={<Layout><PageFishingZone/></Layout>} />
+        <Route path='/gathering' element={<Layout><PageGatheringZone/></Layout>} />
+        <Route path='/adventure' element={<Layout><PageAdventureZone/></Layout>} />
+        
+        <Route path='/queen' element={<Layout><PageQueen/></Layout>} />
 
-          <Route path='/help' element={<Layout><PageHelp/></Layout>} />
-          <Route path='/debugstyles' element={<Layout><PageDebugStyles/></Layout>} />
-          <Route path='*' element={<Navigate to="/home" />} />
-        </Routes>
-      </Router>
-//  </React.StrictMode>,
+        <Route path='/help' element={<Layout><PageHelp/></Layout>} />
+        <Route path='/debugstyles' element={<Layout><PageDebugStyles/></Layout>} />
+        <Route path='*' element={<Navigate to="/home" />} />
+      </Routes>
+    </Router>
+  </RouterWrapper>,
 )
