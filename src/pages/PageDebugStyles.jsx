@@ -1,12 +1,15 @@
-import { useContext } from 'react';
-
+// Boiler (kinda)
+import { useContext, useState, useEffect, useRef } from 'react';  // eslint-disable-line no-unused-vars
 import SaveContext from '../context/SaveContext';
-import PageCore from './PageCore';
-import GridCell from '../components/grid/GridCell';
-import ActionButton from '../components/ActionButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FlexList from '../components/flexlist/FlexList';
+import GLOBALS from '../globals/Globals';  // eslint-disable-line no-unused-vars
+import PageCore from './core/PageCore';
 
+// Components
+import FlexList from '../components/flexlist/FlexList';
+import GridCell from '../components/grid/GridCell';
+import ActionButton from '../components/ActionButton';  // eslint-disable-line no-unused-vars
+
+// Route: "/debugstyles"
 function PageDebugStyles() {
 
   const _context = useContext(SaveContext);
@@ -15,9 +18,9 @@ function PageDebugStyles() {
   return (
     <PageCore title="Debug Stuff">
       <GridCell gridPosition='top-left'>
-        <FlexList mode='flex'>
-          <ActionButton startIcon={<DeleteIcon />} color="fishing" variant="contained"></ActionButton>
-          <ActionButton endIcon={<DeleteIcon />} color="gathering" variant="contained"></ActionButton>
+        <FlexList noHeader mode='flex'>
+          <ActionButton color="fishing" variant="contained"></ActionButton>
+          <ActionButton color="gathering" variant="contained"></ActionButton>
           <ActionButton color="adventure" variant="contained"></ActionButton>
           <ActionButton color="queen" variant="contained"></ActionButton>
           <ActionButton color="home" variant="contained"></ActionButton>

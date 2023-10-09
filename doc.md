@@ -197,7 +197,7 @@
 #### Gathering:
 - Fallen branches (uses Gathering Power (nature))
 
-#### Archeology):
+#### Archeology:
 - ??? remains (uses Gathering Power (earth/beast))
 - lesser worm artifacts (uses Gathering Power (earth/worm))
 

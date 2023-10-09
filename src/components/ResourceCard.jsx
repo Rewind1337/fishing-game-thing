@@ -1,5 +1,7 @@
 import { Paper } from '@mui/material';
 import PropTypes from 'prop-types';
+import LanguageContext from '../context/LanguageContext';
+import { useContext } from 'react';
 
 ResourceCard.propTypes = {
   icon: PropTypes.object.isRequired,
@@ -11,6 +13,8 @@ ResourceCard.propTypes = {
 };
   
 function ResourceCard({icon, iconColor, name, value, cap, perSec}) {
+  const _lang = useContext(LanguageContext);
+  name = _lang.languageFile.resources[name.toLowerCase()];
   return (
   <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}} className="resource-card">
     <div className="resource-card-icon" style={{color: iconColor}}>{icon}</div>

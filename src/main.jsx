@@ -1,7 +1,8 @@
-//  import React from 'react'
 import ReactDOM from 'react-dom/client'
-import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
+import Layout from './pages/core/Layout.jsx';
+import RouterWrapper from './RouterWrapper.jsx';
 
 import PageHome from './pages/home/PageHome.jsx'
 import PageInventory from './pages/inventory/PageInventory.jsx';
@@ -15,9 +16,9 @@ import PageQueen from './pages/queen/PageQueen.jsx';
 
 import PageDebugStyles from './pages/PageDebugStyles.jsx';
 import PageHelp from './pages/help/PageHelp.jsx';
+
 import './index.css'
-import RouterWrapper from './RouterWrapper.jsx';
-import Layout from './pages/Layout.jsx';
+import CssBaseline from '@mui/material/CssBaseline';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterWrapper>

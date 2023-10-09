@@ -1,6 +1,5 @@
 .flexlist {
     display: flex;
-    overflow-y: auto;
     width: 100%;
     padding-top: 1px;
     border-radius: 4px;
@@ -18,6 +17,9 @@
 }
 
 .flexlist-header {
+    position: sticky;
+    top: 1px;
+    z-index: 100;
     display: grid;
     align-content: center;
     flex-basis: calc(100% - 2px);
@@ -31,7 +33,23 @@
     /* visualisation, remove if not needed anymore */
     border: 1px solid gray;
     /* */
+
+    transition: background-color 0.1s ease;
 }
+
+.grid-scrolled  .flexlist-header {
+    flex-basis: calc(100%);
+    width: calc(100%);
+    margin: 0px;
+    text-indent: 9px;
+
+    background-color: rgb(82, 82, 82);
+
+    transition: background-color 0.1s ease, top 0.1s ease;
+}
+
+
+
 
 .flexlist-list {
     flex-direction: column;
@@ -41,22 +59,14 @@
 .flexlist-list > * {
     flex-basis: calc(100% - 2px);
     width: calc(100% - 2px);
-    border-radius: 0;
+    border-radius: 4px;
     margin: 0px 1px;
     height: auto;
 }
 
-.flexlist-list > * {
-    border-radius: 0 !important;
-}
 
-.flexlist-flex > .flexlist-header {
-    border-radius: 4px 4px 0 0 !important;
-}
 
-.flexlist-list > *:last-child {
-    border-radius: 0 0 4px 4px !important;
-}
+
 
 .flexlist-flex {
     flex-direction: row;
@@ -66,4 +76,13 @@
 .flexlist-flex > * {
     width: calc(50% - 2px);
     margin: 0 1px;
+}
+
+
+
+.flexlist-tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
 }

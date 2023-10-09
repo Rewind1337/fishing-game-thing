@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import SaveContext from '../../context/SaveContext';
-import PageCore from '../PageCore';
+import PageCore from '../core/PageCore';
 import GridCell from '../../components/grid/GridCell';
 
 import './Adventure.css'

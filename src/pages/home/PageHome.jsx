@@ -1,10 +1,20 @@
-import { useContext, useState } from 'react';
-
+// Boiler (kinda)
+import { useContext, useState, useEffect, useRef } from 'react';  // eslint-disable-line no-unused-vars
 import SaveContext from '../../context/SaveContext';
-import PageCore from '../PageCore';
+import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
+import PageCore from '../core/PageCore';
+
+// Components
 import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';
 
+// JS Utility
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+
+// CSS Styles
+import './Home.css'
+
+// Route: "/home"
 function PageHome() {
 
   const _context = useContext(SaveContext);

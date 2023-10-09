@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
 
 import { useContext } from 'react';
-import SaveContext from '../context/SaveContext';
-import '../components/UI.css'
-import '../components/grid/Grid.css'
-import ActionButton from '../components/ActionButton';
+import SaveContext from '../../context/SaveContext';
+import LanguageContext from '../../context/LanguageContext';
+import LANG_DE from '../../context/lang/de';
+import LANG_US from '../../context/lang/us';
+import LANG_NL from '../../context/lang/nl';
+
+import '../../components/UI.css'
+import '../../components/grid/Grid.css'
+import ActionButton from '../../components/ActionButton';
 
 import { Paper, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import FlagDE from '../assets/flag-de';
-import FlagNL from '../assets/flag-nl';
-import FlagUS from '../assets/flag-us';
-import WeatherClock from '../components/weatherclock/WeatherClock';
+import FlagDE from '../../assets/flag-de';
+import FlagNL from '../../assets/flag-nl';
+import FlagUS from '../../assets/flag-us';
+import WeatherClock from '../../components/weatherclock/WeatherClock';
 
 PageCore.propTypes = {
     title: PropTypes.string.isRequired,
@@ -21,8 +26,14 @@ PageCore.propTypes = {
 };
 
 function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
-
   const _context = useContext(SaveContext);
+  const _lang = useContext(LanguageContext);
+
+  const selectLanguage = (languageFile) => {
+    _lang.setLanguageFile(languageFile);
+    _context.updateToLocalStorage();
+    location.reload();
+  }
 
     return (
         <div id="wrapper">
@@ -64,13 +75,13 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
               <div id="content-bottom-right">
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
                   <Stack direction={'row'}>
-                    <IconButton color="secondary" aria-label="add an alarm">
+                    <IconButton onClick={() => {selectLanguage(LANG_DE)}}>
                       <FlagDE />
                     </IconButton>
-                    <IconButton color="secondary" aria-label="add an alarm">
+                    <IconButton onClick={() => {selectLanguage(LANG_NL)}}>
                       <FlagNL />
                     </IconButton>
-                    <IconButton color="secondary" aria-label="add an alarm">
+                    <IconButton onClick={() => {selectLanguage(LANG_US)}}>
                       <FlagUS />
                     </IconButton>
                   </Stack>

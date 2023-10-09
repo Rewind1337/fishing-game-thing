@@ -146,7 +146,7 @@ function Sidebar() {
           <div className="sidebar-items-top">
             <SidebarFolder id={0} isToggled={folderStates[0]} canToggle height={25} text="Home">
               <SidebarItem isUnlocked={sidebarUnlocks[0]} badgeData={0} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor={Theme.palette.home.sidebarHover} link='/home'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[1]} badgeData={0} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor={Theme.palette.inventory.sidebarHover} link='/storage'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[1]} badgeData={0} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor={Theme.palette.inventory.sidebarHover} link='/inventory'/>
               <SidebarItem isUnlocked={sidebarUnlocks[2]} badgeData={0} bigText='Pets' smallText='P' icon={<PetsIcon/>} hoverColor={Theme.palette.pets.sidebarHover} link='/pets'/>
             </SidebarFolder>
           </div>

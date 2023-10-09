@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import './FlexList.css'
 
 FlexList.propTypes = {
-  headerText: PropTypes.string,
+  noHeader: PropTypes.bool,
+  headerElement: PropTypes.element,
   mode: PropTypes.string.isRequired,
   minHeight: PropTypes.number,
   maxHeight: PropTypes.number,
@@ -10,10 +11,11 @@ FlexList.propTypes = {
   children: PropTypes.array,
 };
   
-function FlexList({headerText = 'header', mode, minHeight, maxHeight, gap = 0, children}) {
+function FlexList({noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "100%", maxHeight = "100%", gap = 0, children}) {
+  
   return (
     <div className={"flex-list-wrapper " + mode}>
-      <h5 className={"flexlist-header"} style={{marginTop: gap + "px"}}>{headerText}</h5>
+      {!noHeader && <div className={"flexlist-header"} style={{marginTop: gap + "px"}}>{headerElement}</div>}
       <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
         {children}
       </div>

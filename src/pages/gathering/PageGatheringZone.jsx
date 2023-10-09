@@ -1,20 +1,30 @@
+// Boiler (kinda)
 import { useContext, useState, useEffect, useRef } from 'react';
-
 import SaveContext from '../../context/SaveContext';
 import GLOBALS from '../../globals/Globals';
+import PageCore from '../core/PageCore';
 
-import PageCore from '../PageCore';
+// Components
 import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
-
-import CircularProgress from '@mui/material/CircularProgress';  // eslint-disable-line no-unused-vars
+import ResourceCard from '../../components/ResourceCard';
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
+
+// MUI
+import { Paper } from '@mui/material';
+
+// Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFish, faFloppyDisk, faWorm } from '@fortawesome/free-solid-svg-icons';
-import { Paper } from '@mui/material';
-import ResourceCard from '../../components/ResourceCard';
 
+// JS Utility
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+
+// CSS Styles
+import './Gathering.css'
+
+// Route: "/gathering"
 function PageGatheringZone() {
 
   const _context = useContext(SaveContext)
@@ -124,17 +134,17 @@ function PageGatheringZone() {
     <PageCore title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
       <GridCell gridPosition='top-left'>
 
-        <FlexList headerText="Resources" mode="list" minHeight={128} maxHeight={192}>
+        <FlexList headerElement={<h4>{"Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconColor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconColor="hsl(235deg, 100%, 90%)" name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconColor="hsl(60deg, 100%, 90%)" name="Artifacts" value={artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
 
-        <FlexList headerText="Actions" mode="flex" minHeight={178} maxHeight={309} gap={8}>
+        <FlexList headerElement={<h4>{"Actions"}</h4>} mode="flex" minHeight={178} maxHeight={309} gap={8}>
           
           <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}>
             <h5>Worms</h5>
-            <CircularProgressWithLabel icon={<FontAwesomeIcon icon={faWorm} />} iconColor="hsl(300deg, 100%, 90%)" sx={{padding: "5px", color: 'hsl(300deg, 100%, 80%)'}} color="gathering" size={100} thickness={4} variant="determinate" value={wormProgress / wormProgressMax * 100} />
+            <CircularProgressWithLabel textSize='15px' icon={<FontAwesomeIcon icon={faWorm} />} iconColor="hsl(300deg, 100%, 90%)" sx={{padding: "5px", color: 'hsl(300deg, 100%, 80%)'}} color="gathering" size={100} thickness={4} variant="determinate" value={wormProgress / wormProgressMax * 100} />
             <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
               <ActionButton disabled={(isDiggingWorms ? true : false)} color="gathering" variant="contained" text='Start Digging' func={startDiggingWorms}></ActionButton>
               <ActionButton disabled={(!canCollectWorms ? true : false)} color="gathering" variant="contained" text='Collect' func={collectWorms}></ActionButton>
@@ -143,7 +153,7 @@ function PageGatheringZone() {
           
           {isArtifactsUnlocked && (<Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}}>
             <h5>Artifacts</h5>
-            <CircularProgressWithLabel icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconColor="hsl(60deg, 100%, 90%)" sx={{padding: "5px", color: 'hsl(60deg, 100%, 80%)'}} color="archaeology" size={100} thickness={4} variant="determinate" value={artifactProgress / artifactProgressMax * 100} />
+            <CircularProgressWithLabel textSize='15px' icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconColor="hsl(60deg, 100%, 90%)" sx={{padding: "5px", color: 'hsl(60deg, 100%, 80%)'}} color="archaeology" size={100} thickness={4} variant="determinate" value={artifactProgress / artifactProgressMax * 100} />
             <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
               <ActionButton disabled={(isDiggingArtifacts ? true : false)} color="archaeology" variant="contained" text='Start Digging' func={startDiggingArtifacts}></ActionButton>
               <ActionButton disabled={(!canCollectArtifacts ? true : false)} color="archaeology" variant="contained" text='Collect' func={collectArtifacts}></ActionButton>
