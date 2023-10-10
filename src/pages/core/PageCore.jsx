@@ -61,13 +61,22 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></Paper>
               </div>
               <div id="content-bottom-center">
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
+                <Paper elevation={1} sx={{display: 'flex !important', flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
                   <ActionButton color="tutorial" variant="contained" text='Sidebar' sx={{height: "80%"}} func={() => {
                     let modifiedUnlocks = [true, true, true, true, true, true, true, true]
                     _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
                   }}/>
                   <ActionButton color="queen" variant="contained" text='Reset' sx={{height: "80%"}} func={() => {
                     localStorage.clear();
+                    location.reload();
+                  }}/>
+                  <ActionButton color="inventory" variant="contained" text='Cheat' sx={{height: "80%"}} func={() => {
+                    let oldSave = JSON.parse(localStorage.getItem("game-save"))
+                    oldSave.resources.worms = 1000
+                    oldSave.resources.fish = 1000
+                    oldSave.resources.artifacts = 1000
+                    let newSave = JSON.stringify(oldSave);
+                    localStorage.setItem("game-save", newSave)
                     location.reload();
                   }}/>
                 </Paper>
