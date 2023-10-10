@@ -36,7 +36,10 @@ function PageQueen() {
   const [worms, setWorms] = useState(_context.save.resources.worms || 0);
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
-  const pickerOptions = ["fish", "test2", "test3", "test4", "test5", "test6"];
+  const pickerOptions = [
+    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: "fish"},
+    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: "fish"},
+  ];
 
   const handlePickerOpen = () => {
     setPickerModalOpen(true);
@@ -69,8 +72,7 @@ function PageQueen() {
 
   useEffect(() => {
     _context.setSave({resources: {worms: worms, fish: fish}});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fish, worms])
+  }, [fish, worms]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <PageCore title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>

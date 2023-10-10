@@ -193,6 +193,14 @@
     clip-path: circle(16px);
 }
 
+
+.picker-dialog > .MuiDialog-container > .MuiPaper-root {
+    top: -200px;
+    padding: 8px;
+    min-width: 600px;
+    max-width: 1200px;
+}
+
 .MuiPaper-root, .MuiStack-root {margin: 0 auto;}
 
 .MuiCircularProgress-root {
