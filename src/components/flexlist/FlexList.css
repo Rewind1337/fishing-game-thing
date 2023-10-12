@@ -21,8 +21,10 @@
     position: sticky;
     top: 1px;
     z-index: 100;
-    display: grid;
-    align-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
     flex-basis: calc(100% - 2px);
     width: calc(100% - 2px);
     text-align: left;

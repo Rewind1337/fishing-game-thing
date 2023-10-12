@@ -2,6 +2,9 @@ import PropTypes from 'prop-types';
 import './FlexList.css'
 import { useState } from 'react';
 
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 FlexList.propTypes = {
   collapsible: PropTypes.bool,
   noHeader: PropTypes.bool,
@@ -25,13 +28,17 @@ function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>d
     if (collapsed) {
       return (
         <div className={"flex-list-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
-          <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>{headerElement}</div>
+          <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
+            <KeyboardArrowRightIcon/>{headerElement}
+          </div>
         </div>
       );
     } else {
       return (
         <div className={"flex-list-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
-          <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>{headerElement}</div>
+          <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
+            <KeyboardArrowDownIcon/>{headerElement}
+          </div>
           <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
             {children}
           </div>
