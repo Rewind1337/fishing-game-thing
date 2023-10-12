@@ -1,5 +1,25 @@
 import { createContext } from 'react';
 
+const updateDict = (oldDict, newDict, hardSave = false) => {
+    if (typeof newDict !== 'object') {
+        if (typeof oldDict === 'object' && !hardSave) {
+            console.warn("You're not saving right.");
+            return oldDict;
+        }
+        return newDict;
+    }
+  
+    for (let key in newDict) {
+        if (key in oldDict) {
+            oldDict[key] = updateDict(oldDict[key], newDict[key], hardSave);
+        } else {
+            oldDict[key] = newDict[key];
+        }
+    }
+  
+    return oldDict;
+  };
+
 let data = {
     save: {
         pageTimestamps: {},
@@ -12,15 +32,14 @@ let data = {
         }
     },
     setSave : (s) => {
-        data.save = Object.assign({}, data.save, s);
+        //data.save = Object.assign({}, data.save, s);
+        data.save = updateDict(data.save, s)
         localStorage.setItem("game-save", JSON.stringify(data.save));
     },
     updateToLocalStorage : () => {
         localStorage.setItem("game-save", JSON.stringify(data.save));
     },
-    refs: {
-        sidebar: {setSidebarUnlocks: () => {console.log("not in here yet lmao")}}
-    },
+    refs: {},
     setRefs : (r) => {
         data.refs = Object.assign({}, data.refs, r);
         console.log(data.refs);

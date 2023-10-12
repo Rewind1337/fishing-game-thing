@@ -27,7 +27,7 @@ import './Fishing.css'
 function PageFishingZone() {
 
   const _context = useContext(SaveContext)
-  let _currentTimestamp = useRef(_context.save.pageTimestamps.gathering || Date.now())
+  let _allTimeStamps = useRef(_context.save.pageTimestamps)
   
   const [fish, setFish] = useState(_context.save.resources.fish || 0)
   const [worms, setWorms] = useState(_context.save.resources.worms || 0)
@@ -39,6 +39,18 @@ function PageFishingZone() {
   let fishProgressMax = GLOBALS.FISHING.TIME
 
   const [fishingTripStatus, setFishingTripStatus] = useState(0)
+
+  const contextSave = () => {
+    _allTimeStamps.current.fishing = Date.now();
+
+    _context.setSave(
+      {
+        pageTimestamps: _allTimeStamps.current,
+        resources: {worms: worms, fish: fish, artifacts: artifacts}, 
+        fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}
+      }
+    )
+  }
 
   const startFishing = () => {
     if (worms == 0) return;
@@ -90,17 +102,23 @@ function PageFishingZone() {
     };
 
   }, [worms, fish, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
+ 
+  // unmount | make sure its saved
+  useEffect( () => () => {
+    contextSave();
+  }, [] );
 
-  useEffect(() => {
-    _context.setSave({pageTimestamps: {fishing: _currentTimestamp.current},resources: {worms: worms, fish: fish, artifacts: artifacts}, fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}})
-    _currentTimestamp.current = Date.now();
+  // Save Variables to LS after tick
+   useEffect(() => {
+    contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
   // Catch up the Ticks
   useEffect(() => {
-    let _lastTimestamp = _context.save.pageTimestamps.fishing;
-    let deltaTimeInMs = _currentTimestamp.current - _lastTimestamp;
+    let _lastTimestamp = _allTimeStamps.current.fishing;
+    let deltaTimeInMs = Date.now() - _lastTimestamp;
     let flooredToSec = ~~(deltaTimeInMs/1000);
+    console.log("last ts:",_lastTimestamp,"|current ts:",_allTimeStamps.current.fishing,"|delta:",deltaTimeInMs,"|ticks:",flooredToSec)
 
     for (let i = 0; i < flooredToSec; i++) {
       if (isFishing) {

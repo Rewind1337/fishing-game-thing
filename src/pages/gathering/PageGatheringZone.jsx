@@ -28,7 +28,8 @@ import './Gathering.css'
 function PageGatheringZone() {
 
   const _context = useContext(SaveContext)
-  let _currentTimestamp = useRef(_context.save.pageTimestamps.gathering || Date.now())
+  let _allTimeStamps = useRef(_context.save.pageTimestamps)
+  console.log(_context.save.pageTimestamps)
 
   const [fish, setFish] = useState(_context.save.resources.fish || 0)  // eslint-disable-line no-unused-vars
   const [worms, setWorms] = useState(_context.save.resources.worms || 0)
@@ -58,9 +59,11 @@ function PageGatheringZone() {
   const autoMiningUnlocked = false;
 
   const contextSave = () => {
+    _allTimeStamps.current.gathering = Date.now();
+    
     _context.setSave(
       {
-        pageTimestamps: {gathering: _currentTimestamp.current}, 
+        pageTimestamps: _allTimeStamps.current, 
         resources: {worms: worms, fish: fish, artifacts: artifacts}, 
         gathering: {
           isDiggingWorms: isDiggingWorms, wormProgress: wormProgress, 
@@ -156,10 +159,10 @@ function PageGatheringZone() {
 
   // mount | Catch up the Ticks
   useEffect(() => {
-    let _lastTimestamp = _context.save.pageTimestamps.gathering;
-    let deltaTimeInMs = _currentTimestamp.current - _lastTimestamp;
+    let _lastTimestamp = _allTimeStamps.current.gathering;
+    let deltaTimeInMs = Date.now() - _lastTimestamp;
     let flooredToSec = ~~(deltaTimeInMs/1000);
-    console.log("last ts:",_lastTimestamp,"|current ts:",_currentTimestamp.current,"|delta:",deltaTimeInMs,"|ticks:",flooredToSec)
+    console.log("last ts:",_lastTimestamp,"|current ts:",_allTimeStamps.current.gathering,"|delta:",deltaTimeInMs,"|ticks:",flooredToSec)
 
     for (let i = 0; i < flooredToSec; i++) {
       if (isDiggingWorms || isDiggingArtifacts || isMining) {
@@ -184,13 +187,13 @@ function PageGatheringZone() {
             <h5>Worms</h5>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
 
-              <Box>
+              <Box sx={{zIndex: 101}}>
                 <CircularProgressWithLabel fontSize='15px' icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="#ffccff" sx={{padding: "5px", color: '#ff99ff'}} color="pets" size={100} thickness={4} variant="determinate" value={wormProgress / wormProgressMax * 100} />
               </Box>
 
               {autoDiggingWormsUnlocked && (
-              <Box>
-                <CircularProgress sx={{padding: '4px'}} variant="indeterminate" color="pets" size={45} thickness={6} />
+              <Box sx={{zIndex: 100, position: 'absolute'}}>
+                <CircularProgress sx={{padding: '0px'}} variant="indeterminate" color="pets" size={110} thickness={2} />
               </Box>
               )}
             </Box>
