@@ -8,10 +8,11 @@ GridCell.propTypes = {
   justifyContent: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.array,
-    PropTypes.object
+    PropTypes.object,
+    PropTypes.element
   ])
 };
-  
+
 function GridCell({gridPosition, noFlexOverride = false, flexDirection = 'column', justifyContent = 'flex-start', children}) {
   
   const [scrolled, setScrolled] = useState(false)

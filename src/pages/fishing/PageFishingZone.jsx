@@ -124,7 +124,7 @@ function PageFishingZone() {
       </GridCell>
 
       <GridCell gridPosition='top-right'>
-        Current effects?
+        <>Current effects?</>
       </GridCell>
 
       <GridCell gridPosition='center'>
@@ -143,15 +143,15 @@ function PageFishingZone() {
       </GridCell>
 
       <GridCell gridPosition='bottom-left'>
-        Changing Lures, Rods etc
+        <>Changing Lures, Rods etc</>
       </GridCell>
 
       <GridCell gridPosition='bottom-middle'>
-        ?
+        <>?</>
       </GridCell>
 
       <GridCell gridPosition='bottom-right'>
-        Loot?
+        <>Loot?</>
       </GridCell>
 
     </PageCore>

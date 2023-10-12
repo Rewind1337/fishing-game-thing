@@ -40,6 +40,12 @@ const Theme = createTheme(
         sidebarHover: '#b4a384',
         contrastText: '#EEEEEE',
       },
+      mining: {
+        main: '#5f40be',
+        dark: '#30205f',
+        sidebarHover: '#8770ce',
+        contrastText: '#EEEEEE',
+      },
       queen: {
         main: '#c53c3c',
         dark: '#d46d6d',

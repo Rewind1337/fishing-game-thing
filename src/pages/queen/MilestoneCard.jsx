@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faHurricane, faWorm } from '@fortawesome/free-solid-svg-icons';
 
+import format from '../../utility/utility';
+
 MilestoneCard.propTypes = {
   completed: PropTypes.bool,
   id: PropTypes.number.isRequired,
@@ -22,7 +24,7 @@ function MilestoneCard({id, completed = false, wormsRequired, bonus = "bonus goe
       </div>
       <div className="milestone-card-worms">
         <FontAwesomeIcon icon={faWorm}/>
-        {wormsRequired}
+        {format(wormsRequired)}
       </div>
       <div className="milestone-card-bonus">
         {completed && (<><s>{bonus}</s> <FontAwesomeIcon icon={faCheck} /></>)}

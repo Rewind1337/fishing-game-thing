@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import SaveContext from '../../context/SaveContext';
 import LanguageContext from '../../context/LanguageContext';
 import LANG_DE from '../../context/lang/de';
@@ -34,6 +34,9 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
     _context.updateToLocalStorage();
     location.reload();
   }
+
+  useEffect(() => {console.log("mount", title)}, [])              // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div id="wrapper">

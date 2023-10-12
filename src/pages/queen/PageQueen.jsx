@@ -11,7 +11,7 @@ import ActionButton from '../../components/ActionButton';  // eslint-disable-lin
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import ResourceCard from '../../components/ResourceCard';
 import MilestoneCard from './MilestoneCard';
-import PickerModal from './PickerModal';
+import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI
 import { Paper } from '@mui/material';
@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFish, faWorm, faHurricane } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
-import format from '../../utility/utility';
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
 import './Queen.css'
@@ -46,7 +46,7 @@ function PageQueen() {
   };
 
   const handlePickerClose = (value, reason) => {
-    if (reason && reason == "backdropClick" || reason == 'backdropClick') 
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') 
         setPickerModalOpen(false);
 
     sacrificeToQueen(value);
@@ -54,7 +54,7 @@ function PageQueen() {
 
   const sacrificeToQueen = (input) => {
     switch (input.value) {
-      case "fish":
+      case pickerOptions[0].itemID:
         gainBonus(input.amount);
       break;
       default:
@@ -76,7 +76,8 @@ function PageQueen() {
 
   return (
     <PageCore title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>
-      <PickerModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
+
+      <SacrificeModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
 
       <GridCell gridPosition='top-left'>
         <FlexList headerElement={<h4>{"Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
@@ -98,20 +99,20 @@ function PageQueen() {
       <GridCell gridPosition='bottom-left'>
         <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)', width: '100%'}}>
           <FlexList headerElement={<h2>{"All Milestones"}</h2>} mode='list' >
-            <MilestoneCard completed id={0} wormsRequired={format(25)} bonus='wow you did it'/>
-            <MilestoneCard id={1} wormsRequired={format(125)} bonus='wow you did it'/>
-            <MilestoneCard id={2} wormsRequired={format(500)} bonus='wow you did it'/>
-            <MilestoneCard id={3} wormsRequired={format(1000)} bonus='wow you did it'/>
-            <MilestoneCard id={4} wormsRequired={format(2500)} bonus='wow you did it'/>
-            <MilestoneCard id={5} wormsRequired={format(5000)} bonus='wow you did it'/>
-            <MilestoneCard id={6} wormsRequired={format(10000)} bonus='wow you did it'/>
-            <MilestoneCard id={7} wormsRequired={format(22500)} bonus='wow you did it'/>
-            <MilestoneCard id={8} wormsRequired={format(50000)} bonus='wow you did it'/>
-            <MilestoneCard id={9} wormsRequired={format(100000)} bonus='wow you did it'/>
-            <MilestoneCard id={10} wormsRequired={format(250000)} bonus='wow you did it'/>
-            <MilestoneCard id={11} wormsRequired={format(500000)} bonus='wow you did it'/>
-            <MilestoneCard id={12} wormsRequired={format(1000000)} bonus='wow you did it'/>
-            <MilestoneCard id={13} wormsRequired={format(2500000)} bonus='wow you did it'/>
+            <MilestoneCard completed id={0} wormsRequired={25} bonus='wow you did it'/>
+            <MilestoneCard id={1} wormsRequired={125} bonus='wow you did it'/>
+            <MilestoneCard id={2} wormsRequired={500} bonus='wow you did it'/>
+            <MilestoneCard id={3} wormsRequired={1000} bonus='wow you did it'/>
+            <MilestoneCard id={4} wormsRequired={2500} bonus='wow you did it'/>
+            <MilestoneCard id={5} wormsRequired={5000} bonus='wow you did it'/>
+            <MilestoneCard id={6} wormsRequired={10000} bonus='wow you did it'/>
+            <MilestoneCard id={7} wormsRequired={22500} bonus='wow you did it'/>
+            <MilestoneCard id={8} wormsRequired={50000} bonus='wow you did it'/>
+            <MilestoneCard id={9} wormsRequired={100000} bonus='wow you did it'/>
+            <MilestoneCard id={10} wormsRequired={250000} bonus='wow you did it'/>
+            <MilestoneCard id={11} wormsRequired={500000} bonus='wow you did it'/>
+            <MilestoneCard id={12} wormsRequired={1000000} bonus='wow you did it'/>
+            <MilestoneCard id={13} wormsRequired={2500000} bonus='wow you did it'/>
           </FlexList>
         </Paper>
       </GridCell>

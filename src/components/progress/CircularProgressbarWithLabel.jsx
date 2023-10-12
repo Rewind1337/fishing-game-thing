@@ -10,11 +10,11 @@ export default function CircularProgressWithLabel(props) {
         <Box sx={{top: '-20%',left: 0,bottom: 0,right: 0,
         position: 'absolute',display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
 
-        <div style={{color: props.iconColor, scale: props.iconScale}}>{props.icon}</div>
+        <div style={{color: props.iconcolor, scale: props.iconScale}}>{props.icon}</div>
         
         </Box>
 
-        <Box sx={{top: '35%',left: 0,bottom: 0,right: 0,fontSize: props.textSize,
+        <Box sx={{top: '35%',left: 0,bottom: 0,right: 0,fontSize: props.fontSize,
             position: 'absolute',display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
 
             {Math.round(props.value) + "%"}
@@ -26,8 +26,9 @@ export default function CircularProgressWithLabel(props) {
 
 CircularProgressWithLabel.propTypes = {
   icon: PropTypes.element,
-  iconColor: PropTypes.string,
+  iconcolor: PropTypes.string,
   iconScale: PropTypes.string,
-  textSize: PropTypes.string,
+  fontSize: PropTypes.string,
+  textElement: PropTypes.element,
   value: PropTypes.number.isRequired,
 };

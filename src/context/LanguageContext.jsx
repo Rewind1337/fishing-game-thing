@@ -4,7 +4,7 @@ import LANG_NL from './lang/nl';
 import LANG_US from './lang/us';
 
 let data = {
-    languageFile: {...LANG_DE},
+    languageFile: {...LANG_US},
     setLanguageFile : (languageFile) => {
         data.languageFile = languageFile
         localStorage.setItem("game-lang", data.languageFile.language);
