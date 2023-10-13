@@ -9,6 +9,7 @@
 }
 
 * {
+    white-space: nowrap;
     scrollbar-width: thin;
 
     animation-duration: 60s;
@@ -171,16 +172,21 @@
 
 .resource-card-name {
     flex-grow: 1;
+    font-size: 22px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 .resource-card-value {
     text-align: center;
     flex-basis: 128px;
+    font-size: 20px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 .resource-card-persec {
     text-align: center;
     flex-basis: 64px;
+    font-size: 16px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -238,4 +244,32 @@
     100% {
         transform: rotate(720deg);
     }
+}
+
+
+
+.unicode {
+    width: 36px;
+    display: grid;
+    align-items: center;
+}
+
+.character {
+    position: relative;
+}
+
+.aspect-card-icon {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.aspect-card-amount {
+    font-size: 14px;
+    padding: 4px;
+}
+
+.aspect-card-effect {
+    height: 100%;
+
+    font-size: 16px;
+    padding: 4px;
 }

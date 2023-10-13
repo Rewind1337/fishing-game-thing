@@ -9,7 +9,6 @@
     flex-basis: 20%;
     color: hsl(0deg, 100%, 90%);
     text-indent: 23px;
-    white-space: nowrap;
 }
 
 .milestone-card-number > svg {
@@ -24,7 +23,6 @@
     flex-basis: 20%;
     color: hsl(290deg, 100%, 90%);
     text-indent: 5px;
-    white-space: nowrap;
 }
 
 .milestone-card-worms > svg {

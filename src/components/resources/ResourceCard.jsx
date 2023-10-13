@@ -31,7 +31,7 @@ function ResourceCard({icon, iconcolor, height, name, value, cap, perSec, dontTr
   }
 
   return (
-  <Paper elevation={1} sx={paperSX} className="resource-card">
+  <Paper title={name} elevation={1} sx={paperSX} className="resource-card">
     <div className="resource-card-icon" style={{color: iconcolor}}>{icon}</div>
     <div className="resource-card-name">{name}</div>
     <div className="resource-card-value">{value}{(cap ? ' / ' + cap : '')}</div>

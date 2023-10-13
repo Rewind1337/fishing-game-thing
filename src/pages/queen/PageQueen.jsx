@@ -3,6 +3,7 @@ import { useContext, useState, useEffect, useRef } from 'react';  // eslint-disa
 import SaveContext from '../../context/SaveContext';
 import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
 import PageCore from '../core/PageCore';
+import PropTypes from 'prop-types';
 
 // Components
 import FlexList from '../../components/flexlist/FlexList';
@@ -74,23 +75,77 @@ function PageQueen() {
     _context.setSave({resources: {worms: worms, fish: fish}});
   }, [fish, worms]) // eslint-disable-line react-hooks/exhaustive-deps
 
+
+
+
+  
+  function Unicode({c, iconscale = 1, color = 'white', style}) {
+    return (
+      <div className="unicode aspect-card-icon " style={style}>
+        <div className="character" style={{filter: 'drop-shadow(0 0 4px)', scale: (iconscale), color: color}}>
+          {c}
+        </div>
+      </div>
+    )
+  }
+
+  Unicode.propTypes = {
+    c: PropTypes.string.isRequired,
+    iconscale: PropTypes.string,
+    color: PropTypes.string,
+    style: PropTypes.object,
+  };
+
+  function AspectCard({c, name, iconscale = 1, color = 'white', amount}) {
+    return (
+      <Paper title={name} className='aspect-card' elevation={1} sx={{border: '1px solid rgba(255, 255, 255, 0.5)', borderLeft: '0', backgroundColor: 'rgba(0, 0, 0, 0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center'}}>
+        <Unicode c={c} color={color} iconscale={iconscale} style={{border: '1px solid rgba(255, 255, 255, 0.3)', borderRadius: '4px'}}/>
+        <div className='aspect-card-amount' style={{width: '100px'}}>{amount}</div>
+        <div className='aspect-card-effect' style={{width: 'auto', borderLeft: '1px solid rgba(255, 255, 255, 0.5)', flexGrow: '1'}}>effect maybe?</div>
+      </Paper>
+    )
+  }
+
+  AspectCard.propTypes = {
+    c: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    iconscale: PropTypes.string,
+    color: PropTypes.string,
+    amount: PropTypes.number.isRequired,
+  };
+
   return (
     <PageCore title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>
 
       <SacrificeModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
 
       <GridCell gridPosition='top-left'>
-        <FlexList headerElement={<h4>{"Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconColor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
-          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconColor="hsl(235deg, 100%, 90%)" name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
+        <FlexList headerElement={<h4>{"Resources"}</h4>} mode="list" maxHeight={200}>
+          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
+          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconcolor="hsl(235deg, 100%, 90%)" name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
         </FlexList>
       </GridCell>
-      <GridCell gridPosition='top-middle'></GridCell>
+      <GridCell gridPosition='top-middle'>
+        <FlexList headerElement={<h4>{"Aspects"}</h4>} mode='flex' maxHeight={200}>
+          <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999}/>
+          <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0}/>
+          <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0}/>
+          <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0}/>
+          <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"}/>
+          <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"}/>
+          <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0}/>
+          <AspectCard c="🜲" name="Regulus" color='hsl(290deg, 100%, 90%)' amount={0}/>
+          <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0}/>
+          <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"}/>
+          <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"}/>
+          <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0}/>
+        </FlexList>
+      </GridCell>
       <GridCell gridPosition='top-right'></GridCell>
       <GridCell gridPosition='center' flexDirection='row'>
         <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)', width: '100%', padding: '4px 16px'}}>
           <h2>Milestone Progress</h2>
-          <CircularProgressWithLabel textSize='26px' icon={<FontAwesomeIcon icon={faHurricane} />} iconScale='1.66' iconColor="hsl(0deg, 100%, 85%)" sx={{padding: "5px"}} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+          <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{padding: "5px"}} color="queen" size={200} thickness={8} variant="determinate" value={12} />
           <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
             <ActionButton disabled={(fish >= 1 ? false : true)} color="queen" variant="contained" text={(fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
           </div>
