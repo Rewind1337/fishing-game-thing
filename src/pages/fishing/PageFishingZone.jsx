@@ -8,7 +8,7 @@ import PageCore from '../core/PageCore';
 import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
-import ResourceCard from '../../components/ResourceCard';
+import ResourceCard from '../../components/resources/ResourceCard';
 
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
@@ -22,6 +22,7 @@ import format from '../../utility/utility';  // eslint-disable-line no-unused-va
 
 // CSS Styles
 import './Fishing.css'
+import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 
 // Route: "/fishing"
 function PageFishingZone() {
@@ -110,6 +111,7 @@ function PageFishingZone() {
 
   // Save Variables to LS after tick
    useEffect(() => {
+    console.log("tick")
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -127,13 +129,24 @@ function PageFishingZone() {
     }
   })
 
+  const fishCollection = [
+    {
+      icon: <FontAwesomeIcon icon={faFish} />,
+      iconcolor: 'hsl(235deg, 100%, 90%)',
+      name: 'Fish',
+      value: fish,
+      cap: 0,
+      perSec: 0,
+    },
+  ]
+
   return (
     <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
       <GridCell gridPosition='top-left'>
-        <FlexList headerElement={<h4>{"Resources"}</h4>} mode="list" maxHeight={192}>
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconColor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
-          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconColor="hsl(235deg, 100%, 90%)" name="Fish" value={fish} cap={0} perSec={0}></ResourceCard>
+      <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
+          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
+          <ResourceCollectionCard collection={fishCollection} name={'Fishy Stuff'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
         </FlexList>
       </GridCell>
 

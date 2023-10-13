@@ -139,7 +139,7 @@ const GLOBALS = {
             {
                 id: 1,
                 name: "Supreme Rod of the Greek Fishing Gods",
-                coolness: 1.2,
+                coolness: 1.3,
             },
         ],
 
@@ -221,6 +221,12 @@ const GLOBALS = {
             SPEED: 6,
         }
     },
+
+    ENUMS: {
+        RARITY,
+        BAIT,
+        TIME
+    }
 }
 
 export default GLOBALS;

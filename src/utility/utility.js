@@ -1,3 +1,5 @@
+// good function
+
 function format(input, seperator = ".", digitsBelowAThousand = 0){
 	let suffix = ["", "K", "M", "B", "T", 
 	"Aa", "Ab", "Ac", "Ad", "Ae", "Af", "Ag", "Ah", "Ai", "Aj", "Ak", "Al", "Am", "An", "Ao", "Ap", "Aq", "Ar", "As", "At", "Au", "Av", "Aw", "Ax", "Ay", "Az", 

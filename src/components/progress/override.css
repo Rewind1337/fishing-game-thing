@@ -1,0 +1,27 @@
+.MuiCircularProgress-indeterminate.anim-segments-1 > svg > circle {stroke-dasharray: 60px, 60px;}
+.MuiCircularProgress-indeterminate.anim-segments-2 > svg > circle {stroke-dasharray: 30px, 30px;}
+.MuiCircularProgress-indeterminate.anim-segments-3 > svg > circle {stroke-dasharray: 20px, 20px;}
+.MuiCircularProgress-indeterminate.anim-segments-4 > svg > circle {stroke-dasharray: 15px, 15px;}
+.MuiCircularProgress-indeterminate.anim-segments-5 > svg > circle {stroke-dasharray: 12px, 12px;}
+.MuiCircularProgress-indeterminate.anim-segments-6 > svg > circle {stroke-dasharray: 10px, 10px;}
+
+
+
+.MuiCircularProgress-indeterminate.anim-speed-1 {animation: indeterminateSpin 30s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-2 {animation: indeterminateSpin 20s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-3 {animation: indeterminateSpin 12s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-4 {animation: indeterminateSpin 7s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-5 {animation: indeterminateSpin 5s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-6 {animation: indeterminateSpin 3s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-7 {animation: indeterminateSpin 2s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-8 {animation: indeterminateSpin 1s linear infinite !important;}
+.MuiCircularProgress-indeterminate.anim-speed-9 {animation: indeterminateSpin 0.5s linear infinite !important;}
+
+@keyframes indeterminateSpin {
+    0% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+}

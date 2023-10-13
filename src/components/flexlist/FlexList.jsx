@@ -16,7 +16,7 @@ FlexList.propTypes = {
   children: PropTypes.array,
 };
   
-function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "100%", maxHeight = "100%", gap = 0, children}) {
+function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
   
   const [collapsed, setCollapsed] = useState(false)
 

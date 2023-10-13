@@ -184,6 +184,10 @@
     border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.resource-collection-card-header:hover, .flexlist-header:hover {
+    background-color: rgb(128, 102, 22);
+}
+
 .svg-flag-wrapper {
     font-size: 0;
 }
@@ -221,25 +225,10 @@
 
 .MuiCircularProgress-indeterminate {
     animation: indeterminateSpin 3s linear infinite !important;
-    
-    /* overwriting speed of rotation
-    animation-duration: 3s !important;
-    */
 }
 
 .MuiCircularProgress-indeterminate > .MuiCircularProgress-svg > circle {
     animation: none !important;
-    
-    stroke-dasharray: 30px, 30px;
-
-    /* options
-    stroke-dasharray: 60px, 60px;  =>  1 segment
-    stroke-dasharray: 30px, 30px;  =>  2 segments
-    stroke-dasharray: 20px, 20px;  =>  3 
-    stroke-dasharray: 15px, 15px;  =>  4
-    stroke-dasharray: 12px, 12px;  =>  5
-    stroke-dasharray: 10px, 10px;  =>  6
-    */
 }
 
 @keyframes indeterminateSpin {

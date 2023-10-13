@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SaveContext from '../../context/SaveContext';
 import LanguageContext from '../../context/LanguageContext';
 import LANG_DE from '../../context/lang/de';
@@ -29,15 +29,19 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
   const _context = useContext(SaveContext);
   const _lang = useContext(LanguageContext);
 
+  const [selectedLanguage, setSelectedLanguage] = useState(_lang.languageFile.language);
+
   const selectLanguage = (languageFile) => {
     _lang.setLanguageFile(languageFile);
-    _context.updateToLocalStorage();
-    location.reload();
+    setSelectedLanguage(languageFile.language)
   }
+
+  const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
+  const langButtonInactive = {filter: 'blur(1px'}
 
   useEffect(() => {console.log("mount", title)}, [])              // eslint-disable-line react-hooks/exhaustive-deps
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
-
+  
     return (
         <div id="wrapper">
           <div id="content" className={contentClasses}>
@@ -86,14 +90,14 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
               </div>
               <div id="content-bottom-right">
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.6)'}}>
-                  <Stack direction={'row'}>
-                    <IconButton onClick={() => {selectLanguage(LANG_DE)}}>
+                  <Stack direction={'row'} sx={{gap: '12px'}}>
+                    <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => {selectLanguage(LANG_DE)}}>
                       <FlagDE />
                     </IconButton>
-                    <IconButton onClick={() => {selectLanguage(LANG_NL)}}>
+                    <IconButton style={(selectedLanguage == 'NL' ? langButtonActive : langButtonInactive)} onClick={() => {selectLanguage(LANG_NL)}}>
                       <FlagNL />
                     </IconButton>
-                    <IconButton onClick={() => {selectLanguage(LANG_US)}}>
+                    <IconButton style={(selectedLanguage == 'US' ? langButtonActive : langButtonInactive)} onClick={() => {selectLanguage(LANG_US)}}>
                       <FlagUS />
                     </IconButton>
                   </Stack>

@@ -9,7 +9,7 @@ import FlexList from '../../components/flexlist/FlexList';
 import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
-import ResourceCard from '../../components/ResourceCard';
+import ResourceCard from '../../components/resources/ResourceCard';
 import MilestoneCard from './MilestoneCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
