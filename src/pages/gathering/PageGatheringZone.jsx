@@ -27,7 +27,6 @@ function PageGatheringZone() {
 
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
-  console.log(_context.save.pageTimestamps)
 
   const [fish, setFish] = useState(_context.save.resources.fish || 0)  // eslint-disable-line no-unused-vars
   const [worms, setWorms] = useState(_context.save.resources.worms || 0)
@@ -38,7 +37,7 @@ function PageGatheringZone() {
   const [canCollectWorms, setCanCollectWorms] = useState(false);
   let wormProgressPerTick = GLOBALS.GATHERING.WORMDIG.SPEED // 1 per tick
   let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
-  const autoDiggingWormsUnlocked = false;
+  const autoDiggingWormsUnlocked = true;
 
   const [isArtifactsUnlocked, setArtifactsUnlocked] = useState(_context.save.gathering.isArtifactsUnlocked || false)
   const [isDiggingArtifacts, setDiggingArtifacts] = useState(_context.save.gathering.isDiggingArtifacts || false)
@@ -111,6 +110,7 @@ function PageGatheringZone() {
   }
 
   const pageTick = () => {
+    console.log("tick")
     if (worms >= 15) { setArtifactsUnlocked(true) }
 
     if (isDiggingWorms == true) {
@@ -150,11 +150,6 @@ function PageGatheringZone() {
     contextSave();
   }, []);
 
-  // Save Variables to LS after tick
-  useEffect(() => {
-    contextSave();
-  }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
-
   // mount | Catch up the Ticks
   useEffect(() => {
     let _lastTimestamp = _allTimeStamps.current.gathering;
@@ -164,10 +159,16 @@ function PageGatheringZone() {
 
     for (let i = 0; i < flooredToSec; i++) {
       if (isDiggingWorms || isDiggingArtifacts || isMining) {
+        console.log("gonna tick now")
         pageTick();
       }
     }
   }, [])
+
+  // Save Variables to LS after tick
+  useEffect(() => {
+    contextSave();
+  }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
   const fishCollection = [
     {

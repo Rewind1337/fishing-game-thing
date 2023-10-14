@@ -92,10 +92,6 @@ function PageFishingZone() {
   }
 
   useEffect(() => {
-    pageTick()
-  }, [])
-
-  useEffect(() => {
     const timer = setInterval(pageTick, 500);
 
     return () => {
@@ -108,12 +104,6 @@ function PageFishingZone() {
   useEffect( () => () => {
     contextSave();
   }, [] );
-
-  // Save Variables to LS after tick
-   useEffect(() => {
-    console.log("tick")
-    contextSave();
-  }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
   // Catch up the Ticks
   useEffect(() => {
@@ -128,6 +118,11 @@ function PageFishingZone() {
       }
     }
   })
+
+  // Save Variables to LS after tick
+   useEffect(() => {
+    contextSave();
+  }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
   const fishCollection = [
     {
