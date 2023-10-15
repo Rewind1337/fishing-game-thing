@@ -29,7 +29,10 @@ function PageAdventureZone() {
       }
     }
 
+    // generating start, boss and end nodes
+    
     data.unshift([{id: "0-0", type: "start"}]);
+    // data.push([{id: data.length + "-B", type: "boss"}]); This is where the boss would go or something
     data.push([{id: data.length + "-X", type: "end"}]);
 
     // go over data and make random connections
@@ -42,6 +45,11 @@ function PageAdventureZone() {
         nextSet; currentNode;
       }
     }
+
+    // link up nodetypes to events, battles, etc. data.
+
+    // some other steps probably
+
     return data;
   }
 

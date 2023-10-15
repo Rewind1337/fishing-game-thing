@@ -24,6 +24,17 @@ const TIME = {
     AROUND_NOON: 7,
 }
 
+const NODETYPES = {
+    RANDOM: 0,
+    EVENT: 1,
+    BATTLE: 2,
+    MINIBOSS: 3,
+    RESOURCES: 4,
+    BOSS: 5,
+    START: 6,
+    END: 7,
+}
+
 const GLOBALS = {
     DB: {
 
@@ -128,6 +139,52 @@ const GLOBALS = {
             },
         ],
 
+        // ADVENTURE STUFF
+
+        ADVENTURE: {
+            NODETYPES: [
+                {id: NODETYPES.RANDOM, type: 'random'},
+                {id: NODETYPES.EVENT, type: 'event'},
+                {id: NODETYPES.BATTLE, type: 'battle'},
+                {id: NODETYPES.MINIBOSS, type: 'miniboss'},
+                {id: NODETYPES.RESOURCES, type: 'resources'},
+                {id: NODETYPES.BOSS, type: 'boss'},
+                {id: NODETYPES.START, type: 'start'},
+                {id: NODETYPES.END, type: 'boss'},
+            ],
+            ENCOUNTERS: [
+                {
+                    id: 0,
+                    type: 'fluff',
+                    title: 'Its Raining Meatballs',
+                    encounter: [],
+                    reward: [],
+                },
+            ],
+            ENEMIES: [
+                {
+                    id: 0,
+                    name: 'Rat',
+                    stats: {},
+                    drops: {},
+                }
+            ]
+        },
+
+        // FISHING STUFF
+
+        FISHING: {
+            SUBLOCATIONS: [
+                {id: 0, name: 'By the Shallows'},
+                {id: 1, name: 'By the Reeds'},
+                {id: 2, name: 'By the Trees'},
+                {id: 3, name: 'Worm Queen Shrine'},
+            ],
+            LOCATIONS: [
+                {id: 0, name: 'Local Waterhole', sublocations: [0, 1, 2, 3], fish: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
+            ],
+        },
+
         // RODS
 
         ROD: [
@@ -225,7 +282,8 @@ const GLOBALS = {
     ENUMS: {
         RARITY,
         BAIT,
-        TIME
+        TIME,
+        NODETYPES
     }
 }
 

@@ -100,24 +100,25 @@ function PageFishingZone() {
 
   }, [worms, fish, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
  
-  // unmount | make sure its saved
-  useEffect( () => () => {
-    contextSave();
-  }, [] );
+  // unmount
+  useEffect(() => () => {
+    // contextSave(); // this breaks the save on exit? automation works now lol
+  }, []);
 
   // Catch up the Ticks
   useEffect(() => {
     let _lastTimestamp = _allTimeStamps.current.fishing;
     let deltaTimeInMs = Date.now() - _lastTimestamp;
-    let flooredToSec = ~~(deltaTimeInMs/1000);
-    console.log("last ts:",_lastTimestamp,"|current ts:",_allTimeStamps.current.fishing,"|delta:",deltaTimeInMs,"|ticks:",flooredToSec)
+    let flooredToSec = ~~(deltaTimeInMs / 500);
+    let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
+    console.log("last ts:", _lastTimestamp, "|current ts:", Date.now(), "|delta:", deltaTimeInMs, "|ticks:", cappedToMaxTicks)
 
     for (let i = 0; i < flooredToSec; i++) {
       if (isFishing) {
         pageTick();
       }
     }
-  })
+  }, [])
 
   // Save Variables to LS after tick
    useEffect(() => {

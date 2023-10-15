@@ -145,24 +145,26 @@ function PageGatheringZone() {
 
   }, [wormProgress, artifactProgress, miningProgress, worms, artifacts, isDiggingWorms, isDiggingArtifacts, isMining]);  // eslint-disable-line react-hooks/exhaustive-deps
 
-  // unmount | make sure its saved
+  // unmount
   useEffect(() => () => {
-    contextSave();
+    // contextSave(); // this breaks the save on exit? automation works now lol
   }, []);
 
   // mount | Catch up the Ticks
   useEffect(() => {
     let _lastTimestamp = _allTimeStamps.current.gathering;
     let deltaTimeInMs = Date.now() - _lastTimestamp;
-    let flooredToSec = ~~(deltaTimeInMs / 1000);
-    console.log("last ts:", _lastTimestamp, "|current ts:", _allTimeStamps.current.gathering, "|delta:", deltaTimeInMs, "|ticks:", flooredToSec)
+    let flooredToSec = ~~(deltaTimeInMs / 500);
+    let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
+    console.log("last ts:", _lastTimestamp, "|current ts:", Date.now(), "|delta:", deltaTimeInMs, "|ticks:", cappedToMaxTicks)
 
-    for (let i = 0; i < flooredToSec; i++) {
+    for (let i = 0; i < cappedToMaxTicks; i++) {
       if (isDiggingWorms || isDiggingArtifacts || isMining) {
-        console.log("gonna tick now")
         pageTick();
       }
     }
+    
+    contextSave();
   }, [])
 
   // Save Variables to LS after tick

@@ -18,7 +18,7 @@
 ----------
 =============
 ----------
-## Home Page
+## (Home ?) Page
 #### Actions
 - 
 
@@ -104,22 +104,32 @@
     - Fishing - Related
     - Mining - Related
     - Archaeology - Related
-- Battles
+- Battles (Regular, Miniboss, Boss at the end)
 - Loot (Resources, Items)
 - Events (Temporary Stat Changes)
 ----------
 
 ## Queen / Sacrifice Page
 #### Actions
-- Sacrifice a Fish
+- Sacrifice a Fish for Different Aspects and Resources as well as Progress toward the next Milestone
 
-#### Magical Milestones
-- 20 Worms Obtained All Time (Gathering Power (worm) +)
-- 100 Worms Obtained All Time (Gathering Power (earth/worm) +)
+#### Milestones
+- One Time Unlocks of varying importance
+	- Unlocking Offline-Time
+	- Unlocking Automation Stuff
+	- Opening Zones (Sidebar) / Sub-Zones (for Fishing/Adventure)
+	- One of the many Aspect-Bonuses, but big amounts
 
-#### Other Magical Enhancements
-- Global Fishing Tick Speed (increasing cost, small bonus)
-
+#### Aspects
+- Increasing Offline-Time (linear)
+- Tick Speed increases on a per-page/per-theme basis (linear)
+- Increasing Fish Luck / Multicatch (chance?) / Catch Window (less than linear?)
+- Increasing Worm related things
+- Increasing Archaeology related things
+- Increasing Mining related things
+- Increase Combat Stats (various stats (hp, dmg, recovery?, ...), maybe some combined into one aspect, some split, etc etc.)
+- Multiplying all other Aspects (super rare and super small)
+- Increasing Aspects gained from Fish (rare, linear) 
 
 ----------
 
@@ -139,17 +149,18 @@
 ## Pets Page
 #### Actions
 - Check Pet Status (Click Pet in a List of all Pets)
+- Pet Passives
+	- Automation
+	- Bonuses
+- Feed Pets
+	- while fed, they do their thing better?
+- Send Pets on Missions or something
 ----------
 ## Help Page
 #### Actions
-- 
-----------
-## Other Stuff
-- 
-----------
-## Components
-- List for Resources / Currencies
-- A Log &/ Toast Notifications
+- How to play?
+- Tips?
+- Some kind of list thing with entries that get added when you get more shit 
 
 ----------
 =============
