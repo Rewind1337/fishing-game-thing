@@ -23,7 +23,9 @@
     }
 
     &-buttons {
-
+        display: grid;
+        align-items: center;
+        margin-left: 1px;
     }
 
     &-name {

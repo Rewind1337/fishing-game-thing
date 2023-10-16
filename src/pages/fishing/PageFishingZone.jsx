@@ -77,7 +77,7 @@ let getFish = function(location, sublocation, bait, time) {
 		rarity: 1,
 		baitNeeded: 0,
 		timeOfDay: 8,
-		flavor: "You might want to notify the devs, you shouldn't be fishing here.",
+		flavor: "poggers! you caught nil",
 	};
 	
 	if (location < 0 || location > GLOBALS.DB.FISHING.LOCATIONS.length) {
@@ -103,7 +103,7 @@ let getFish = function(location, sublocation, bait, time) {
 	for (let fishId of sublocationDat.fish) {
     let fish = GLOBALS.DB.FISH[fishId];
 		if (canCatch(fish, bait, time)) {
-			totalWeight += getWeight(justANibble);
+			totalWeight += getWeight(fish);
 			fishList.push({'fish': fish, 'cumWeight': totalWeight});
 		}
 	}
