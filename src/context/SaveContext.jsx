@@ -29,6 +29,7 @@ let data = {
         sidebar: {
             states: [true, true, true],
             unlocks: [true, false, false, true, true, false, false, true],
+            badgeData: [0, 0, 0, 0, 0, 0, 0, 0],
         }
     },
     setSave : (s) => {

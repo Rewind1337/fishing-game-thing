@@ -14,7 +14,7 @@ import PetCard from './PetCard';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Pets.css'
+import './Pets.scss'
 
 // Route: "/pets"
 function PagePets() {

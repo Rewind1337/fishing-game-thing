@@ -12,7 +12,7 @@ import ActionButton from '../../components/ActionButton';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Home.css'
+import './Home.scss'
 
 // Route: "/home"
 function PageHome() {

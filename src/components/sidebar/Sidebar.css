@@ -6,7 +6,7 @@
     padding: 0;
     z-index: 10000;
 
-    opacity: 0.1;
+    opacity: 1;
     
     background-image: url('../../assets/statue.png');
     background-position: left;
@@ -19,14 +19,13 @@
     flex-direction: column;
     flex-wrap: nowrap;
     
-    position: absolute;
     left: -95px;
 
     color: white;
 
     text-align: center;
     
-    transition: width 0.25s ease, font-size 0.25s ease, line-height 0.25s ease, left 0.25s ease, box-shadow 0.66s ease, opacity 0.25s ease;
+    transition: width 0.25s ease, font-size 0.25s ease, line-height 0.25s ease, left 0.25s ease, opacity 0.25s ease;
 }
 
 #sidebar.expanded{
@@ -34,19 +33,10 @@
     font-size: 18px;
     line-height: 36px;
     left: 0px;
-    box-shadow: 
-    0 0 100px 10vmax rgba(0, 0, 0, 0.05),
-    0 0 100px 20vmax rgba(0, 0, 0, 0.05),
-    0 0 100px 30vmax rgba(0, 0, 0, 0.05),
-    0 0 100px 40vmax rgba(0, 0, 0, 0.05),
-    0 0 100px 50vmax rgba(0, 0, 0, 0.05),
-    0 0 100px 60vmax rgba(0, 0, 0, 0.05),
-    0 0 100px 70vmax rgba(0, 0, 0, 0.10),
-    0 0 100px 80vmax rgba(0, 0, 0, 0.15);
 
     opacity: 1;
     
-    transition: width 0.25s ease, font-size 0.25s ease, line-height 0.25s ease, left 0.25s ease, box-shadow 0.66s ease, opacity 0.25s ease;
+    transition: width 0.25s ease, font-size 0.25s ease, line-height 0.25s ease, left 0.25s ease, opacity 0.25s ease;
 }
 
 .sidebar-header {

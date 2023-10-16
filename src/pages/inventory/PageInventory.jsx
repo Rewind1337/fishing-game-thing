@@ -13,7 +13,7 @@ import ActionButton from '../../components/ActionButton';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Inventory.css'
+import './Inventory.scss'
 
 // Route: "/inventory"
 function PageInventory() {

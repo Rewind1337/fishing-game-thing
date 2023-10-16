@@ -55,7 +55,7 @@
 
 #grid-adventure {
     display: grid;
-    grid-template-columns: repeat(4, minmax(256px, 25%)) 300px;
+    grid-template-columns: repeat(4, minmax(256px, 25%)) 500px;
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 4px;
     grid-row-gap: 4px;
@@ -127,6 +127,7 @@
     background-image: url('../../assets/bg-gathering.png');
 }
 
+#grid-gathering .grid-cell-content {border-color: green}
 #content.gathering {
     background-image: url('../../assets/bg-gathering.png');
 }
@@ -158,10 +159,6 @@
 }
 
 .grid-cell {
-    /* visualisation, remove if not needed anymore */
-    border-radius: 4px;
-    border: 1px solid gray;
-    /* */
     z-index: 100;
 }
 

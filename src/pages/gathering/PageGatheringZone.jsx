@@ -9,6 +9,9 @@ import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import ResourceCard from '../../components/resources/ResourceCard';
+import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
+import GatheringModule from './GatheringModule';
+import BasicModal from '../../components/modal/BasicModal';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,9 +21,7 @@ import { faBoreHole, faFish, faFloppyDisk, faWorm } from '@fortawesome/free-soli
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Gathering.css'
-import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
-import GatheringModule from './GatheringModule';
+import './Gathering.scss'
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -55,6 +56,27 @@ function PageGatheringZone() {
   let miningProgressMax = GLOBALS.GATHERING.MINING.TIME; // 12min
   const autoMiningUnlocked = false;
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalIcon, setModalIcon] = useState(<FontAwesomeIcon icon={faWorm}/>);
+  const [modalText, setModalText] = useState("This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long");
+  const [modalHeader, setModalHeader] = useState("Cool header hehe");
+
+  const handleModalOpen = () => {
+    generateModalContent();
+    setModalOpen(true);
+  };
+
+  const handleModalClose = (value, reason) => {// eslint-disable-line no-unused-vars
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') {return}
+    if (value.value == 'close') {setModalOpen(false)}
+  };
+
+  const generateModalContent = () => {
+    setModalIcon(modalIcon);
+    setModalText(modalText);
+    setModalHeader(modalHeader);
+  }
+
   const contextSave = () => {
     _allTimeStamps.current.gathering = Date.now();
 
@@ -73,6 +95,8 @@ function PageGatheringZone() {
 
   const startDiggingWorms = () => {
     setDiggingWorms(true)
+    
+    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.WORMDIG.TIME, 500);
   }
 
   const collectWorms = () => {
@@ -82,10 +106,17 @@ function PageGatheringZone() {
       setCanCollectWorms(false)
       setWormProgress(0)
     }
+
+    let r = ~~(Math.random() * 100)
+    if (r == 0) {
+      handleModalOpen();
+    }
   }
 
   const startDiggingArtifacts = () => {
     setDiggingArtifacts(true)
+
+    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.ARTIFACTDIG.TIME, 500);
   }
 
   const collectArtifacts = () => {
@@ -99,6 +130,8 @@ function PageGatheringZone() {
 
   const startMining = () => {
     setMining(true)
+    
+    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.MINING.TIME, 500);
   }
 
   const collectMining = () => {
@@ -110,7 +143,6 @@ function PageGatheringZone() {
   }
 
   const pageTick = () => {
-    console.log("tick")
     if (worms >= 15) { setArtifactsUnlocked(true) }
 
     if (isDiggingWorms == true) {
@@ -137,8 +169,8 @@ function PageGatheringZone() {
 
   // Tick Interval for page loop
   useEffect(() => {
+    _context.refs.sidebar['clearBadgeDataFor'](4);
     const timer = setInterval(pageTick, 500);
-
     return () => {
       clearInterval(timer);
     };
@@ -156,7 +188,6 @@ function PageGatheringZone() {
     let deltaTimeInMs = Date.now() - _lastTimestamp;
     let flooredToSec = ~~(deltaTimeInMs / 500);
     let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
-    console.log("last ts:", _lastTimestamp, "|current ts:", Date.now(), "|delta:", deltaTimeInMs, "|ticks:", cappedToMaxTicks)
 
     for (let i = 0; i < cappedToMaxTicks; i++) {
       if (isDiggingWorms || isDiggingArtifacts || isMining) {
@@ -165,6 +196,7 @@ function PageGatheringZone() {
     }
     
     contextSave();
+    _context.refs.sidebar['clearBadgeDataFor'](4);
   }, [])
 
   // Save Variables to LS after tick
@@ -185,6 +217,9 @@ function PageGatheringZone() {
 
   return (
     <PageCore title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
+
+      <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose}/>
+
       <GridCell gridPosition='left'>
 
         <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>

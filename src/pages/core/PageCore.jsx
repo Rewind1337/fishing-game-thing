@@ -7,7 +7,7 @@ import LANG_DE from '../../context/lang/de';
 import LANG_US from '../../context/lang/us';
 import LANG_NL from '../../context/lang/nl';
 
-import '../../components/UI.css'
+import '../../components/UI.scss'
 import '../../components/grid/Grid.css'
 import ActionButton from '../../components/ActionButton';
 

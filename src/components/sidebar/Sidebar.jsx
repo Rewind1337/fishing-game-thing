@@ -36,10 +36,75 @@ function Sidebar() {
   const savedSidebarUnlocks = _context.save.sidebar.unlocks;
   const [sidebarUnlocks, setSidebarUnlocks] = useState(savedSidebarUnlocks);
 
+  const savedSidebarBadgeData = _context.save.sidebar.sidebarBadgeData;
+  const [sidebarBadgeData, setSidebarBadgeData] = useState(savedSidebarBadgeData);
+
+  const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {
+    clearBadgeDataFor(page);
+    
+    let nameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+    
+    let rightnow = Date.now();
+    let whenItFinishes = rightnow + (duration * pageTickSpeed)
+
+    if (localStorage.getItem("badge-data") == undefined) {
+      localStorage.setItem("badge-data", JSON.stringify({[nameMap[page]]: [whenItFinishes]}))
+    } else {
+      let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
+      allBadgeData[nameMap[page]].push(whenItFinishes);
+      localStorage.setItem("badge-data", JSON.stringify(allBadgeData))
+    }
+  }
+
+  const clearBadgeDataFor = (page) => {
+    if (localStorage.getItem("badge-data") != undefined) {
+      let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
+      let changedBadgeData = allBadgeData
+      for (let t in allBadgeData.gathering) {
+        if (allBadgeData.gathering[t] < Date.now()) {
+          changedBadgeData.gathering.splice(t, 1);
+        }
+      }
+      localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
+      let changedSidebarData = sidebarBadgeData;
+      changedSidebarData[page] = changedBadgeData.length;
+      setSidebarBadgeData(changedSidebarData);
+    }
+  }
+
+  const checkForBadgeData = (page) => {
+    if (localStorage.getItem("badge-data") != undefined) {
+      let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
+      let n = 0;
+      for (let t in allBadgeData.gathering) {
+        if (allBadgeData.gathering[t] < Date.now()) {
+          console.log("gathering", t, true)
+          n++;
+        }
+      }
+  
+      let newData = sidebarBadgeData
+      newData[page] = n;
+      setSidebarBadgeData(newData);
+    }
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {checkForBadgeData(4)}, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+
   const setRefs = _context.setRefs;
 
   useEffect(() => {
-    setRefs({sidebar: {'setSidebarUnlocks' : setSidebarUnlocks}});
+    setRefs({sidebar: {
+      'setSidebarUnlocks' : setSidebarUnlocks, 
+      'clearBadgeDataFor' : clearBadgeDataFor,
+      'addBadgeTimer' : addBadgeTimer}});
     setMouseOver(false);
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
@@ -47,9 +112,9 @@ function Sidebar() {
 
   useEffect(() => {
     return () => {
-      setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks}});
+      setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, sidebarBadgeData: sidebarBadgeData}});
     }
-  }, [sidebarUnlocks, setSidebarUnlocks, folderStates, setFolderStates, setSave])
+  }, [sidebarUnlocks, setSidebarUnlocks, folderStates, setFolderStates, sidebarBadgeData, setSidebarBadgeData, setSave])
 
   SidebarFolder.propTypes = {
     id: PropTypes.number.isRequired,
@@ -145,24 +210,24 @@ function Sidebar() {
         <div className="sidebar-items-container">
           <div className="sidebar-items-top">
             <SidebarFolder id={0} isToggled={folderStates[0]} canToggle height={25} text="Home">
-              <SidebarItem isUnlocked={sidebarUnlocks[0]} badgeData={0} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor={Theme.palette.home.sidebarHover} link='/home'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[1]} badgeData={0} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor={Theme.palette.inventory.sidebarHover} link='/inventory'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[2]} badgeData={0} bigText='Pets' smallText='P' icon={<PetsIcon/>} hoverColor={Theme.palette.pets.sidebarHover} link='/pets'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[0]} badgeData={sidebarBadgeData[0]} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor={Theme.palette.home.sidebarHover} link='/home'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[1]} badgeData={sidebarBadgeData[1]} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor={Theme.palette.inventory.sidebarHover} link='/inventory'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[2]} badgeData={sidebarBadgeData[2]} bigText='Pets' smallText='P' icon={<PetsIcon/>} hoverColor={Theme.palette.pets.sidebarHover} link='/pets'/>
             </SidebarFolder>
           </div>
           <div className="sidebar-items-center">
             <SidebarFolder id={1} isToggled={folderStates[1]} canToggle height={50} text="Zones">
-              <SidebarItem isUnlocked={sidebarUnlocks[3]} badgeData={0} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor={Theme.palette.fishing.sidebarHover} link='/fishing'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[4]} badgeData={0} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor={Theme.palette.gathering.sidebarHover} link='/gathering'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[5]} badgeData={0} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor={Theme.palette.adventure.sidebarHover} link='/adventure'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[3]} badgeData={sidebarBadgeData[3]} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor={Theme.palette.fishing.sidebarHover} link='/fishing'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[4]} badgeData={sidebarBadgeData[4]} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor={Theme.palette.gathering.sidebarHover} link='/gathering'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[5]} badgeData={sidebarBadgeData[5]} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor={Theme.palette.adventure.sidebarHover} link='/adventure'/>
             </SidebarFolder>
             <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
-              <SidebarItem isUnlocked={sidebarUnlocks[6]} badgeData={0} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor={Theme.palette.queen.sidebarHover} link='/queen'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[6]} badgeData={sidebarBadgeData[6]} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor={Theme.palette.queen.sidebarHover} link='/queen'/>
             </SidebarFolder>
           </div>
           <div className="sidebar-items-bottom">
             <SidebarFolder id={3} flex height={50} text="Other">
-              <SidebarItem isUnlocked={sidebarUnlocks[7]} badgeData={0} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[7]} badgeData={sidebarBadgeData[7]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
             </SidebarFolder>
             <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
           </div>

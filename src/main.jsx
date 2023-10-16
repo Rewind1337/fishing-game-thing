@@ -17,7 +17,7 @@ import PageQueen from './pages/queen/PageQueen.jsx';
 import PageDebugStyles from './pages/PageDebugStyles.jsx';
 import PageHelp from './pages/help/PageHelp.jsx';
 
-import './index.css'
+import './imports.scss'
 import CssBaseline from '@mui/material/CssBaseline';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

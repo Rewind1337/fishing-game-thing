@@ -25,7 +25,7 @@ import { faFish, faWorm, faHurricane } from '@fortawesome/free-solid-svg-icons';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Queen.css'
+import './Queen.scss'
 
 // Route: "/queen"
 function PageQueen() {
@@ -47,8 +47,10 @@ function PageQueen() {
   };
 
   const handlePickerClose = (value, reason) => {
-    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') 
-        setPickerModalOpen(false);
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown' || value == 'close') {
+      setPickerModalOpen(false);
+      return;
+    }
 
     sacrificeToQueen(value);
   };

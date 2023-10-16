@@ -21,7 +21,7 @@ import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Fishing.css'
+import './Fishing.scss'
 import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 
 // Route: "/fishing"
@@ -111,9 +111,8 @@ function PageFishingZone() {
     let deltaTimeInMs = Date.now() - _lastTimestamp;
     let flooredToSec = ~~(deltaTimeInMs / 500);
     let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
-    console.log("last ts:", _lastTimestamp, "|current ts:", Date.now(), "|delta:", deltaTimeInMs, "|ticks:", cappedToMaxTicks)
 
-    for (let i = 0; i < flooredToSec; i++) {
+    for (let i = 0; i < cappedToMaxTicks; i++) {
       if (isFishing) {
         pageTick();
       }

@@ -11,7 +11,7 @@ import GridCell from '../../components/grid/GridCell';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
-import './Help.css'
+import './Help.scss'
 
 // Route: "/help"
 function PageHelp() {

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
-import './override.css';
+import './progress.css';
 
 export default function CircularProgressWithLabel(props) {
   return (

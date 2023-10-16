@@ -22,6 +22,7 @@ const TIME = {
     NIGHT_SECOND_HALF: 5,
     AROUND_MIDNIGHT: 6,
     AROUND_NOON: 7,
+    ALWAYS: 8,
 }
 
 const NODETYPES = {

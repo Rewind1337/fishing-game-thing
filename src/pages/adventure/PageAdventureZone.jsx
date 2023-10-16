@@ -1,11 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../core/PageCore';
 import GridCell from '../../components/grid/GridCell';
 
-import './Adventure.css'
+import './Adventure.scss'
 
 function PageAdventureZone() {
 
@@ -54,7 +54,7 @@ function PageAdventureZone() {
   }
 
   // test generation
-  const data = generate(2, 5, 1, 3, [
+  const data = generate(15, 41, 1, 9, [
     {nodeType: 'random', weight: 1},
     {nodeType: 'event', weight: 1},
     {nodeType: 'resources', weight: 1},
@@ -62,29 +62,74 @@ function PageAdventureZone() {
     {nodeType: 'miniboss', weight: 1},
   ])
 
+
+
   AdventureMapView.propTypes = {
     data: PropTypes.object.isRequired,
   };
 
   // test visualisation
   function AdventureMapView({ data }) {
+  
+    const [dragging, setDragging] = useState(false)
+    const mapRef = useRef(null)
+    const lastCursor = useRef({x: 0, y: 0})
+    const currentCursor = useRef({x: 0, y: 0})
+
+    const mouseClick = (e) => {
+      console.log(mapRef.current);
+      let element = e.target;
+      let elementRect = element.getBoundingClientRect()
+      let mapHeight = mapRef.current.getBoundingClientRect().height + 100;
+      let mapWidth = mapRef.current.getBoundingClientRect().width;
+      mapRef.current.scrollTo({ // very fucking whacky, supposed to scroll to center kinda
+        top: mapRef.current.scrollTop + elementRect.top + (elementRect.height / 2) - mapHeight / 2,
+        left: mapRef.current.scrollLeft + (elementRect.left - ((window.innerWidth * 0.70) + 100)) + (elementRect.width / 2) - mapWidth / 2,
+        behavior: 'smooth'
+      })
+    }
+  
+    const mouseMove = (e) => {
+      if (dragging) {
+        currentCursor.current = {x: e.pageX, y: e.pageY};
+
+        let dx = lastCursor.current.x - currentCursor.current.x
+        let dy = lastCursor.current.y - currentCursor.current.y
+        
+        mapRef.current.scrollBy(dx * 1.2, dy * 1.2)
+        lastCursor.current = {x: e.pageX, y: e.pageY};
+      }
+    }
+  
+    const mouseDown = (e) => {
+      setDragging(true);
+      currentCursor.current = {x: e.pageX, y: e.pageY};
+      lastCursor.current = {x: e.pageX, y: e.pageY};
+    }
+  
+    const mouseUp = () => {
+      setDragging(false);
+    }
+
     return (
-    <div className='adventure-map'>
-      {data.map((set, length) => {
-        console.log(set, length);
-        return (
-        <div key={'layer-' + length} className='adventure-layer'>
-          {set.map((node, subKey) => {
-            console.log(node, subKey);
-            return (
-              <div key={'node-' + node.id} className={'adventure-node ' + node.type}>
-                {node.id}
-              </div>
-            )
-          })}
-        </div>
-        )
-      })}
+    <div className='adventure-map' onMouseMove={mouseMove} onMouseDown={mouseDown} onMouseUp={mouseUp} ref={mapRef}>
+      <div className='adventure-wrap'>
+        {data.map((set, length) => {
+          // console.log(set, length);
+          return (
+          <div key={'layer-' + length} className='adventure-layer'>
+            {set.map((node, subKey) => {
+              // console.log(node, subKey);
+              return (
+                <div key={'node-' + node.id + "-" + subKey} className={'adventure-node ' + node.type} onMouseUp={mouseClick}>
+                  {node.id}
+                </div>
+              )
+            })}
+          </div>
+          )
+        })}
+      </div>
     </div>
     );
   }
