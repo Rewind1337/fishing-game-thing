@@ -36,10 +36,12 @@ function ToastManager() {
   
     return (
         <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={state.open}
         autoHideDuration={6000}
         onClose={handleClose}
         message="Note archived"
+        sx={{ bottom: "52px !important", right: "4px !important" }}
         TransitionComponent={transition}>
             <Alert onClose={handleClose} severity={state.severity}>
                 {state.text}

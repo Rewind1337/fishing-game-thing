@@ -162,15 +162,20 @@ function PageFishingZone() {
     if (fishProgress >= tickRange.min && fishProgress <= tickRange.max) {
       // alert("ayy");
       // Only fishes at night right now.
+      let toastText = "";
+
       let caughtFish = getFish(0, 0, 1, 0.75);
       if (caughtFish.id >= 0) {
-        alert("Caught a(n): " + caughtFish.name);
+        toastText = "Caught a(n): " + caughtFish.name;
         setFish(fish + 1);
       } else if (caughtFish.id == -1) {
-        alert("Just a nibble.");
+        toastText = "Just a nibble.";
       } else if (caughtFish.id <= -2) {
-        alert("You broke the game, fish not found!");
+        toastText = "You broke the game, fish not found!";
       }
+      
+      _context.refs.toastmanager['fireToast']("info", toastText);
+    
       stopFishing();
       return;
     }

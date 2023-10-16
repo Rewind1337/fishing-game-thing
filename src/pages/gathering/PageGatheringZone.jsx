@@ -101,15 +101,18 @@ function PageGatheringZone() {
 
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
-      setWorms(worms + 1 + ~~(Math.random() * 3))
+      let randomGain = 1 + ~~(Math.random() * 3);
+      setWorms(worms + randomGain)
       setDiggingWorms(false)
       setCanCollectWorms(false)
       setWormProgress(0)
-    }
 
-    let r = ~~(Math.random() * 100)
-    if (r == 0) {
-      handleModalOpen();
+      _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Worms");
+    
+      let r = ~~(Math.random() * 100)
+      if (r == 0) {
+        handleModalOpen();
+      }
     }
   }
 
@@ -121,10 +124,13 @@ function PageGatheringZone() {
 
   const collectArtifacts = () => {
     if (artifactProgress >= artifactProgressMax - 1) {
-      setArtifacts(artifacts + 1 + ~~(Math.random() * 2))
+      let randomGain = 1 + ~~(Math.random() * 2);
+      setArtifacts(artifacts + randomGain)
       setDiggingArtifacts(false)
       setCanCollectArtifacts(false)
       setArtifactProgress(0)
+
+      _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Artifacts");
     }
   }
 
@@ -139,6 +145,8 @@ function PageGatheringZone() {
       setMining(false)
       setCanCollectMining(false)
       setMiningProgress(0)
+
+      _context.refs.toastmanager['fireToast']("info", "You collected " + 0 + " of anything, you hacker");
     }
   }
 
