@@ -6,6 +6,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 FlexList.propTypes = {
+  id: PropTypes.string,
   collapsible: PropTypes.bool,
   noHeader: PropTypes.bool,
   headerElement: PropTypes.element,
@@ -16,7 +17,7 @@ FlexList.propTypes = {
   children: PropTypes.array,
 };
   
-function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
+function FlexList({id, collapsible = false, noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
   
   const [collapsed, setCollapsed] = useState(false)
 
@@ -27,7 +28,7 @@ function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>d
   if (collapsible) {
     if (collapsed) {
       return (
-        <div className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
+        <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
           <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
             <KeyboardArrowRightIcon/>{headerElement}
           </div>
@@ -35,7 +36,7 @@ function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>d
       );
     } else {
       return (
-        <div className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
+        <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
           <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
             <KeyboardArrowDownIcon/>{headerElement}
           </div>
@@ -48,7 +49,7 @@ function FlexList({collapsible = false, noHeader = false, headerElement = (<h4>d
   }
 
   return (
-    <div className={"flexlist-wrapper " + mode}>
+    <div id={id} className={"flexlist-wrapper " + mode}>
       {!noHeader && <div className={"flexlist-header"} style={{marginTop: gap + "px"}}>{headerElement}</div>}
       <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
         {children}

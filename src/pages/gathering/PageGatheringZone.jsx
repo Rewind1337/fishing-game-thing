@@ -38,7 +38,7 @@ function PageGatheringZone() {
   const [canCollectWorms, setCanCollectWorms] = useState(false);
   let wormProgressPerTick = GLOBALS.GATHERING.WORMDIG.SPEED // 1 per tick
   let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
-  const autoDiggingWormsUnlocked = true;
+  const autoDiggingWormsUnlocked = false;
 
   const [isArtifactsUnlocked, setArtifactsUnlocked] = useState(_context.save.gathering.isArtifactsUnlocked || false)
   const [isDiggingArtifacts, setDiggingArtifacts] = useState(_context.save.gathering.isDiggingArtifacts || false)
@@ -230,7 +230,7 @@ function PageGatheringZone() {
 
         <FlexList headerElement={<h4>{"Actions"}</h4>} mode="flex" gap={8}>
 
-          <GatheringModule autoSegments={3} autoSpeed={6} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm}/>} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms}/>
+          <GatheringModule autoSegments={3} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm}/>} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms}/>
           
           <GatheringModule isUnlocked={isArtifactsUnlocked}  header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={faFloppyDisk}/>} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts}/>
           

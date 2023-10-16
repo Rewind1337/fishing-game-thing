@@ -47,7 +47,7 @@ function PageQueen() {
   };
 
   const handlePickerClose = (value, reason) => {
-    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown' || value == 'close') {
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown' || value.value == 'close') {
       setPickerModalOpen(false);
       return;
     }
