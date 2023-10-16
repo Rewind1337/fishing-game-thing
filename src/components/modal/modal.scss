@@ -1,8 +1,8 @@
 
 
 .picker-dialog {
-    .MuiDialog-container {
-        .MuiPaper-root {
+    > .MuiDialog-container {
+        > .MuiPaper-root {
             top: -200px;
             padding: 16px;
             min-width: 600px;
@@ -12,8 +12,8 @@
 }
 
 .basic-dialog {
-    .MuiDialog-container {
-        .MuiPaper-root {
+    > .MuiDialog-container {
+        > .MuiPaper-root {
             top: -100px;
             padding: 32px;
             min-width: 600px;
