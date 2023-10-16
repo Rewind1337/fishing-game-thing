@@ -7,22 +7,28 @@ import './resource.scss';
 
 ResourceCard.propTypes = {
   icon: PropTypes.object.isRequired,
+  langpath: PropTypes.string,
+  dontTranslate: PropTypes.bool,
   iconcolor: PropTypes.string,
   height: PropTypes.number,
   name: PropTypes.string,
   value: PropTypes.number,
   cap: PropTypes.number,
   perSec: PropTypes.number,
-  dontTranslate: PropTypes.bool,
   paperBorder: PropTypes.bool,
 };
   
-function ResourceCard({icon, iconcolor, height, name, value, cap, perSec, dontTranslate = false, paperBorder}) {
+function ResourceCard({icon, langpath = "resources", iconcolor, height, name, value, cap, perSec, dontTranslate = false, paperBorder}) {
   const _lang = useContext(LanguageContext);
 
-  if (_lang.languageFile.resources[name.toLowerCase()] != undefined) {
+  let splitPath = langpath.split("/");
+  let _current = _lang.languageFile
+
+  for (let i = 0; i < splitPath.length; i++) {_current = _current[splitPath[i]]}
+
+  if (_current[name.toLowerCase()] != undefined) {
     if (!dontTranslate) {
-      name = _lang.languageFile.resources[name.toLowerCase()];
+      name = _current[name.toLowerCase()];
     }
   }
 

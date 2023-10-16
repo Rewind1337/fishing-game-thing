@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import './FlexList.scss'
-import { useState } from 'react';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useState } from 'react';
 
 FlexList.propTypes = {
   id: PropTypes.string,
@@ -18,7 +18,7 @@ FlexList.propTypes = {
 };
   
 function FlexList({id, collapsible = false, noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
-  
+
   const [collapsed, setCollapsed] = useState(false)
 
   if (collapsible && noHeader) {

@@ -4,6 +4,10 @@ const LANG_DE = {
         worms: 'Würmer',
         fish: 'Fische',
         artifacts: 'Artefakte',
+        
+        collections: {
+            "all fish": "Alle Fische",
+        }
     }
 }
 
