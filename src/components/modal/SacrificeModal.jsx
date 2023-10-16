@@ -7,7 +7,7 @@ import { Paper } from '@mui/material';
 import FlexList from '../flexlist/FlexList';
 import ActionButton from '../ActionButton';
 
-import './modal.css'
+import './modal.scss'
 
 function SacrificeModal(props) {
   const { options, header, onClose, open } = props;

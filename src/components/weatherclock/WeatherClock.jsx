@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { getWeatherFromNoise, setupWeatherNoise } from './WeatherNoise.js'
-import './WeatherClock.css'
+import './WeatherClock.scss'
 import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloud, faCloudBolt, faCloudRain, faCloudSun, faCloudSunRain, faSnowflake, faSun } from '@fortawesome/free-solid-svg-icons';

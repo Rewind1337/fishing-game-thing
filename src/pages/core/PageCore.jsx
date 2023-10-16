@@ -8,7 +8,7 @@ import LANG_US from '../../context/lang/us';
 import LANG_NL from '../../context/lang/nl';
 
 import '../../components/UI.scss'
-import '../../components/grid/Grid.css'
+import '../../components/grid/Grid.scss'
 import ActionButton from '../../components/ActionButton';
 
 import { Paper, Stack } from '@mui/material';

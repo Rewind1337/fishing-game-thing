@@ -1,0 +1,16 @@
+@for $i from 1 through 9 {
+    .MuiCircularProgress-indeterminate.anim-segments-#{$i} > svg > circle {stroke-dasharray: calc(60px / $i), calc(60px / $i);}
+}
+
+@for $i from 1 through 9 {
+    .MuiCircularProgress-indeterminate.anim-speed-#{$i} {animation: indeterminateSpin calc(30s / $i) linear infinite !important;}
+}
+
+@keyframes indeterminateSpin {
+    0% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+}

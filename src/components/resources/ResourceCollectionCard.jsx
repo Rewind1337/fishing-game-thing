@@ -5,6 +5,8 @@ import { useState } from 'react';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
+import './resource.scss';
+
 ResourceCollectionCard.propTypes = {
   collection: PropTypes.array.isRequired,
   icon: PropTypes.object.isRequired,

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import LanguageContext from '../../context/LanguageContext';
 import { useContext } from 'react';
 
+import './resource.scss';
+
 ResourceCard.propTypes = {
   icon: PropTypes.object.isRequired,
   iconcolor: PropTypes.string,

@@ -17,7 +17,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import './Sidebar.css'
+import './Sidebar.scss'
 import Theme from '../../styles/Theme';
 
 import { styled } from '@mui/material/styles';
@@ -189,7 +189,7 @@ function Sidebar() {
     return (
       <Link to={(isUnlocked ? link : '')} className={'sidebar-item-link' + (mouseOverItem ? ' hover' : '')} style={(isUnlocked ? {cursor: 'pointer'} : {cursor: 'default'})}>
         <div className={classes} onMouseEnter={(event) => {event.stopPropagation(); setMouseOverItem(true)}} onMouseLeave={(event) => {event.stopPropagation(); setMouseOverItem(false)}}>
-          <div className='sidebar-item--image' style={iconColor}>
+          <div className='sidebar-item-image' style={iconColor}>
             {(isUnlocked ? (mouseOver ? 
               <StyledBadge badgeContent={badgeData}>{icon ? icon : ''}</StyledBadge> : 
               (badgeData != 0 ? 
@@ -198,7 +198,7 @@ function Sidebar() {
               )) : ''
             )}
             </div>
-          <div className='sidebar-item--text' style={iconColor}>{text}</div>
+          <div className='sidebar-item-text' style={iconColor}>{text}</div>
         </div>
       </Link>
     );

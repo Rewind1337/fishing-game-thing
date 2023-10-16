@@ -6,7 +6,7 @@ import { Paper } from '@mui/material';
 
 import ActionButton from '../ActionButton';
 
-import './modal.css'
+import './modal.scss'
 
 function BasicModal(props) {
   const { header, text, icon, onClose, open } = props;

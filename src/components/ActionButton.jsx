@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
-import './ActionButton.css'
+import './ActionButton.scss'
 
 ActionButton.propTypes = {
     sx: PropTypes.object,
