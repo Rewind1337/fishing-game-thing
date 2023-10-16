@@ -7,10 +7,11 @@ const RARITY = {
 }
 
 const BAIT = {
-    WORMS: 0,
-    FISH: 1,
-    INSECTS: 2,
-    GLOWWORMS: 3,
+    NOTHING: 0,
+    WORMS: 1,
+    FISH: 2,
+    INSECTS: 3,
+    GLOWWORMS: 4,
 }
 
 const TIME = {
@@ -99,7 +100,7 @@ const GLOBALS = {
                 flavor: "This fish is a unique species that lives in shallow water and burrows under the sand. It looks like an eel, but is actually a fish.",
             },
             {
-                id: 6,
+                id: 7,
                 name: "Night Noodler",
                 rarity: RARITY.UNCOMMON,
                 baitNeeded: BAIT.FISH,
@@ -176,10 +177,10 @@ const GLOBALS = {
 
         FISHING: {
             SUBLOCATIONS: [
-                {id: 0, name: 'By the Shallows'},
-                {id: 1, name: 'By the Reeds'},
-                {id: 2, name: 'By the Trees'},
-                {id: 3, name: 'Worm Queen Shrine'},
+                {id: 0, name: 'By the Shallows', fish:[0, 6]},
+                {id: 1, name: 'By the Reeds', fish:[0, 6, 7]},
+                {id: 2, name: 'By the Trees', fish:[]},
+                {id: 3, name: 'Worm Queen Shrine', fish:[]},
             ],
             LOCATIONS: [
                 {id: 0, name: 'Local Waterhole', sublocations: [0, 1, 2, 3], fish: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
@@ -204,6 +205,10 @@ const GLOBALS = {
         // BAITS
 
         BAIT: [
+            {
+                id: BAIT.NOTHING,
+                name: "Nothing",
+            },
             {
                 id: BAIT.WORMS,
                 name: "Worms",
