@@ -36,7 +36,6 @@ let data = {
         }
     },
     setSave : (s) => {
-        //data.save = Object.assign({}, data.save, s);
         data.save = updateDict(data.save, s)
         localStorage.setItem("game-save", JSON.stringify(data.save));
     },

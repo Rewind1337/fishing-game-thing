@@ -23,7 +23,7 @@
 
     text-align: center;
     
-    transition: width 0.25s ease, font-size 0.25s ease, line-height 0.25s ease, left 0.25s ease, opacity 0.25s ease;
+    transition: width 0.25s ease, font-size 0.25s ease, line-height 0.25s ease, left 0.1s ease, opacity 0.25s ease;
 
     &.expanded{
         width: 300px;

@@ -115,9 +115,7 @@ function Sidebar() {
   const setSave = _context.setSave;
 
   useEffect(() => {
-    return () => {
-      setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, sidebarBadgeData: sidebarBadgeData}});
-    }
+    setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, sidebarBadgeData: sidebarBadgeData}});
   }, [sidebarUnlocks, setSidebarUnlocks, folderStates, setFolderStates, sidebarBadgeData, setSidebarBadgeData, setSave])
 
   SidebarFolder.propTypes = {
@@ -209,7 +207,7 @@ function Sidebar() {
   }
 
     return (
-      <div id="sidebar" className={sidebarClasses} onPointerEnter={(event) => {event.stopPropagation(); setMouseOver(true)}} onPointerLeave={(event) => {event.stopPropagation(); setMouseOver(false)}}>
+      <div id="sidebar" style={(loaded ? {position: "relative", left: "0px"} : {position: "absolute", left: "-1000px"})} className={sidebarClasses} onPointerEnter={(event) => {event.stopPropagation(); setMouseOver(true)}} onPointerLeave={(event) => {event.stopPropagation(); setMouseOver(false)}}>
         <div className="sidebar-header">{sidebarHeaderText}</div>
         <div className="sidebar-items-container">
           <div className="sidebar-items-top">

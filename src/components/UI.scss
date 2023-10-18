@@ -13,6 +13,10 @@
     animation-iteration-count: infinite;
 }
 
+html {
+    background-color: rgb(43, 43, 43);
+}
+
 input, button, textarea, select {font: inherit;}
 
 *, 
@@ -67,6 +71,7 @@ a {text-decoration: none; color: $text-light;}
 }
 
 #root {
+    background-color: rgb(43, 43, 43);
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -74,11 +79,12 @@ a {text-decoration: none; color: $text-light;}
 }
 
 #wrapper {
-    background-color: black;
+    background-color: rgb(43, 43, 43);
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     width: 100%;
+    transition: opacity 0.25s ease;
 }
 
 #content {

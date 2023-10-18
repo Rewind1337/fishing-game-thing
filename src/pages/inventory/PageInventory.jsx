@@ -11,6 +11,7 @@ import ActionButton from '../../components/ActionButton';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
 import './Inventory.scss'

@@ -3,16 +3,18 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import SaveContext from '../../context/SaveContext';
 import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
-import PropTypes from 'prop-types';
 
 // Components
 import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
 import ResourceCard from '../../components/resources/ResourceCard';
+import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
+import FishingTripMap from './FishingTripMap';
 
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
+import { Paper } from '@mui/material';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,153 +22,19 @@ import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import resourceHook from '../../utility/resourceHook';
+import getFish from './getFish';
 
 // CSS Styles
 import './Fishing.scss'
-import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
-import { Paper } from '@mui/material';
-
-let getWeight = function(fish) {
-	let rarityTable = [
-		100,
-		25,
-		10,
-		4,
-		1
-	];
-	
-	return rarityTable[fish.rarity];
-}
-
-let canCatch = function(fish, bait, time) {
-	if (bait != fish.baitNeeded) {
-		return false;
-	}
-	
-	let timeArray = [
-		[0.25, 0.75],
-		[0.75, 0.25],
-		[0.25, 0.5],
-		[0.5, 0.75],
-		[0.75, 0],
-		[0, 0.25],
-		[0.9, 0.1],
-		[0.4, 0.6],
-		[0, 1]
-	];
-
-	let time1 = timeArray[fish.timeOfDay][0];
-	let time2 = timeArray[fish.timeOfDay][1];
-
-	if (time1 <= time2) {
-		return (time >= time1 & time <= time2);
-	}
-	return (time >= time1 | time <= time2);
-};
-
-let getFish = function(location, sublocation, bait, time) {
-	let errorFish = {
-		id: -2,
-		name: "404 fish not found",
-		rarity: 4,
-		baitNeeded: 0,
-		timeOfDay: 8,
-		flavor: "You might want to notify the devs, you shouldn't be fishing here.",
-	};
-	let justANibble = {
-		id: -1,
-		name: "Guess it's nothing.",
-		rarity: 1,
-		baitNeeded: 0,
-		timeOfDay: 8,
-		flavor: "poggers! you caught nil",
-	};
-	
-	if (location < 0 || location > GLOBALS.DB.FISHING.LOCATIONS.length) {
-		console.warn("Warning, player escaped the confines of the game! Invalid location!");
-		return errorFish;
-	}
-	
-	let locationDat = GLOBALS.DB.FISHING.LOCATIONS[location];
-	
-	if (!(sublocation in locationDat.sublocations)) {
-		console.warn("Warning, player escaped the confines of the game! Invalid sublocation!");
-		return errorFish;
-	}
-	
-	let sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[location];
-	
-	if (sublocationDat.fish.length == 0) {
-		return errorFish;
-	}
-	
-	let fishList = [];
-	let totalWeight = 0;
-	for (let fishId of sublocationDat.fish) {
-    let fish = GLOBALS.DB.FISH[fishId];
-		if (canCatch(fish, bait, time)) {
-			totalWeight += getWeight(fish);
-			fishList.push({'fish': fish, 'cumWeight': totalWeight});
-		}
-	}
-
-	totalWeight += getWeight(justANibble);
-	fishList.push({'fish': justANibble, 'cumWeight': totalWeight});
-	
-	let noFailBias = 0;
-	let randomRoll = (Math.random() - noFailBias * (totalWeight - getWeight(justANibble))) * totalWeight;
-	for (let result of fishList) {
-		if (randomRoll < result.cumWeight) {
-			return result['fish'];
-		}
-	}
-	return justANibble;
-};
-
-FishingTripMap.propTypes = {
-  location: PropTypes.object,
-  tripStatus: PropTypes.number.isRequired,
-};
-
-// test visualisation
-function FishingTripMap({ location, tripStatus }) {
-
-  const mouseClick = (e) => {
-    console.log(e);
-  }
-
-  if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {
-    return <div className='fishing-map'>Not on a Trip</div>
-  }
-
-  if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP) {
-    return <div className='fishing-map'>Preparing Trip</div>
-  }
-
-  if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
-    return (
-      <div className='fishing-map' onClick={mouseClick}>
-        <div className='fishing-map-location'>{location.name}</div>
-        <div className='fishing-map-grid'>
-          {location.sublocations.map((objID) => {
-            let realObj = GLOBALS.DB.FISHING.SUBLOCATIONS[objID]
-            return <div key={realObj.id} className={'fishing-map-sublocation ' + (realObj.hidden ? "hidden" : "")}>{realObj.name}</div>
-          })}
-        </div>
-      </div>
-    )
-  }
-}
 
 // Route: "/fishing"
 function PageFishingZone() {
 
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
-  
-  const [fish, setFish] = useState(_context.save.resources.fish || 0)
-  const [worms, setWorms] = useState(_context.save.resources.worms || 0)
-  const [artifacts, setArtifacts] = useState(_context.save.resources.artifacts || 0)  // eslint-disable-line no-unused-vars
+
+  const [resources, setResources] = useState(resourceHook(_context))
 
   const [isFishing, setFishing] = useState(_context.save.fishing.isFishing || false)
   const [fishProgress, setFishProgress] = useState(_context.save.fishing.fishProgress || false)
@@ -182,19 +50,19 @@ function PageFishingZone() {
     _context.setSave(
       {
         pageTimestamps: _allTimeStamps.current,
-        resources: {worms: worms, fish: fish, artifacts: artifacts}, 
+        resources: {...resources}, 
         fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}
       }
     )
   }
 
   const startFishing = (onTrip) => {
-    if (worms == 0) {
+    if (resources.worms == 0) {
       _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
       return;
     }
 
-    setWorms(worms - 1);
+    setResources(r => ({...r, worms: r.worms - 1}));
     setFishing(true)
     let tickMiddle = 10 + Math.round(Math.random() * 40);
     setTickRange({min: tickMiddle - 10, max: tickMiddle + 10})
@@ -206,14 +74,13 @@ function PageFishingZone() {
 
   const attemptCatch = (onTrip) => {
     if (fishProgress >= tickRange.min && fishProgress <= tickRange.max) {
-      // alert("ayy");
       // Only fishes at night right now.
       let toastText = "";
 
       let caughtFish = getFish(0, 0, 1, 0.75);
       if (caughtFish.id >= 0) {
         toastText = "Caught a(n): " + caughtFish.name;
-        setFish(fish + 1);
+        setResources(r => ({...r, fish: r.fish + 1}));
       } else if (caughtFish.id == -1) {
         toastText = "Just a nibble.";
       } else if (caughtFish.id <= -2) {
@@ -266,7 +133,7 @@ function PageFishingZone() {
       clearInterval(timer);
     };
 
-  }, [worms, fish, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [resources, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
  
   // unmount
   useEffect(() => () => {
@@ -297,7 +164,7 @@ function PageFishingZone() {
       icon: <FontAwesomeIcon icon={faFish} />,
       iconcolor: 'hsl(235deg, 100%, 90%)',
       name: 'Fish',
-      value: fish,
+      value: resources.fish,
       cap: 0,
       perSec: 0,
     },
@@ -308,7 +175,7 @@ function PageFishingZone() {
 
       <GridCell gridPosition='top-left'>
       <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
+          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
         </FlexList>
       </GridCell>

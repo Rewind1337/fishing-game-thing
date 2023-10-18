@@ -12,6 +12,7 @@ import PetCard from './PetCard';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 
 // CSS Styles
 import './Pets.scss'

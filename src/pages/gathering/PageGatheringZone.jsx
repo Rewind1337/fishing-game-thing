@@ -19,6 +19,7 @@ import { faBoreHole, faFish, faFloppyDisk, faWorm } from '@fortawesome/free-soli
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import resourceHook from '../../utility/resourceHook';
 
 // CSS Styles
 import './Gathering.scss'
@@ -29,9 +30,7 @@ function PageGatheringZone() {
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
 
-  const [fish, setFish] = useState(_context.save.resources.fish || 0)  // eslint-disable-line no-unused-vars
-  const [worms, setWorms] = useState(_context.save.resources.worms || 0)
-  const [artifacts, setArtifacts] = useState(_context.save.resources.artifacts || 0)
+  const [resources, setResources] = useState(resourceHook(_context))
 
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
@@ -61,6 +60,12 @@ function PageGatheringZone() {
   const [modalText, setModalText] = useState("This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long");
   const [modalHeader, setModalHeader] = useState("Cool header hehe");
 
+  const generateModalContent = () => {
+    setModalIcon(modalIcon);
+    setModalText(modalText);
+    setModalHeader(modalHeader);
+  }
+
   const handleModalOpen = () => {
     generateModalContent();
     setModalOpen(true);
@@ -71,19 +76,13 @@ function PageGatheringZone() {
     if (value.value == 'close') {setModalOpen(false)}
   };
 
-  const generateModalContent = () => {
-    setModalIcon(modalIcon);
-    setModalText(modalText);
-    setModalHeader(modalHeader);
-  }
-
   const contextSave = () => {
     _allTimeStamps.current.gathering = Date.now();
 
     _context.setSave(
       {
         pageTimestamps: _allTimeStamps.current,
-        resources: { worms: worms, fish: fish, artifacts: artifacts },
+        resources: {...resources},
         gathering: {
           isDiggingWorms: isDiggingWorms, wormProgress: wormProgress,
           isArtifactsUnlocked: isArtifactsUnlocked, isDiggingArtifacts: isDiggingArtifacts, artifactProgress: artifactProgress,
@@ -102,7 +101,7 @@ function PageGatheringZone() {
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
       let randomGain = 1 + ~~(Math.random() * 3);
-      setWorms(worms + randomGain)
+      setResources(r => ({...r, worms: r.worms + randomGain}));
       setDiggingWorms(false)
       setCanCollectWorms(false)
       setWormProgress(0)
@@ -114,13 +113,12 @@ function PageGatheringZone() {
         handleModalOpen();
       }
       
-      if (worms >= 15) { setArtifactsUnlocked(true) }
+      if (resources.worms >= 15) { setArtifactsUnlocked(true) }
 
       if (_context.save.sidebar.unlocks[3] == false) {
         let modifiedUnlocks = _context.save.sidebar.unlocks;
         modifiedUnlocks[3] = true;
         _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
-        _context.updateToLocalStorage();
       }
     }
   }
@@ -134,7 +132,7 @@ function PageGatheringZone() {
   const collectArtifacts = () => {
     if (artifactProgress >= artifactProgressMax - 1) {
       let randomGain = 1 + ~~(Math.random() * 2);
-      setArtifacts(artifacts + randomGain)
+      setResources(r => ({...r, artifacts: r.artifacts + randomGain}));
       setDiggingArtifacts(false)
       setCanCollectArtifacts(false)
       setArtifactProgress(0)
@@ -160,8 +158,6 @@ function PageGatheringZone() {
   }
 
   const pageTick = () => {
-    if (worms >= 15) { setArtifactsUnlocked(true) }
-
     if (isDiggingWorms == true) {
       setWormProgress((old) => (old >= (wormProgressMax - 1) ? wormProgressMax : old + wormProgressPerTick));
       if (wormProgress >= wormProgressMax - 1) {
@@ -192,7 +188,7 @@ function PageGatheringZone() {
       clearInterval(timer);
     };
 
-  }, [wormProgress, artifactProgress, miningProgress, worms, artifacts, isDiggingWorms, isDiggingArtifacts, isMining]);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [wormProgress, artifactProgress, miningProgress, resources, isDiggingWorms, isDiggingArtifacts, isMining]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   // unmount
   useEffect(() => () => {
@@ -226,7 +222,7 @@ function PageGatheringZone() {
       icon: <FontAwesomeIcon icon={faFish} />,
       iconcolor: 'hsl(235deg, 100%, 90%)',
       name: 'Fish',
-      value: fish,
+      value: resources.fish,
       cap: 0,
       perSec: 0,
     },
@@ -240,9 +236,9 @@ function PageGatheringZone() {
       <GridCell gridPosition='left'>
 
         <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={worms} cap={0} perSec={0}></ResourceCard>
+          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
-          {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={artifacts} cap={0} perSec={0}></ResourceCard>)}
+          {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
 
         <FlexList headerElement={<h4>{"Actions"}</h4>} mode="flex" gap={8}>
