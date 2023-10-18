@@ -1,5 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import GLOBALS from '../../globals/Globals';
 
 import SaveContext from '../../context/SaveContext';
 import PageCore from '../core/PageCore';
@@ -135,7 +136,7 @@ function PageAdventureZone() {
   }
 
   return (
-    <PageCore title="Adventure Zone" gridId="grid-adventure" contentClasses={'adventure'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.ADVENTURE} title="Adventure Zone" gridId="grid-adventure" contentClasses={'adventure'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='top-middle'></GridCell>
       <GridCell gridPosition='top-right'></GridCell>

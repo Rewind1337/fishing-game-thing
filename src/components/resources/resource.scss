@@ -1,7 +1,7 @@
 .resource-card {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100% - 2px);
     height: auto;
     padding: 2px;
 
@@ -10,6 +10,8 @@
     }
 
     &-icon {
+        text-indent: 0;
+        
         svg {
             height: 40px !important;
             width: 40px !important;
@@ -21,21 +23,25 @@
         }
     }
 
-    &-name {
+    &-name {  
+        white-space: nowrap;
         flex-grow: 1;
-        font-size: 22px;
+        flex-basis: 128px;
+        font-size: 16px;
         border-left: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    &-value {
+    &-value {  
+        white-space: nowrap;
         text-align: center;
         flex-basis: 128px;
-        font-size: 20px;
+        font-size: 16px;
         border-left: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     &-persec {
-        text-align: center;
+        white-space: nowrap;
+        text-align: right;
         flex-basis: 64px;
         font-size: 16px;
         border-left: 1px solid rgba(255, 255, 255, 0.3);

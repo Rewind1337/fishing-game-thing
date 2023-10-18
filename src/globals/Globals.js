@@ -37,6 +37,23 @@ const NODETYPES = {
     END: 7,
 }
 
+const TRIPSTATUS = {
+    IDLE: 0,
+    PREPARING_TRIP: 1,
+    TRIP_ACTIVE: 2,
+}
+
+const PAGES = {
+    HOME: 0,
+    INVENTORY: 1,
+    PETS: 2,
+    FISHING: 3,
+    GATHERING: 4,
+    ADVENTURE: 5,
+    QUEEN: 6,
+    HELP: 7,
+}
+
 const GLOBALS = {
     DB: {
 
@@ -177,10 +194,10 @@ const GLOBALS = {
 
         FISHING: {
             SUBLOCATIONS: [
-                {id: 0, name: 'By the Shallows', fish:[0, 6]},
-                {id: 1, name: 'By the Reeds', fish:[0, 6, 7]},
-                {id: 2, name: 'By the Trees', fish:[]},
-                {id: 3, name: 'Worm Queen Shrine', fish:[]},
+                {id: 0, name: 'By the Shallows', fish: [0, 6]},
+                {id: 1, name: 'By the Reeds', fish: [0, 6, 7]},
+                {id: 2, name: 'By the Trees', fish: []},
+                {id: 3, name: 'Worm Queen Shrine', hidden: true, fish: []},
             ],
             LOCATIONS: [
                 {id: 0, name: 'Local Waterhole', sublocations: [0, 1, 2, 3], fish: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
@@ -286,10 +303,10 @@ const GLOBALS = {
     },
 
     ENUMS: {
-        RARITY,
-        BAIT,
-        TIME,
-        NODETYPES
+        RARITY, BAIT, TIME,
+        NODETYPES,
+        TRIPSTATUS,
+        PAGES
     }
 }
 

@@ -42,7 +42,7 @@ function PageHome() {
   }
 
   return (
-    <PageCore title="Home" contentClasses={'home'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.HOME} title="Home" contentClasses={'home'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='right-side'></GridCell>
       <GridCell gridPosition='bottom-left'>

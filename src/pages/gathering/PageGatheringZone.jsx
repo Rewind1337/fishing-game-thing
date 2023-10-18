@@ -113,6 +113,15 @@ function PageGatheringZone() {
       if (r == 0) {
         handleModalOpen();
       }
+      
+      if (worms >= 15) { setArtifactsUnlocked(true) }
+
+      if (_context.save.sidebar.unlocks[3] == false) {
+        let modifiedUnlocks = _context.save.sidebar.unlocks;
+        modifiedUnlocks[3] = true;
+        _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
+        _context.updateToLocalStorage();
+      }
     }
   }
 
@@ -224,7 +233,7 @@ function PageGatheringZone() {
   ]
 
   return (
-    <PageCore title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.GATHERING} title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
 
       <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose}/>
 

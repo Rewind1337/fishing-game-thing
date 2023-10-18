@@ -1,7 +1,7 @@
 // Boiler (kinda)
 import { useContext, useState, useEffect, useRef } from 'react';  // eslint-disable-line no-unused-vars
 import SaveContext from '../../context/SaveContext';
-import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
+import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
 import PropTypes from 'prop-types';
 
@@ -117,7 +117,7 @@ function PageQueen() {
   };
 
   return (
-    <PageCore title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.QUEEN} title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>
 
       <SacrificeModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
 

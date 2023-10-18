@@ -19,17 +19,20 @@ import FlagUS from '../../assets/flag-us';
 import WeatherClock from '../../components/weatherclock/WeatherClock';
 
 PageCore.propTypes = {
+    pageID: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     contentClasses: PropTypes.string,
     gridId: PropTypes.string,
     children: PropTypes.array,
 };
 
-function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
+function PageCore({pageID, title, gridId = 'grid-default', contentClasses, children}) {
   const _context = useContext(SaveContext);
   const _lang = useContext(LanguageContext);
 
   const [selectedLanguage, setSelectedLanguage] = useState(_lang.languageFile.language);
+
+  const [loaded, setLoaded] = useState(false)
 
   const selectLanguage = (languageFile) => {
     _lang.setLanguageFile(languageFile);
@@ -38,12 +41,18 @@ function PageCore({title, gridId = 'grid-default', contentClasses, children}) {
 
   const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
   const langButtonInactive = {filter: 'blur(1px'}
+ 
+  useEffect(() => {
+    console.log("mount", title)
+    if (_context.save.sidebar.unlocks[pageID] == false) {window.location = "/home"} else {
+      setLoaded(true);
+    }
+  }, [])
 
-  useEffect(() => {console.log("mount", title)}, [])              // eslint-disable-line react-hooks/exhaustive-deps
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
   
     return (
-        <div id="wrapper">
+        <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
           <div id="content" className={contentClasses}>
             <div id="content-top">
               <div id="content-top-left">

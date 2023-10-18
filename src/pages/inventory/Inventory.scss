@@ -5,6 +5,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    font-size: 12px;
 
     &.rod {
         background-color: rgb(255, 0, 0, 0.1);
@@ -25,7 +26,10 @@
     &-buttons {
         display: grid;
         align-items: center;
-        margin-left: 1px;
+
+        > button {
+            font-size: 14px !important;
+        }
     }
 
     &-name {

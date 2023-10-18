@@ -3,6 +3,7 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import SaveContext from '../../context/SaveContext';
 import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
+import PropTypes from 'prop-types';
 
 // Components
 import GridCell from '../../components/grid/GridCell';
@@ -23,6 +24,7 @@ import format from '../../utility/utility';  // eslint-disable-line no-unused-va
 // CSS Styles
 import './Fishing.scss'
 import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
+import { Paper } from '@mui/material';
 
 let getWeight = function(fish) {
 	let rarityTable = [
@@ -121,6 +123,41 @@ let getFish = function(location, sublocation, bait, time) {
 	return justANibble;
 };
 
+FishingTripMap.propTypes = {
+  location: PropTypes.object,
+  tripStatus: PropTypes.number.isRequired,
+};
+
+// test visualisation
+function FishingTripMap({ location, tripStatus }) {
+
+  const mouseClick = (e) => {
+    console.log(e);
+  }
+
+  if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {
+    return <div className='fishing-map'>Not on a Trip</div>
+  }
+
+  if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP) {
+    return <div className='fishing-map'>Preparing Trip</div>
+  }
+
+  if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+    return (
+      <div className='fishing-map' onClick={mouseClick}>
+        <div className='fishing-map-location'>{location.name}</div>
+        <div className='fishing-map-grid'>
+          {location.sublocations.map((objID) => {
+            let realObj = GLOBALS.DB.FISHING.SUBLOCATIONS[objID]
+            return <div key={realObj.id} className={'fishing-map-sublocation ' + (realObj.hidden ? "hidden" : "")}>{realObj.name}</div>
+          })}
+        </div>
+      </div>
+    )
+  }
+}
+
 // Route: "/fishing"
 function PageFishingZone() {
 
@@ -136,7 +173,8 @@ function PageFishingZone() {
   const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: -1, max: -1})
   let fishProgressMax = GLOBALS.FISHING.TIME
 
-  const [fishingTripStatus, setFishingTripStatus] = useState(0)
+  const [fishingTripStatus, setFishingTripStatus] = useState(GLOBALS.ENUMS.TRIPSTATUS.IDLE)
+  const [fishingTripData, setFishingTripData] = useState({});
 
   const contextSave = () => {
     _allTimeStamps.current.fishing = Date.now();
@@ -150,15 +188,23 @@ function PageFishingZone() {
     )
   }
 
-  const startFishing = () => {
-    if (worms == 0) return;
-    setFishing(true)
+  const startFishing = (onTrip) => {
+    if (worms == 0) {
+      _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
+      return;
+    }
+
     setWorms(worms - 1);
+    setFishing(true)
     let tickMiddle = 10 + Math.round(Math.random() * 40);
     setTickRange({min: tickMiddle - 10, max: tickMiddle + 10})
+
+    if (onTrip) {
+      console.log("wow look at you, youre on a trip");
+    }
   }
 
-  const attemptCatch = () => {
+  const attemptCatch = (onTrip) => {
     if (fishProgress >= tickRange.min && fishProgress <= tickRange.max) {
       // alert("ayy");
       // Only fishes at night right now.
@@ -177,6 +223,11 @@ function PageFishingZone() {
       _context.refs.toastmanager['fireToast']("info", toastText);
     
       stopFishing();
+
+      if (onTrip) {
+        console.log("wow look at you, you attempted a catch on a trip");
+      }
+
       return;
     }
     stopFishing();
@@ -191,6 +242,12 @@ function PageFishingZone() {
   const setTripTo = (n) => {
     stopFishing();
     setFishingTripStatus(n);
+
+    if (n == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {setFishingTripData({})}
+
+    if (n == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP) {setFishingTripData({
+      location: GLOBALS.DB.FISHING.LOCATIONS[0]
+    })}
   }
   
   const pageTick = () => {
@@ -247,7 +304,7 @@ function PageFishingZone() {
   ]
 
   return (
-    <PageCore title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
       <GridCell gridPosition='top-left'>
       <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
@@ -261,30 +318,87 @@ function PageFishingZone() {
       </GridCell>
 
       <GridCell gridPosition='top-right'>
-        <>Current effects?</>
+        <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
       </GridCell>
 
       <GridCell gridPosition='center'>
-        {fishingTripStatus == 0 && <> {/* Just Fishing */}
-          <ActionButton disabled={(isFishing ? true : false)} color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={startFishing}/><br/>
-          <ActionButton disabled={(!isFishing ? true : false)} color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch()}}/>
-          <ActionButton color="gathering" variant="contained" text='Start Trip' func={() => {setTripTo(1)}}/><br/>
-        </>
-        }
-        {fishingTripStatus == 1 && <> {/* Fishing Trip */}
-          <ActionButton disabled={(isFishing ? true : false)} color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={startFishing}/><br/>
-          <ActionButton disabled={(!isFishing ? true : false)} color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch()}}/>
-          <ActionButton color="queen" variant="contained" text='Finish Trip' func={() => {setTripTo(0)}}/><br/>
-        </>
-        }
+
       </GridCell>
 
       <GridCell gridPosition='bottom-left'>
-        <>Changing Lures, Rods etc</>
+        <FlexList collapsible mode='list' headerElement={<h5>Rods</h5>}>
+            {GLOBALS.DB.ROD.map((r) => {
+                return (
+                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
+                    <div className='inventory-card-buttons'>
+                      <ActionButton text={"Equip"}/>
+                    </div>
+                    <div className='inventory-card-name'>{r.name}</div>
+                  </Paper>
+                )
+            })}
+            </FlexList>
+            <FlexList collapsible mode='list' headerElement={<h5>Hooks</h5>}>
+            {GLOBALS.DB.HOOK.map((h) => {
+                return (
+                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
+                    <div className='inventory-card-buttons'>
+                      <ActionButton text={"Equip"}/>
+                    </div>
+                    <div className='inventory-card-name'>{h.name}</div>
+                  </Paper>
+                )
+            })}
+            </FlexList>
+            <FlexList collapsible mode='list' headerElement={<h5>Bait</h5>}>
+            {GLOBALS.DB.BAIT.map((b) => {
+                return (
+                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
+                    <div className='inventory-card-buttons'>
+                      <ActionButton text={"Equip"}/>
+                    </div>
+                    <div className='inventory-card-name'>{b.name}</div>
+                  </Paper>
+                )
+            })}
+            </FlexList>
+            <FlexList collapsible mode='list' headerElement={<h5>Lures</h5>}>
+            {GLOBALS.DB.LURE.map((l) => {
+                return (
+                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
+                    <div className='inventory-card-buttons'>
+                      <ActionButton text={"Use"}/>
+                    </div>
+                    <div className='inventory-card-name'>{l.name}</div>
+                  </Paper>
+            )})}
+            </FlexList>
       </GridCell>
 
-      <GridCell gridPosition='bottom-middle'>
-        <>?</>
+      <GridCell gridPosition='bottom-middle' flexDirection='row' justifyContent='flex-end'>
+        <div className='action-buttons'>
+          
+          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
+            {(isFishing
+              ? <ActionButton color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch(false)}}/>
+              : <ActionButton color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={() => {startFishing(false)}}/>
+            )}
+            <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
+          </>}
+
+          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+            <ActionButton color="fishing" variant="contained" text='Start Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE)}}/>
+          </>}
+
+          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
+            {(isFishing
+              ? <ActionButton color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch(true)}}/>
+              : <ActionButton color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={() => {startFishing(true)}}/>
+            )}
+            <ActionButton color="queen" variant="contained" text='Finish Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
+          </>}
+
+        </div>
       </GridCell>
 
       <GridCell gridPosition='bottom-right'>

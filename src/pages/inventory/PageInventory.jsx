@@ -36,7 +36,7 @@ function PageInventory() {
   }
 
   return (
-    <PageCore title="Inventory" gridId="grid-inventory" contentClasses={'inventory'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.INVENTORY} title="Inventory" gridId="grid-inventory" contentClasses={'inventory'}>
       <GridCell gridPosition='top-left'>
 
         <div className='flexlist-tabs'>

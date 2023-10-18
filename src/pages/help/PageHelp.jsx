@@ -19,7 +19,7 @@ function PageHelp() {
   const _context = useContext(SaveContext);  // eslint-disable-line no-unused-vars
 
   return (
-    <PageCore title="Help / Tutorial" contentClasses={'help'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.HELP} title="Help / Tutorial" contentClasses={'help'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='right-side'></GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>

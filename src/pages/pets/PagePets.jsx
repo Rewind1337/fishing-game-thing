@@ -22,7 +22,7 @@ function PagePets() {
   const _context = useContext(SaveContext);  // eslint-disable-line no-unused-vars
   
   return (
-    <PageCore title="Pets" contentClasses={'pets'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.PETS} title="Pets" contentClasses={'pets'}>
       <GridCell gridPosition='top-left'>
         This is where like a big view would go
       </GridCell>

@@ -6,7 +6,6 @@
     padding: 0;
     user-select: none;
 
-    white-space: nowrap;
     scrollbar-width: thin;
 
     animation-duration: 60s;
@@ -75,6 +74,7 @@ a {text-decoration: none; color: $text-light;}
 }
 
 #wrapper {
+    background-color: black;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -138,7 +138,7 @@ a {text-decoration: none; color: $text-light;}
 
 #content-top > * > *, #content-bottom > * > * {
     height: 100%;
-    min-width: 270px;
+    min-width: 0px;
 
     padding: 0px;
 
@@ -195,4 +195,14 @@ a {text-decoration: none; color: $text-light;}
 
 .character {
     position: relative;
+}
+
+
+
+.fade-in {
+    opacity: 1 !important;
+}
+
+.fade-out {
+    opacity: 0 !important;
 }

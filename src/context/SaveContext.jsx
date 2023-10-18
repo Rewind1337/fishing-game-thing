@@ -26,9 +26,12 @@ let data = {
         resources: {},
         fishing: {},
         gathering: {},
+        inventory: {},
+        character: {},
+        pets: {},
         sidebar: {
             states: [true, true, true],
-            unlocks: [true, false, false, true, true, false, false, true],
+            unlocks: [true, false, false, false, true, false, false, true],
             sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
         }
     },

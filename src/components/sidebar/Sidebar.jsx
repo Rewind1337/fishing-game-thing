@@ -17,6 +17,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
+import '../UI.scss'
 import './Sidebar.scss'
 import Theme from '../../styles/Theme';
 
@@ -26,8 +27,10 @@ import { Badge } from '@mui/material';
 function Sidebar() {
   const _context = useContext(SaveContext);
 
+  const [loaded, setLoaded] = useState(false)
+
   const [mouseOver, setMouseOver] = useState(true);
-  const sidebarClasses = 'sidebar' + (mouseOver ? ' expanded' : '');
+  const sidebarClasses = 'sidebar ' + (mouseOver ? 'expanded ' : '') + (loaded ? 'fade-in ' : 'fade-out ');
   const sidebarHeaderText = (mouseOver ? 'Game • Thing' : 'G • T');
 
   const savedFolderStates = _context.save.sidebar.states;
@@ -106,6 +109,7 @@ function Sidebar() {
       'clearBadgeDataFor' : clearBadgeDataFor,
       'addBadgeTimer' : addBadgeTimer}});
     setMouseOver(false);
+    setLoaded(true);
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
   const setSave = _context.setSave;
