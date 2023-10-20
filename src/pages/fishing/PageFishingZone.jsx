@@ -174,7 +174,7 @@ function PageFishingZone() {
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
       <GridCell gridPosition='top-left'>
-      <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
+      <FlexList collapsible headerText={"All Resources"} mode="list" minHeight={128} maxHeight={192}>
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
         </FlexList>
@@ -193,7 +193,7 @@ function PageFishingZone() {
       </GridCell>
 
       <GridCell gridPosition='bottom-left'>
-        <FlexList collapsible mode='list' headerElement={<h5>Rods</h5>}>
+        <FlexList collapsible mode='list' headerText={"Rods"}>
             {GLOBALS.DB.ROD.map((r) => {
                 return (
                   <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
@@ -205,7 +205,7 @@ function PageFishingZone() {
                 )
             })}
             </FlexList>
-            <FlexList collapsible mode='list' headerElement={<h5>Hooks</h5>}>
+            <FlexList collapsible mode='list' headerText={"Hooks"}>
             {GLOBALS.DB.HOOK.map((h) => {
                 return (
                   <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
@@ -217,7 +217,7 @@ function PageFishingZone() {
                 )
             })}
             </FlexList>
-            <FlexList collapsible mode='list' headerElement={<h5>Bait</h5>}>
+            <FlexList collapsible mode='list' headerText={"Bait"}>
             {GLOBALS.DB.BAIT.map((b) => {
                 return (
                   <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
@@ -229,7 +229,7 @@ function PageFishingZone() {
                 )
             })}
             </FlexList>
-            <FlexList collapsible mode='list' headerElement={<h5>Lures</h5>}>
+            <FlexList collapsible mode='list' headerText={"Lures"}>
             {GLOBALS.DB.LURE.map((l) => {
                 return (
                   <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
@@ -262,7 +262,7 @@ function PageFishingZone() {
               ? <ActionButton color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch(true)}}/>
               : <ActionButton color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={() => {startFishing(true)}}/>
             )}
-            <ActionButton color="queen" variant="contained" text='Finish Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
+            <ActionButton color="queen" variant="contained" text='Finish Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
           </>}
 
         </div>

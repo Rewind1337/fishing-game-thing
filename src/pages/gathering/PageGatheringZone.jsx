@@ -235,13 +235,13 @@ function PageGatheringZone() {
 
       <GridCell gridPosition='left'>
 
-        <FlexList collapsible headerElement={<h4>{"All Resources"}</h4>} mode="list" minHeight={128} maxHeight={192}>
+        <FlexList collapsible headerText={"All Resources"} mode="list" minHeight={128} maxHeight={192}>
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
 
-        <FlexList headerElement={<h4>{"Actions"}</h4>} mode="flex" gap={8}>
+        <FlexList headerText={"Actions"} mode="flex" gap={8}>
 
           <GatheringModule autoSegments={3} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm}/>} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms}/>
           

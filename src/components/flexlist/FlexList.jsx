@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types';
 import './FlexList.scss'
 
+import useTranslation from '../../context/useTranslation'
+
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState } from 'react';
 
 FlexList.propTypes = {
   id: PropTypes.string,
+  langpath: PropTypes.string,
+  dontTranslate: PropTypes.bool,
   collapsible: PropTypes.bool,
   noHeader: PropTypes.bool,
-  headerElement: PropTypes.element,
+  headerText: PropTypes.element,
   mode: PropTypes.string.isRequired,
   minHeight: PropTypes.number,
   maxHeight: PropTypes.number,
@@ -17,7 +21,8 @@ FlexList.propTypes = {
   children: PropTypes.array,
 };
   
-function FlexList({id, collapsible = false, noHeader = false, headerElement = (<h4>did you forget noHeader ?</h4>), mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
+function FlexList({id, langpath = "flexlist", dontTranslate = false, collapsible = false, noHeader = false, headerText = "did you forget noHeader?", mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
+  headerText = useTranslation(langpath, headerText, dontTranslate);
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -30,7 +35,7 @@ function FlexList({id, collapsible = false, noHeader = false, headerElement = (<
       return (
         <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
           <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
-            <KeyboardArrowRightIcon/>{headerElement}
+            <KeyboardArrowRightIcon/><h4>{headerText}</h4>
           </div>
         </div>
       );
@@ -38,7 +43,7 @@ function FlexList({id, collapsible = false, noHeader = false, headerElement = (<
       return (
         <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
           <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
-            <KeyboardArrowDownIcon/>{headerElement}
+            <KeyboardArrowDownIcon/><h4>{headerText}</h4>
           </div>
           <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
             {children}
@@ -50,7 +55,7 @@ function FlexList({id, collapsible = false, noHeader = false, headerElement = (<
 
   return (
     <div id={id} className={"flexlist-wrapper " + mode}>
-      {!noHeader && <div className={"flexlist-header"} style={{marginTop: gap + "px"}}>{headerElement}</div>}
+      {!noHeader && <div className={"flexlist-header"} style={{marginTop: gap + "px"}}><h4>{headerText}</h4></div>}
       <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
         {children}
       </div>

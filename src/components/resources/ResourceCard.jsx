@@ -1,7 +1,7 @@
 import { Paper } from '@mui/material';
 import PropTypes from 'prop-types';
-import LanguageContext from '../../context/LanguageContext';
-import { useContext } from 'react';
+
+import useTranslation from '../../context/useTranslation'
 
 import './resource.scss';
 
@@ -18,20 +18,9 @@ ResourceCard.propTypes = {
   paperBorder: PropTypes.bool,
 };
   
-function ResourceCard({icon, langpath = "resources", iconcolor, height, name, value, cap, perSec, dontTranslate = false, paperBorder}) {
-  const _lang = useContext(LanguageContext);
-
-  let splitPath = langpath.split("/");
-  let _current = _lang.languageFile
-
-  for (let i = 0; i < splitPath.length; i++) {_current = _current[splitPath[i]]}
-
-  if (_current[name.toLowerCase()] != undefined) {
-    if (!dontTranslate) {
-      name = _current[name.toLowerCase()];
-    }
-  }
-
+function ResourceCard({icon, dontTranslate = false, langpath = "resources", iconcolor, height, name, value, cap, perSec, paperBorder}) {
+  name = useTranslation(langpath, name, dontTranslate);
+  
   const paperSX = {
     backgroundColor: 'rgba(0, 0, 0, 0.0)', 
     height: height,

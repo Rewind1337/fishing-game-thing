@@ -24,7 +24,7 @@ function ResourceCollectionCard({collection = [], icon, iconcolor, name}) {
   const collectionHeader = (
     <div className='resource-collection-card-header' style={{textAlign: 'left', textIndent: '8px', display: 'flex', alignItems: 'center', cursor: 'pointer'}} onClick={() => {setCollapsed(!collapsed)}}>
       {(collapsed ? <KeyboardArrowRightIcon/> : <KeyboardArrowDownIcon/>)}
-      <ResourceCard path='resources/collections' paperBorder height={32} icon={icon} iconcolor={iconcolor} name={name} value={combinedTotal} cap={0} perSec={0}/>
+      <ResourceCard langpath='resources/collections' paperBorder height={32} icon={icon} iconcolor={iconcolor} name={name} value={combinedTotal} cap={0} perSec={0}/>
     </div>
   )
   
