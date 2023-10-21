@@ -235,22 +235,22 @@ function PageGatheringZone() {
 
       <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose}/>
 
-      <Grid xs={3}>
-        <FlexList collapsible headerText={"All Resources"} mode="list" minHeight={128} maxHeight={192}>
+      <Grid mobile={12} tablet={6} desktop={4} maxHeight={{mobile: 200, tablet: 300}} overflow={"auto"}>
+        <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
       </Grid>
 
-      <Grid container xs={"auto"} sx={{flexGrow: '1'}} spacing={0.5}>
-        <Grid xs={4} sx={{flexGrow: '1'}}>
+      <Grid container mobile={"auto"} tablet={6} desktop={8} maxHeight={{mobile: 400, tablet: 600}} overflow={"auto"} sx={{flexGrow: '1'}} spacing={0.5}>
+        <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{flexGrow: '1'}}>
           <GatheringModule autoSegments={3} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm}/>} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms}/>
         </Grid>
-        <Grid xs={4} sx={{flexGrow: '1'}}>
+        <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{flexGrow: '1'}}>
           <GatheringModule isUnlocked={isArtifactsUnlocked}  header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={faFloppyDisk}/>} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts}/>
           </Grid>
-        <Grid xs={4} sx={{flexGrow: '1'}}>
+        <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{flexGrow: '1'}}>
           <GatheringModule isUnlocked={isMiningUnlocked}  header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={faBoreHole}/>} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining}/>
         </Grid>
       </Grid>

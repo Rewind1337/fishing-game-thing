@@ -13,7 +13,7 @@ import MilestoneCard from './MilestoneCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI
-import { Paper } from '@mui/material';
+import { Paper, useMediaQuery } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
@@ -27,9 +27,12 @@ import resourceHook from '../../utility/resourceHook';  // eslint-disable-line n
 // CSS Styles
 import './Queen.scss'
 import AspectCard from './AspectCard';
+import Theme from '../../styles/Theme';
 
 // Route: "/queen"
 function PageQueen() {
+
+  const mqMobileTablet = useMediaQuery(Theme.breakpoints.down('desktop'));
 
   const _context = useContext(SaveContext);
   _context; // to prevent the no-unused-vars, remove if actually used somewhere else
@@ -83,15 +86,13 @@ function PageQueen() {
 
       <SacrificeModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
 
-      <Grid container xs={12} flexGrow={1}spacing={0.5}>
-        <Grid xs={2} maxHeight={400} overflow={"auto"}>
-          <FlexList headerText="Resources" mode="list" maxHeight={200}>
+      <Grid container mobile={12} flexGrow={1} spacing={0.5} overflow={"auto"}>
+        <Grid mobile={6} desktop={4} maxHeight={{mobile: 200, tablet: 300, desktop: 400}} overflow={"auto"}>
+          <FlexList headerText="Resources" mode="list">
             <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
             <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconcolor="hsl(235deg, 100%, 90%)" name="Fish" value={resources.fish} cap={0} perSec={0}></ResourceCard>
           </FlexList>
-        </Grid>
-        <Grid xs={6} maxHeight={400} overflow={"auto"}>
-          <FlexList headerText="Aspects" mode='list'>
+          {mqMobileTablet && <FlexList headerText="Aspects" mode='list'>
             <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999}/>
             <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0}/>
             <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0}/>
@@ -104,9 +105,32 @@ function PageQueen() {
             <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"}/>
             <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"}/>
             <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0}/>
-          </FlexList>
+          </FlexList>}
         </Grid>
-        <Grid xs={4} maxHeight={400} overflow={"auto"}>
+        <Grid mobile={6} desktop={4} maxHeight={{mobile: 200, tablet: 300, desktop: 400}} overflow={"auto"}>
+          {!mqMobileTablet && <FlexList headerText="Aspects" mode='list'>
+            <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999}/>
+            <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0}/>
+            <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0}/>
+            <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0}/>
+            <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"}/>
+            <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"}/>
+            <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0}/>
+            <AspectCard c="🜲" name="Regulus" color='hsl(290deg, 100%, 90%)' amount={0}/>
+            <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0}/>
+            <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"}/>
+            <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"}/>
+            <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0}/>
+          </FlexList>}
+          {mqMobileTablet && <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px'}}>
+            <h2>Milestone Progress</h2>
+            <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{padding: "5px"}} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+            <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+              <ActionButton disabled={(resources.fish >= 1 ? false : true)} color="queen" variant="contained" text={(resources.fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+            </div>
+          </Paper>}
+        </Grid>
+        <Grid mobile={6} desktop={4} maxHeight={{mobile: 200, tablet: 300, desktop: 400}} overflow={"auto"}>
           <FlexList headerText="All Milestones" mode='list' >
             <MilestoneCard completed id={0} wormsRequired={25} bonus='wow you did it'/>
             <MilestoneCard id={1} wormsRequired={125} bonus='wow you did it'/>
@@ -124,17 +148,17 @@ function PageQueen() {
             <MilestoneCard id={13} wormsRequired={2500000} bonus='wow you did it'/>
           </FlexList>
         </Grid>
+        <Grid mobile={6} desktop={4} widescreen={6} maxHeight={{mobile: 200, tablet: 300, desktop: 400}} spacing={0.5}>
+          {!mqMobileTablet && <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px'}}>
+            <h2>Milestone Progress</h2>
+            <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{padding: "5px"}} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+            <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+              <ActionButton disabled={(resources.fish >= 1 ? false : true)} color="queen" variant="contained" text={(resources.fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+            </div>
+          </Paper>}
+        </Grid>
       </Grid>
 
-      <Grid container xs={4} spacing={0.5}>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px'}}>
-          <h2>Milestone Progress</h2>
-          <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{padding: "5px"}} color="queen" size={200} thickness={8} variant="determinate" value={12} />
-          <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-            <ActionButton disabled={(resources.fish >= 1 ? false : true)} color="queen" variant="contained" text={(resources.fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
-          </div>
-        </Paper>
-      </Grid>
     </PageCore>
   )
 }

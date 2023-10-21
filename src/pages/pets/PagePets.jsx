@@ -26,11 +26,11 @@ function PagePets() {
   
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.PETS} title="Pets" contentClasses={'pets'}>
-      <Grid container xs={12} flexGrow={1}spacing={0.5}>
-        <Grid xs={8}>
+      <Grid container mobile={12} flexGrow={1}spacing={0.5}>
+        <Grid mobile={8}>
           
         </Grid>
-        <Grid xs={4} maxHeight={600}>
+        <Grid mobile={4} maxHeight={600}>
           <FlexList headerText="Owned Pets" mode="list">
             <PetCard srcImg='./src/assets/bg-pets.png' name='Sister'/>
             <PetCard srcImg='./src/assets/bg-pets.png' name='Brother'/>

@@ -145,11 +145,11 @@ function PageAdventureZone() {
 
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.ADVENTURE} title="Adventure Zone" gridId="grid-adventure" contentClasses={'adventure'}>
-      <Grid container xs={12} flexGrow={1}spacing={0.5}>
-        <Grid xs={8}>
+      <Grid container mobile={12} flexGrow={1}spacing={0.5}>
+        <Grid mobile={8}>
           
         </Grid>
-        <Grid xs={4} maxHeight={400} >
+        <Grid mobile={4} maxHeight={400} >
           <AdventureMapView data={data}/>
         </Grid>
       </Grid>

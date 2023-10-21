@@ -14,7 +14,7 @@ import FishingTripMap from './FishingTripMap';
 
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
-import { Paper } from '@mui/material';
+import { Paper, useMediaQuery } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
@@ -28,12 +28,15 @@ import getFish from './getFish';
 
 // CSS Styles
 import './Fishing.scss'
+import Theme from '../../styles/Theme';
 
 // Route: "/fishing"
 function PageFishingZone() {
 
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
+
+  const mqMobileTablet = useMediaQuery(Theme.breakpoints.down('desktop'));
 
   const [resources, setResources] = useState(resourceHook(_context))
 
@@ -177,26 +180,26 @@ function PageFishingZone() {
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
-    <Grid xs={12} sx={{flexGrow: '1'}} maxHeight={80} spacing={0} height={"auto"}>
+    <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
       <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
     </Grid>
 
-    <Grid container xs={12} flexGrow={1} spacing={0.5}>
-      <Grid xs={3} maxHeight={250} overflow={"auto"}>
+    <Grid container mobile={12} maxHeight={200} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
+      <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
         </FlexList>
       </Grid>
-      <Grid container xs={6} spacing={0.5} height={"auto"} paddingTop={0}>
-        <Grid xs={6}>
+      <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0}>
+        <Grid mobile={12} desktop={6} >
           <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
             {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
               {fishingButton}
             </>}
           </Paper>
         </Grid>
-        <Grid xs={6}>
+        <Grid mobile={12} desktop={6}>
           <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
             {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
               <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
@@ -212,63 +215,67 @@ function PageFishingZone() {
           </Paper>
         </Grid>
       </Grid>
-      <Grid xs={3} maxHeight={250} overflow={"auto"}>
+      <Grid mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
         <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
+          {!mqMobileTablet && <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>}
         </Paper>
       </Grid>
     </Grid>
     
-    <Grid container xs={12} sx={{flexGrow: '1'}} spacing={0.5}>
-      <Grid xs={2} spacing={0}>
+    <Grid container mobile={12} maxHeight={400} overflow={"auto"} sx={{flexGrow: '1'}} spacing={0.5}>
+      <Grid mobile={6} desktop={4} widescreen={3} spacing={0}>
         <FlexList collapsible mode='list' headerText={"Rods"}>
           {GLOBALS.DB.ROD.map((r) => {
-              return (
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
-                  <div className='inventory-card-buttons'>
-                    <ActionButton text={"Equip"}/>
-                  </div>
-                  <div className='inventory-card-name'>{r.name}</div>
-                </Paper>
-              )
-          })}
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Equip"}/>
+                </div>
+                <div className='inventory-card-name'>{r.name}</div>
+              </Paper>
+            )})}
           </FlexList>
           <FlexList collapsible mode='list' headerText={"Hooks"}>
           {GLOBALS.DB.HOOK.map((h) => {
-              return (
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
-                  <div className='inventory-card-buttons'>
-                    <ActionButton text={"Equip"}/>
-                  </div>
-                  <div className='inventory-card-name'>{h.name}</div>
-                </Paper>
-              )
-          })}
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Equip"}/>
+                </div>
+                <div className='inventory-card-name'>{h.name}</div>
+              </Paper>
+            )})}
           </FlexList>
           <FlexList collapsible mode='list' headerText={"Bait"}>
           {GLOBALS.DB.BAIT.map((b) => {
-              return (
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
-                  <div className='inventory-card-buttons'>
-                    <ActionButton text={"Equip"}/>
-                  </div>
-                  <div className='inventory-card-name'>{b.name}</div>
-                </Paper>
-              )
-          })}
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Equip"}/>
+                </div>
+                <div className='inventory-card-name'>{b.name}</div>
+              </Paper>
+          )})}
           </FlexList>
           <FlexList collapsible mode='list' headerText={"Lures"}>
           {GLOBALS.DB.LURE.map((l) => {
-              return (
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
-                  <div className='inventory-card-buttons'>
-                    <ActionButton text={"Use"}/>
-                  </div>
-                  <div className='inventory-card-name'>{l.name}</div>
-                </Paper>
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Use"}/>
+                </div>
+                <div className='inventory-card-name'>{l.name}</div>
+              </Paper>
           )})}
         </FlexList>
       </Grid>
+
+      <Grid mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+          {mqMobileTablet && <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>}
+        </Paper>
+      </Grid>
+
     </Grid>
 
     </PageCore>

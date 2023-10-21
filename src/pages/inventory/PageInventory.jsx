@@ -41,8 +41,8 @@ function PageInventory() {
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.INVENTORY} title="Inventory" gridId="grid-inventory" contentClasses={'inventory'}>
 
-      <Grid container xs={12} flexGrow={1}spacing={0.5}>
-        <Grid xs={4} maxHeight={800} overflow={"auto"}>
+      <Grid container mobile={12} flexGrow={1}spacing={0.5}>
+        <Grid mobile={4} maxHeight={800} overflow={"auto"}>
           <Paper elevation={1} className='flexlist-tabs' sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
             <ActionButton color='inventory' text={mainTabHeaders[0]} func={() => {handleMainTabChange(0)}}/>
             <ActionButton color='inventory' text={mainTabHeaders[1]} func={() => {handleMainTabChange(1)}}/>
@@ -103,10 +103,10 @@ function PageInventory() {
             {mainTabIndex == 2 && <>This is {mainTabHeaders[2]} Stuff</>}
           </FlexList>
         </Grid>
-        <Grid xs={4} maxHeight={800} overflow={"auto"}>
+        <Grid mobile={4} maxHeight={800} overflow={"auto"}>
           
         </Grid>
-        <Grid xs={4} maxHeight={800} overflow={"auto"}>
+        <Grid mobile={4} maxHeight={800} overflow={"auto"}>
           <Paper elevation={1} className='flexlist-tabs' sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
             <ActionButton color='inventory' text={otherTabHeaders[0]} func={() => {handleOtherTabChange(0)}}/>
             <ActionButton color='inventory' text={otherTabHeaders[1]} func={() => {handleOtherTabChange(1)}}/>
