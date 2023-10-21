@@ -47,7 +47,7 @@ function Sidebar() {
                         ((mouseOver && !mqMobile) ? 'expanded ' : '') + 
                         (loaded ? 'fade-in ' : 'fade-out ') + 
                         (mqMobile ? 'mobile ' : '') + 
-                        (mobileSidebarVisible ? 'visible ' : '');
+                        (mobileSidebarVisible ? 'visible ' : '')
 
   const sidebarHeaderText = (mqMobile ? 'Game • Thing' : (mouseOver ? 'Game • Thing' : 'G • T'));
 
@@ -209,7 +209,7 @@ function Sidebar() {
     
     return (
       <Link to={(isUnlocked ? link : '')} className={'sidebar-item-link' + (mouseOverItem ? ' hover' : '')} style={(isUnlocked ? {cursor: 'pointer'} : {cursor: 'default'})}>
-        <div className={classes} onMouseEnter={(event) => {event.stopPropagation(); setMouseOverItem(true)}} onMouseLeave={(event) => {event.stopPropagation(); setMouseOverItem(false)}}>
+        <div className={classes} onMouseEnter={(event) => {event.stopPropagation(); setMouseOverItem(true);}} onMouseLeave={(event) => {event.stopPropagation(); setMouseOverItem(false);}}>
           <div className='sidebar-item-image' style={iconColor}>
             {(isUnlocked ? (mouseOver ? 
               <StyledBadge badgeContent={badgeData}>{icon ? icon : ''}</StyledBadge> : 

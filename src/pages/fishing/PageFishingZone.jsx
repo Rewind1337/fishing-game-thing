@@ -14,7 +14,7 @@ import FishingTripMap from './FishingTripMap';
 
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
-import { Paper, useMediaQuery } from '@mui/material';
+import { Paper } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
@@ -28,15 +28,12 @@ import getFish from './getFish';
 
 // CSS Styles
 import './Fishing.scss'
-import Theme from '../../styles/Theme';
 
 // Route: "/fishing"
 function PageFishingZone() {
 
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
-
-  const mqMobileTablet = useMediaQuery(Theme.breakpoints.down('desktop'));
 
   const [resources, setResources] = useState(resourceHook(_context))
 
@@ -215,9 +212,9 @@ function PageFishingZone() {
           </Paper>
         </Grid>
       </Grid>
-      <Grid mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
+      <Grid className="hide-tablet-down show-desktop-up" mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
         <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-          {!mqMobileTablet && <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>}
+          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
         </Paper>
       </Grid>
     </Grid>
@@ -270,9 +267,9 @@ function PageFishingZone() {
         </FlexList>
       </Grid>
 
-      <Grid mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
+      <Grid className="show-tablet-down hide-desktop-up" mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
         <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-          {mqMobileTablet && <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>}
+          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
         </Paper>
       </Grid>
 
