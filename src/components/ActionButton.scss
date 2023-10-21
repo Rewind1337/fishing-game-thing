@@ -1,10 +1,12 @@
 button {
     &.actionbutton {
+        display: block;
         border-radius: 4px;
+        width: 100%;
         padding: 4px 6px;
         margin: 1px 1px;
         font-size: 22px;
-        line-height: 1;
+        line-height: 1.5;
 
         &[disabled] {
             color: rgb(45, 45, 45);

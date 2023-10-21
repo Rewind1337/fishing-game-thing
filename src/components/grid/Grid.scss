@@ -1,119 +1,9 @@
-/* https://cssgrid-generator.netlify.app/ */
-
-
-
-
-#grid-inventory {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 4px;
-    grid-row-gap: 4px;
-}
-#grid-inventory > .grid-top-left { grid-area: 1 / 1 / 4 / 2; }
-#grid-inventory > .grid-top-right { grid-area: 1 / 2 / 4 / 3; }
-#grid-inventory > .grid-bottom-left { grid-area: 4 / 1 / 6 / 2; }
-#grid-inventory > .grid-bottom-right { grid-area: 4 / 2 / 6 / 3; } 
-
-
-
-
-
-#grid-gathering {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr; 
-    grid-column-gap: 4px;
-    grid-row-gap: 4px;
-}
-
-#grid-gathering > .grid-left { grid-area: 1 / 1 / 2 / 2; }
-#grid-gathering > .grid-center { grid-area: 1 / 2 / 2 / 3; }
-#grid-gathering > .grid-right { grid-area: 1 / 3 / 2 / 4; } 
-
-
-
-#grid-fishing {
-    display: grid;
-    grid-template-columns: 300px repeat(4, 1fr) 200px;
-    grid-template-rows: 64px 128px repeat(4, 1fr);
-    grid-column-gap: 4px;
-    grid-row-gap: 4px;
-}
-
-#grid-fishing > .grid-top-left {grid-area: 1 / 1 / 3 / 2;}
-#grid-fishing > .grid-top-middle {grid-area: 1 / 2 / 2 / 6;}
-#grid-fishing > .grid-top-right {grid-area: 1 / 6 / 3 / 7;}
-#grid-fishing > .grid-center {grid-area: 2 / 2 / 5 / 6;}
-#grid-fishing > .grid-bottom-left {grid-area: 3 / 1 / 7 / 2;}
-#grid-fishing > .grid-bottom-middle {grid-area: 5 / 2 / 7 / 6;}
-#grid-fishing > .grid-bottom-right {grid-area: 3 / 6 / 7 / 7;}
-
-
-
-
-
-#grid-adventure {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(256px, 25%)) 500px;
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 4px;
-    grid-row-gap: 4px;
-}
-    
-#grid-adventure > .grid-top-left { grid-area: 1 / 1 / 3 / 2; }
-#grid-adventure > .grid-top-middle { grid-area: 1 / 2 / 3 / 4; }
-#grid-adventure > .grid-top-right { grid-area: 1 / 4 / 3 / 5; }
-#grid-adventure > .grid-right-side { grid-area: 1 / 5 / 6 / 5; }
-#grid-adventure > .grid-center-left { grid-area: 3 / 1 / 5 / 3; }
-#grid-adventure > .grid-center-right { grid-area: 3 / 3 / 5 / 5; }
-#grid-adventure > .grid-bottom-row { grid-area: 5 / 1 / 6 / 5; } 
-
-
-
-
-
-#grid-queen {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 4px;
-    grid-row-gap: 4px;
-}
-    
-#grid-queen > .grid-top-left { grid-area: 1 / 1 / 2 / 1; }
-#grid-queen > .grid-top-middle { grid-area: 1 / 2 / 2 / 3; }
-#grid-queen > .grid-top-right { grid-area: 1 / 3 / 3 / 4; }
-#grid-queen > .grid-center { grid-area: 2 / 2 / 3 / 3; }
-#grid-queen > .grid-bottom-left { grid-area: 2 / 1 / 4 / 2; }
-#grid-queen > .grid-bottom-right { grid-area: 3 / 2 / 4 / 4; } 
-
-
-
-
-
-#grid-default {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 4px;
-    grid-row-gap: 4px;
-}
-    
-#grid-default > .grid-top-left { grid-area: 1 / 1 / 2 / 3; }
-#grid-default > .grid-right-side { grid-area: 1 / 3 / 3 / 4; }
-#grid-default > .grid-bottom-left { grid-area: 2 / 1 / 3 / 2; }
-#grid-default > .grid-bottom-center { grid-area: 2 / 2 / 3 / 3; } 
-
-
-
-
-
-.content-grid {  padding: 0; height: 768px;}
+.content-main {  height: 768px;}
 
 /* Background Stuff? */
 
 #content {
+    background-image: url('../../assets/bg-gathering.png');
     background-position: center;
     background-origin: border-box;
     background-size: cover;
@@ -123,62 +13,23 @@
     max-height: 100%;
 }
 
-#content {
-    background-image: url('../../assets/bg-gathering.png');
-}
-
-#grid-gathering .grid-cell-content {border-color: green}
-#content.gathering {
-    background-image: url('../../assets/bg-gathering.png');
-}
-
-#content.fishing {
-    background-image: url('../../assets/bg-fishing.png');
-}
-
-#content.queen {
-    background-image: url('../../assets/bg-queen.png');
-}
-
-#content.adventure {
-    background-image: url('../../assets/bg-adventure.png');
-}
-
-#content.home {
-    background-image: url('../../assets/bg-home.png');
-}
-
-/* 
-#content.help {
-    background-image: url('../assets/bg-help.png');
-}
-*/
-
-#content.pets {
-    background-image: url('../../assets/bg-pets.png');
-}
+#content.home {background-image: url('../../assets/bg-home.png');}
+#content.inventory {background: linear-gradient(153deg, rgb(255, 244, 171) 0%, rgb(206, 163, 97) 100%);}
+#content.pets {background-image: url('../../assets/bg-pets.png');}
+#content.fishing {background-image: url('../../assets/bg-fishing.png');}
+#content.gathering {background-image: url('../../assets/bg-gathering.png');}
+#content.adventure {background-image: url('../../assets/bg-adventure.png');}
+#content.queen {background-image: url('../../assets/bg-queen.png');}
+#content.help {background: linear-gradient(153deg, rgba(171,235,255,1) 0%, rgba(148,175,255,1) 100%);}
 
 .grid-cell {
     z-index: 100;
 }
 
 .grid-cell-content {
-    width: 100%;
-    height: 100%;
-
     backdrop-filter: brightness(66%) grayscale(66%);
     background-color: rgba(0, 0, 0, 0.6);
     
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: center;
-
-    /* visualisation, remove if not needed anymore */
-    border-radius: 4px;
-    border: 1px solid gray;
-    /* */
     z-index: 100;
 
     overflow: auto;

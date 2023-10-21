@@ -5,13 +5,15 @@ import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
 
 // Components
-import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import ResourceCard from '../../components/resources/ResourceCard';
 import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 import GatheringModule from './GatheringModule';
 import BasicModal from '../../components/modal/BasicModal';
+
+// MUI 
+import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -233,26 +235,26 @@ function PageGatheringZone() {
 
       <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose}/>
 
-      <GridCell gridPosition='left'>
-
+      <Grid xs={3}>
         <FlexList collapsible headerText={"All Resources"} mode="list" minHeight={128} maxHeight={192}>
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
+      </Grid>
 
-        <FlexList headerText={"Actions"} mode="flex" gap={8}>
-
+      <Grid container xs={"auto"} sx={{flexGrow: '1'}} spacing={0.5}>
+        <Grid xs={4} sx={{flexGrow: '1'}}>
           <GatheringModule autoSegments={3} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm}/>} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms}/>
-          
+        </Grid>
+        <Grid xs={4} sx={{flexGrow: '1'}}>
           <GatheringModule isUnlocked={isArtifactsUnlocked}  header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={faFloppyDisk}/>} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts}/>
-          
+          </Grid>
+        <Grid xs={4} sx={{flexGrow: '1'}}>
           <GatheringModule isUnlocked={isMiningUnlocked}  header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={faBoreHole}/>} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining}/>
-          
-        </FlexList>
-      </GridCell>
-      <GridCell gridPosition='center'></GridCell>
-      <GridCell gridPosition='right'></GridCell>
+        </Grid>
+      </Grid>
+
     </PageCore>
   )
 }

@@ -1,10 +1,18 @@
-import { useContext, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import GLOBALS from '../../globals/Globals';
-
+// Boiler (kinda)
+import { useContext, useState, useRef } from 'react';
 import SaveContext from '../../context/SaveContext';
+import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
-import GridCell from '../../components/grid/GridCell';
+import PropTypes from 'prop-types';
+
+// Components
+
+// MUI
+import Grid from '@mui/material/Unstable_Grid2';
+
+// JS Utility
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 
 import './Adventure.scss'
 
@@ -137,15 +145,14 @@ function PageAdventureZone() {
 
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.ADVENTURE} title="Adventure Zone" gridId="grid-adventure" contentClasses={'adventure'}>
-      <GridCell gridPosition='top-left'></GridCell>
-      <GridCell gridPosition='top-middle'></GridCell>
-      <GridCell gridPosition='top-right'></GridCell>
-      <GridCell gridPosition='right-side'>
-        <AdventureMapView data={data}/>
-      </GridCell>
-      <GridCell gridPosition='center-left'></GridCell>
-      <GridCell gridPosition='center-right'></GridCell>
-      <GridCell gridPosition='bottom-row'></GridCell>
+      <Grid container xs={12} flexGrow={1}spacing={0.5}>
+        <Grid xs={8}>
+          
+        </Grid>
+        <Grid xs={4} maxHeight={400} >
+          <AdventureMapView data={data}/>
+        </Grid>
+      </Grid>
     </PageCore>
   )
 }
