@@ -25,11 +25,11 @@ GatheringModule.propTypes = {
 function GatheringModule({isUnlocked = false, icon, iconColor, progressColor, header, bigSize = 100, smallSize = 66, progress, progressMax, autoUnlocked = false, autoSpeed = 1, autoSegments = 1, isActive, canCollect, start, collect}) {
     
     if (!isUnlocked) {
-        return (<Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)', height: 'min-content' }}>more ??</Paper>)
+        return (<Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)', height: 'min-content' }}>more ??</Paper>)
     }
     
-    return (<Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)', height: 'min-content' }}>
-      <h5>{header}</h5>
+    return (<Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)', height: 'min-content' }}>
+      <h5 style={{borderRadius: "4px", backgroundColor: 'rgba(0, 0, 0, 0.1)'}}>{header}</h5>
       <Box sx={{display: 'flex',flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}}>
   
         <Box sx={{zIndex: 101}}>

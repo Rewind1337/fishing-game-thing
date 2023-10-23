@@ -6,7 +6,6 @@ import PageCore from '../core/PageCore';
 
 // Components
 import FlexList from '../../components/flexlist/FlexList';
-import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import ResourceCard from '../../components/resources/ResourceCard';
@@ -15,6 +14,7 @@ import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI
 import { Paper } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -76,66 +76,88 @@ function PageQueen() {
     _context.setSave({resources: {...resources}});
   }, [resources]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const milestoneProgress = (
+    <div className='milestone-progress'>
+      <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
+        <h2>Milestone Progress</h2>
+        <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+        <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+          <ActionButton disabled={(resources.fish >= 1 ? false : true)} color="queen" variant="contained" text={(resources.fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+        </div>
+      </Paper>
+    </div>
+  );
 
+  const aspectList = (
+    <FlexList headerText="Aspects" mode='list'>
+      <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} />
+      <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} />
+      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0} />
+      <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} />
+      <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} />
+      <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} />
+      <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0} />
+      <AspectCard c="🜲" name="Regulus" color='hsl(290deg, 100%, 90%)' amount={0} />
+      <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0} />
+      <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"} />
+      <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"} />
+      <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} />
+    </FlexList>
+  );
 
+  const resourceList = (
+    <FlexList headerText="Resources" mode="list">
+      <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
+      <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconcolor="hsl(235deg, 100%, 90%)" name="Fish" value={resources.fish} cap={0} perSec={0}></ResourceCard>
+    </FlexList>
+  );
+
+  const milestoneList = (
+    <FlexList headerText="All Milestones" mode='list'>
+      <MilestoneCard completed id={0} wormsRequired={25} bonus='wow you did it' />
+      <MilestoneCard id={1} wormsRequired={125} bonus='wow you did it' />
+      <MilestoneCard id={2} wormsRequired={500} bonus='wow you did it' />
+      <MilestoneCard id={3} wormsRequired={1000} bonus='wow you did it' />
+      <MilestoneCard id={4} wormsRequired={2500} bonus='wow you did it' />
+      <MilestoneCard id={5} wormsRequired={5000} bonus='wow you did it' />
+      <MilestoneCard id={6} wormsRequired={10000} bonus='wow you did it' />
+      <MilestoneCard id={7} wormsRequired={22500} bonus='wow you did it' />
+      <MilestoneCard id={8} wormsRequired={50000} bonus='wow you did it' />
+      <MilestoneCard id={9} wormsRequired={100000} bonus='wow you did it' />
+      <MilestoneCard id={10} wormsRequired={250000} bonus='wow you did it' />
+      <MilestoneCard id={11} wormsRequired={500000} bonus='wow you did it' />
+      <MilestoneCard id={12} wormsRequired={1000000} bonus='wow you did it' />
+      <MilestoneCard id={13} wormsRequired={2500000} bonus='wow you did it' />
+    </FlexList>
+  );
+  
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.QUEEN} title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>
 
       <SacrificeModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
 
-      <GridCell gridPosition='top-left'>
-        <FlexList headerElement={<h4>{"Resources"}</h4>} mode="list" maxHeight={200}>
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
-          <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconcolor="hsl(235deg, 100%, 90%)" name="Fish" value={resources.fish} cap={0} perSec={0}></ResourceCard>
-        </FlexList>
-      </GridCell>
-      <GridCell gridPosition='top-middle'>
-        <FlexList headerElement={<h4>{"Aspects"}</h4>} mode='flex' maxHeight={200}>
-          <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999}/>
-          <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0}/>
-          <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0}/>
-          <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0}/>
-          <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"}/>
-          <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"}/>
-          <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0}/>
-          <AspectCard c="🜲" name="Regulus" color='hsl(290deg, 100%, 90%)' amount={0}/>
-          <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0}/>
-          <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"}/>
-          <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"}/>
-          <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0}/>
-        </FlexList>
-      </GridCell>
-      <GridCell gridPosition='top-right'></GridCell>
-      <GridCell gridPosition='center' flexDirection='row'>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)', width: '100%', padding: '4px 16px'}}>
-          <h2>Milestone Progress</h2>
-          <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{padding: "5px"}} color="queen" size={200} thickness={8} variant="determinate" value={12} />
-          <div className='action-button-container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-            <ActionButton disabled={(resources.fish >= 1 ? false : true)} color="queen" variant="contained" text={(resources.fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
-          </div>
-        </Paper>
-      </GridCell>
-      <GridCell gridPosition='bottom-left'>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)', width: '100%'}}>
-          <FlexList headerElement={<h2>{"All Milestones"}</h2>} mode='list' >
-            <MilestoneCard completed id={0} wormsRequired={25} bonus='wow you did it'/>
-            <MilestoneCard id={1} wormsRequired={125} bonus='wow you did it'/>
-            <MilestoneCard id={2} wormsRequired={500} bonus='wow you did it'/>
-            <MilestoneCard id={3} wormsRequired={1000} bonus='wow you did it'/>
-            <MilestoneCard id={4} wormsRequired={2500} bonus='wow you did it'/>
-            <MilestoneCard id={5} wormsRequired={5000} bonus='wow you did it'/>
-            <MilestoneCard id={6} wormsRequired={10000} bonus='wow you did it'/>
-            <MilestoneCard id={7} wormsRequired={22500} bonus='wow you did it'/>
-            <MilestoneCard id={8} wormsRequired={50000} bonus='wow you did it'/>
-            <MilestoneCard id={9} wormsRequired={100000} bonus='wow you did it'/>
-            <MilestoneCard id={10} wormsRequired={250000} bonus='wow you did it'/>
-            <MilestoneCard id={11} wormsRequired={500000} bonus='wow you did it'/>
-            <MilestoneCard id={12} wormsRequired={1000000} bonus='wow you did it'/>
-            <MilestoneCard id={13} wormsRequired={2500000} bonus='wow you did it'/>
-          </FlexList>
-        </Paper>
-      </GridCell>
-      <GridCell gridPosition='bottom-right'></GridCell>
+      <Grid container mobile={12} flexGrow={1} spacing={0.5}>
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} overflow={"auto"}>
+          {resourceList}
+        </Grid>
+        <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} overflow={"auto"}>
+          {resourceList}
+          {aspectList}
+        </Grid>
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} overflow={"auto"}>
+          {aspectList}
+        </Grid>
+        <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} overflow={"auto"}>
+          {milestoneProgress}
+        </Grid>
+        <Grid mobile={6} desktop={6} maxHeight={{mobile: 300, desktop: 325}} overflow={"auto"}>
+          {milestoneList}
+        </Grid>
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} widescreen={6} maxHeight={{mobile: 300, desktop: 325}} spacing={0.5}>
+          {milestoneProgress}
+        </Grid>
+      </Grid>
+
     </PageCore>
   )
 }

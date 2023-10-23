@@ -17,21 +17,39 @@ import AdbIcon from '@mui/icons-material/Adb';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import '../UI.scss'
 import './Sidebar.scss'
+import '../../mq.scss'
 import Theme from '../../styles/Theme';
 
 import { styled } from '@mui/material/styles';
-import { Badge } from '@mui/material';
+import { Badge, useMediaQuery } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
 
+  const mqMobile = useMediaQuery(Theme.breakpoints.down('tablet'));
+
   const [loaded, setLoaded] = useState(false)
 
   const [mouseOver, setMouseOver] = useState(true);
-  const sidebarClasses = 'sidebar ' + (mouseOver ? 'expanded ' : '') + (loaded ? 'fade-in ' : 'fade-out ');
-  const sidebarHeaderText = (mouseOver ? 'Game • Thing' : 'G • T');
+  
+  const [mobileSidebarVisible, setMobileSidebarVisible] = useState((mqMobile ? false : true))
+
+  const mobileSidebarButton = (
+    <div className='mobile-sidebar-button' onClick={() => {setMobileSidebarVisible(!mobileSidebarVisible)}}>
+      <FontAwesomeIcon icon={faBars} />
+    </div>
+  )
+  
+  const sidebarClasses = 'sidebar ' + 
+                        ((mouseOver && !mqMobile) ? 'expanded ' : '') + 
+                        (loaded ? 'fade-in ' : 'fade-out ') + 
+                        (mqMobile ? 'mobile ' : '') + 
+                        (mobileSidebarVisible ? 'visible ' : '')
+
+  const sidebarHeaderText = (mqMobile ? 'Game • Thing' : (mouseOver ? 'Game • Thing' : 'G • T'));
 
   const savedFolderStates = _context.save.sidebar.states;
   const [folderStates, setFolderStates] = useState(savedFolderStates);
@@ -105,6 +123,7 @@ function Sidebar() {
 
   useEffect(() => {
     setRefs({sidebar: {
+      'setMobileSidebarVisible' : setMobileSidebarVisible,
       'setSidebarUnlocks' : setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
       'addBadgeTimer' : addBadgeTimer}});
@@ -191,7 +210,7 @@ function Sidebar() {
     const [mouseOverItem, setMouseOverItem] = useState(false);
 
     let classes = 'sidebar-item' + (mouseOver ? ' expanded' : '') + (isUnlocked ? '' : ' disabled')
-    let text = (mouseOver ? bigText : smallText)
+    let text = (mqMobile ? bigText : (mouseOver ? bigText : smallText))
     let iconColor = (isUnlocked ? (mouseOverItem ? {color: hoverColor} : {color: "white"}) : {color: 'gray'});
 
     const StyledBadge = styled(Badge)(() => ({
@@ -206,7 +225,7 @@ function Sidebar() {
     
     return (
       <Link to={(isUnlocked ? link : '')} className={'sidebar-item-link' + (mouseOverItem ? ' hover' : '')} style={(isUnlocked ? {cursor: 'pointer'} : {cursor: 'default'})}>
-        <div className={classes} onMouseEnter={(event) => {event.stopPropagation(); setMouseOverItem(true)}} onMouseLeave={(event) => {event.stopPropagation(); setMouseOverItem(false)}}>
+        <div className={classes} onMouseEnter={(event) => {event.stopPropagation(); setMouseOverItem(true);}} onMouseLeave={(event) => {event.stopPropagation(); setMouseOverItem(false);}}>
           <div className='sidebar-item-image' style={iconColor}>
             {(isUnlocked ? (mouseOver ? 
               <StyledBadge badgeContent={badgeData}>{icon ? icon : ''}</StyledBadge> : 
@@ -223,6 +242,8 @@ function Sidebar() {
   }
 
     return (
+      <>
+      {mqMobile && mobileSidebarButton}
       <div id="sidebar" style={(loaded ? {position: "relative", left: "0px"} : {position: "absolute", left: "-1000px"})} className={sidebarClasses} onPointerEnter={(event) => {event.stopPropagation(); setMouseOver(true)}} onPointerLeave={(event) => {event.stopPropagation(); setMouseOver(false)}}>
         <div className="sidebar-header">{sidebarHeaderText}</div>
         <div className="sidebar-items-container">
@@ -251,6 +272,7 @@ function Sidebar() {
           </div>
         </div>
       </div>
+      </>
     )
   }
   

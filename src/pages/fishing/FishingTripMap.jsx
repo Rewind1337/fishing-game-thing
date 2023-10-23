@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import GLOBALS from '../../globals/Globals';
+import { Paper } from '@mui/material';
 
 // test visualisation
 function FishingTripMap({ location, tripStatus }) {
@@ -18,7 +19,7 @@ function FishingTripMap({ location, tripStatus }) {
 
   if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
     return (
-      <div className='fishing-map' onClick={mouseClick}>
+      <Paper className='fishing-map' onClick={mouseClick} elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)', height: 'min-content'}} >
         <div className='fishing-map-location'>{location.name}</div>
         <div className='fishing-map-grid'>
           {location.sublocations.map((objID) => {
@@ -26,7 +27,7 @@ function FishingTripMap({ location, tripStatus }) {
             return <div key={realObj.id} className={'fishing-map-sublocation ' + (realObj.hidden ? "hidden" : "")}>{realObj.name}</div>
           })}
         </div>
-      </div>
+      </Paper>
     )
   }
 }

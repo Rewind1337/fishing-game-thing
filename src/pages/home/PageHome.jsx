@@ -5,8 +5,10 @@ import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-v
 import PageCore from '../core/PageCore';
 
 // Components
-import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';
+
+// MUI
+import Grid from '@mui/material/Unstable_Grid2';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -44,12 +46,14 @@ function PageHome() {
 
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.HOME} title="Home" contentClasses={'home'}>
-      <GridCell gridPosition='top-left'></GridCell>
-      <GridCell gridPosition='right-side'></GridCell>
-      <GridCell gridPosition='bottom-left'>
-        <ActionButton disabled={(!canExplore ? true : false)} color="queen" variant="contained" text='Explore' func={rollExploreLocation}></ActionButton>
-      </GridCell>
-      <GridCell gridPosition='bottom-right'></GridCell>
+      <Grid container mobile={12} flexGrow={1}spacing={0.5}>
+        <Grid mobile={8}>
+          
+        </Grid>
+        <Grid mobile={4}>
+          <ActionButton disabled={(!canExplore ? true : false)} color="queen" variant="contained" text='Explore' func={rollExploreLocation}></ActionButton>
+        </Grid>
+      </Grid>
     </PageCore>
   )
 }

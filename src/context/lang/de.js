@@ -28,10 +28,10 @@ const LANG_DE = {
     flexlist: { // Flex List Headers
         "all resources": "Alle Resourcen",
         "actions": "Aktionen",
-        "rods": "Angelruten",
-        "hooks": "Angelhaken",
+        "rods": "Ruten",
+        "hooks": "Haken",
         "bait": "Köder",
-        "lures": "Köderbomben"
+        "lures": "Lockmittel"
     }
 }
 

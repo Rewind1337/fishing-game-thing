@@ -3,9 +3,9 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import SaveContext from '../../context/SaveContext';
 import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
+import PropTypes from 'prop-types';  // eslint-disable-line no-unused-vars
 
 // Components
-import GridCell from '../../components/grid/GridCell';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
 import ResourceCard from '../../components/resources/ResourceCard';
@@ -15,6 +15,7 @@ import FishingTripMap from './FishingTripMap';
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
 import { Paper } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -138,10 +139,7 @@ function PageFishingZone() {
 
   }, [resources, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
  
-  // unmount
-  useEffect(() => () => {
-    // contextSave(); // this breaks the save on exit? automation works now lol
-  }, []);
+  useEffect(() => () => {}, []); // unmount
 
   // Catch up the Ticks
   useEffect(() => {
@@ -173,107 +171,112 @@ function PageFishingZone() {
     },
   ]
 
+  const handleFishingButtonClick = (onTrip) => {
+    (isFishing ? attemptCatch(onTrip) : startFishing(onTrip));
+  }
+
+  const fishingButton = <ActionButton color="fishing" variant="contained" text={(isFishing ? 'Attempt to reel it in' : 'Throw out your Rod')} func={() => { handleFishingButtonClick(fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE); } } />
+
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
-      <GridCell gridPosition='top-left'>
-      <FlexList collapsible headerText={"All Resources"} mode="list" minHeight={128} maxHeight={192}>
+    <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
+      <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
+    </Grid>
+
+    <Grid container mobile={12} maxHeight={200} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
+      <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
+        <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
         </FlexList>
-      </GridCell>
+      </Grid>
+      <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0}>
+        <Grid mobile={12} desktop={6} >
+          <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+            {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+              {fishingButton}
+            </>}
+          </Paper>
+        </Grid>
+        <Grid mobile={12} desktop={6}>
+          <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+            {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
+              <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
+            </>}
 
-      <GridCell gridPosition='top-middle' noFlexOverride>
-        <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
-      </GridCell>
+            {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+              <ActionButton color="fishing" variant="contained" text='Start Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE)}}/>
+            </>}
 
-      <GridCell gridPosition='top-right'>
-        <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
-      </GridCell>
-
-      <GridCell gridPosition='center'>
-
-      </GridCell>
-
-      <GridCell gridPosition='bottom-left'>
+            {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
+              <ActionButton color="queen" variant="contained" text='Finish Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
+            </>}
+          </Paper>
+        </Grid>
+      </Grid>
+      <Grid className="hide-tablet-down show-desktop-up" mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
+        </Paper>
+      </Grid>
+    </Grid>
+    
+    <Grid container mobile={12} maxHeight={400} overflow={"auto"} sx={{flexGrow: '1'}} spacing={0.5}>
+      <Grid mobile={6} desktop={4} widescreen={3} spacing={0}>
         <FlexList collapsible mode='list' headerText={"Rods"}>
-            {GLOBALS.DB.ROD.map((r) => {
-                return (
-                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
-                    <div className='inventory-card-buttons'>
-                      <ActionButton text={"Equip"}/>
-                    </div>
-                    <div className='inventory-card-name'>{r.name}</div>
-                  </Paper>
-                )
-            })}
-            </FlexList>
-            <FlexList collapsible mode='list' headerText={"Hooks"}>
-            {GLOBALS.DB.HOOK.map((h) => {
-                return (
-                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
-                    <div className='inventory-card-buttons'>
-                      <ActionButton text={"Equip"}/>
-                    </div>
-                    <div className='inventory-card-name'>{h.name}</div>
-                  </Paper>
-                )
-            })}
-            </FlexList>
-            <FlexList collapsible mode='list' headerText={"Bait"}>
-            {GLOBALS.DB.BAIT.map((b) => {
-                return (
-                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
-                    <div className='inventory-card-buttons'>
-                      <ActionButton text={"Equip"}/>
-                    </div>
-                    <div className='inventory-card-name'>{b.name}</div>
-                  </Paper>
-                )
-            })}
-            </FlexList>
-            <FlexList collapsible mode='list' headerText={"Lures"}>
-            {GLOBALS.DB.LURE.map((l) => {
-                return (
-                  <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
-                    <div className='inventory-card-buttons'>
-                      <ActionButton text={"Use"}/>
-                    </div>
-                    <div className='inventory-card-name'>{l.name}</div>
-                  </Paper>
+          {GLOBALS.DB.ROD.map((r) => {
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Equip"}/>
+                </div>
+                <div className='inventory-card-name'>{r.name}</div>
+              </Paper>
             )})}
-            </FlexList>
-      </GridCell>
+          </FlexList>
+          <FlexList collapsible mode='list' headerText={"Hooks"}>
+          {GLOBALS.DB.HOOK.map((h) => {
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Equip"}/>
+                </div>
+                <div className='inventory-card-name'>{h.name}</div>
+              </Paper>
+            )})}
+          </FlexList>
+          <FlexList collapsible mode='list' headerText={"Bait"}>
+          {GLOBALS.DB.BAIT.map((b) => {
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Equip"}/>
+                </div>
+                <div className='inventory-card-name'>{b.name}</div>
+              </Paper>
+          )})}
+          </FlexList>
+          <FlexList collapsible mode='list' headerText={"Lures"}>
+          {GLOBALS.DB.LURE.map((l) => {
+            return (
+              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
+                <div className='inventory-card-buttons'>
+                  <ActionButton text={"Use"}/>
+                </div>
+                <div className='inventory-card-name'>{l.name}</div>
+              </Paper>
+          )})}
+        </FlexList>
+      </Grid>
 
-      <GridCell gridPosition='bottom-middle' flexDirection='row' justifyContent='flex-end'>
-        <div className='action-buttons'>
-          
-          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
-            {(isFishing
-              ? <ActionButton color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch(false)}}/>
-              : <ActionButton color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={() => {startFishing(false)}}/>
-            )}
-            <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
-          </>}
+      <Grid className="show-tablet-down hide-desktop-up" mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
+        </Paper>
+      </Grid>
 
-          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
-            <ActionButton color="fishing" variant="contained" text='Start Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE)}}/>
-          </>}
-
-          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
-            {(isFishing
-              ? <ActionButton color="fishing" variant="contained" text='Attempt to reel it in' func={() => {attemptCatch(true)}}/>
-              : <ActionButton color="fishing" variant="contained" text='Throw out your Fishing Rod BOI' func={() => {startFishing(true)}}/>
-            )}
-            <ActionButton color="queen" variant="contained" text='Finish Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
-          </>}
-
-        </div>
-      </GridCell>
-
-      <GridCell gridPosition='bottom-right'>
-        <>Loot?</>
-      </GridCell>
+    </Grid>
 
     </PageCore>
   )

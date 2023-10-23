@@ -17,7 +17,7 @@ MilestoneCard.propTypes = {
 function MilestoneCard({id, completed = false, wormsRequired, bonus = "bonus goes here"}) {
 
   return (
-    <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.0)'}} className="milestone-card">
+    <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)'}} className="milestone-card">
       <div className="milestone-card-number">
         <FontAwesomeIcon icon={faHurricane}/>
         {id + 1}

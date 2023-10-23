@@ -18,8 +18,8 @@ const LANG_US = {
         "collect": "Collect",
         
         // Fishing Page Buttons
-        "throw out your fishing rod boi": "Throw out your Rod",
-        "attempt to reel it in": "Throw out your Rod",
+        "throw out your rod": "Throw out your Rod",
+        "attempt to reel it in": "Attempt to reel it in",
         "prepare fishing trip": "Prepare Fishing Trip",
         "start fishing trip": "Start Fishing Trip",
         "finish fishing trip": "Finish Fishing Trip",
