@@ -1,0 +1,18 @@
+button {
+    &.actionbutton {
+        border-radius: 4px;
+        padding: 4px 6px;
+        margin: 1px 1px;
+        font-size: 22px;
+        line-height: 1;
+
+        &[disabled] {
+            color: rgb(45, 45, 45);
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+    }
+}
+
+.action-button-container > .actionbutton {
+    flex-grow:1;
+}

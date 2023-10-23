@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@mui/material/styles';
 
-import Sidebar from '../components/sidebar/Sidebar'
-import Theme from '../styles/Theme.jsx';
+import Sidebar from '../../components/sidebar/Sidebar'
+import Theme from '../../styles/Theme.jsx';
 
 Layout.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.object,
 };
 
 function Layout({children}) {

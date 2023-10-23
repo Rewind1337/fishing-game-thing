@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
+import useTranslation from '../context/useTranslation'
+
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
-import './ActionButton.css'
-
+import './ActionButton.scss'
 
 ActionButton.propTypes = {
     sx: PropTypes.object,
+    dontTranslate: PropTypes.bool,
     link: PropTypes.string,
+    langpath: PropTypes.string,
     disabled: PropTypes.bool,
     id: PropTypes.string,
     startIcon: PropTypes.object,
@@ -22,7 +25,8 @@ ActionButton.propTypes = {
     func: PropTypes.func,
 }
 
-function ActionButton({ sx = {}, link, disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = 'placeholder', func = () => {}}) {
+function ActionButton({ sx = {}, dontTranslate = false, link, langpath = "buttons", disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = color, func = () => {}}) {
+    text = useTranslation(langpath, text, dontTranslate);
 
     const handleClick = () => {func()}
 

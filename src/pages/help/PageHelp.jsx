@@ -1,16 +1,25 @@
-import { useContext } from 'react';
-
+// Boiler (kinda)
+import { useContext, useState, useEffect, useRef } from 'react';  // eslint-disable-line no-unused-vars
 import SaveContext from '../../context/SaveContext';
-import PageCore from '../PageCore';
+import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
+import PageCore from '../core/PageCore';
+
+// Components
 import GridCell from '../../components/grid/GridCell';
 
+// JS Utility
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+
+// CSS Styles
+import './Help.scss'
+
+// Route: "/help"
 function PageHelp() {
 
-  const _context = useContext(SaveContext);
-  _context; // to prevent the no-unused-vars, remove if actually used somewhere else
+  const _context = useContext(SaveContext);  // eslint-disable-line no-unused-vars
 
   return (
-    <PageCore title="Help / Tutorial" contentClasses={'help'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.HELP} title="Help / Tutorial" contentClasses={'help'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='right-side'></GridCell>
       <GridCell gridPosition='bottom-left'></GridCell>

@@ -1,0 +1,41 @@
+.action-buttons {
+    display: flex;
+    height: auto;
+    width: 100%;
+    flex-wrap: wrap;
+
+    button {
+        line-height: 32px;
+        font-size: 24px;
+        flex-grow: 1 !important;
+        flex-basis: 50% !important;
+    }
+}
+
+.fishing-map {
+    width: 100%;
+    height: 100%;
+
+    &-location {
+        height: 20%;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    &-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2px;
+        align-items: center;
+
+        > .fishing-map-sublocation {
+            display: grid;
+            align-content: center;
+            height: 70px;
+            width: calc(50% - 2px);
+            font-size: 13px;
+            padding: 4px;
+            border: 1px solid blue;
+        }
+    }
+}

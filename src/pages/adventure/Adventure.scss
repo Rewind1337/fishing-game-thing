@@ -1,0 +1,79 @@
+.adventure-map {
+    display: grid;
+    align-content: flex-start;
+
+    overflow: auto;
+
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.adventure-layer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    width: max-content;
+    padding: 2px;  
+    margin: 0 auto;
+}
+
+.adventure-node {
+    display: grid;
+    align-content: center;
+
+    width: 40px;
+    height: 40px;
+    scale: 1;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid white;
+    border-radius: 50%;
+    font-size: 12px;
+
+    margin: 0 12px;
+
+    transition: scale 0.2s ease;
+}
+
+.adventure-node {
+    &.random {
+        border-color: rgb(237, 255, 166);
+    }
+
+    &.start, &.end {
+        border-color: rgb(0, 115, 255);
+    }
+
+    &.event {
+        border-color: blueviolet;
+    }
+
+    &.resources {
+        border-color: darkorange;
+    }
+
+    &.battle {
+        border-color: rgb(255, 96, 96);
+    }
+
+    &.miniboss {
+        border-color: rgb(247, 86, 58);
+    }
+
+    &.boss {
+        border-color: rgb(197, 0, 13);
+    }
+
+    &:hover {
+        scale: 1.2;
+        border-width: 3px;
+        box-shadow: 0 0 12px gray;
+        cursor: pointer;
+    
+        transition: scale 0.2s ease;
+    }
+}

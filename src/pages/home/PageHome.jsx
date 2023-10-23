@@ -1,34 +1,49 @@
-import { useContext, useState } from 'react';
-
+// Boiler (kinda)
+import { useContext, useState, useEffect, useRef } from 'react';  // eslint-disable-line no-unused-vars
 import SaveContext from '../../context/SaveContext';
-import PageCore from '../PageCore';
+import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
+import PageCore from '../core/PageCore';
+
+// Components
 import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';
 
+// JS Utility
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
+
+// CSS Styles
+import './Home.scss'
+
+// Route: "/home"
 function PageHome() {
 
   const _context = useContext(SaveContext);
-  _context; // to prevent the no-unused-vars, remove if actually used somewhere else
 
-  const [canExplore, setExplore] = useState(true);
+  const [canExplore, ] = useState(true);
   const [unlockedGathering, unlockGathering] = useState(_context.save.sidebar.unlocks[4] || false);
   const [unlockedQueen, unlockQueen] = useState(_context.save.sidebar.unlocks[6] || false);
 
   const rollExploreLocation = () => {
     if (!unlockedGathering) {
       unlockGathering(true);
-      _context.refs.sidebar['unlocker'](4, true);
+      let modifiedUnlocks = _context.save.sidebar.unlocks;
+      modifiedUnlocks[4] = true;
+      _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
       return;
     }
+    
     if (!unlockedQueen && _context.save.resources.fish > 0) {
       unlockQueen(true);
-      _context.refs.sidebar['unlocker'](6, true);
+      let modifiedUnlocks = _context.save.sidebar.unlocks;
+      modifiedUnlocks[6] = true;
+      _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
       return;
     }
   }
 
   return (
-    <PageCore title="Home" contentClasses={'home'}>
+    <PageCore pageID={GLOBALS.ENUMS.PAGES.HOME} title="Home" contentClasses={'home'}>
       <GridCell gridPosition='top-left'></GridCell>
       <GridCell gridPosition='right-side'></GridCell>
       <GridCell gridPosition='bottom-left'>
