@@ -15,15 +15,15 @@ const BAIT = {
 }
 
 const TIME = {
-    DAY_FULL: 0,
-    NIGHT_FULL: 1,
-    DAY_FIRST_HALF: 2,
-    DAY_SECOND_HALF: 3,
-    NIGHT_FIRST_HALF: 4,
-    NIGHT_SECOND_HALF: 5,
-    AROUND_MIDNIGHT: 6,
-    AROUND_NOON: 7,
-    ALWAYS: 8,
+    ALWAYS: 0,
+    DAY_FULL: 1,
+    NIGHT_FULL: 2,
+    DAY_FIRST_HALF: 3,
+    DAY_SECOND_HALF: 4,
+    NIGHT_FIRST_HALF: 5,
+    NIGHT_SECOND_HALF: 6,
+    AROUND_MIDNIGHT: 7,
+    AROUND_NOON: 8,
 }
 
 const NODETYPES = {
@@ -65,8 +65,9 @@ const GLOBALS = {
                 name: "Muddy Munchie",
                 rarity: RARITY.COMMON,
                 baitNeeded: BAIT.WORMS,
-                timeOfDay: TIME.DAY_FULL,
+                timeOfDay: TIME.ALWAYS,
                 flavor: "The Muddy Munchie is a common fish found in murky pools of water. It feeds on small creatures like worms and insects, which it can easily find in the muddy bottom.",
+                moreWorms: 2,
             },
             {
                 id: 1, 

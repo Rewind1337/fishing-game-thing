@@ -79,19 +79,27 @@ function PageFishingZone() {
       let toastText = "";
 
       let location = [-1, 0];
-      let dayTime = 0.75;
-      let caughtFish = getFish(location, dayTime, {'bait':1});
+      let dayTime = 0.85;
+      let caughtFish = getFish(location, dayTime, {'bait':1, 'homeUnlocks':['wailer']});
 
       if (caughtFish.id >= 0) {
-        toastText = "Caught a(n): " + caughtFish.name;
+        let vowelN = (['aeiouy'].includes(caughtFish.name[0].toLowerCase()) ? "n" : "");
+        toastText = "Caught a"+vowelN+": " + caughtFish.name;
         setResources(r => ({...r, fish: r.fish + 1}));
+
+        let newFishes = resources.fishes
+        newFishes[caughtFish.id] += 1;
+        setResources(r => ({...r, fishes: r.fishes = newFishes}));
+
+        _context.refs.toastmanager['fireToast']("success", toastText);
+
       } else if (caughtFish.id == -1) {
         toastText = "Just a nibble.";
+        _context.refs.toastmanager['fireToast']("info", toastText);
       } else if (caughtFish.id <= -2) {
         toastText = "You broke the game, fish not found!";
+        _context.refs.toastmanager['fireToast']("error", toastText);
       }
-      
-      _context.refs.toastmanager['fireToast']("info", toastText);
     
       stopFishing();
 
@@ -164,8 +172,16 @@ function PageFishingZone() {
     {
       icon: <FontAwesomeIcon icon={faFish} />,
       iconcolor: 'hsl(235deg, 100%, 90%)',
-      name: 'Fish',
-      value: resources.fish,
+      name: 'Muddie Munchie',
+      value: resources.fishes[0],
+      cap: 0,
+      perSec: 0,
+    },
+    {
+      icon: <FontAwesomeIcon icon={faFish} />,
+      iconcolor: 'hsl(235deg, 100%, 90%)',
+      name: 'Whiskered Wailer',
+      value: resources.fishes[1],
       cap: 0,
       perSec: 0,
     },

@@ -38,8 +38,8 @@ function PageQueen() {
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
   const pickerOptions = [
-    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: "fish"},
-    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: "fish"},
+    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: 0, itemName: "Muddie Munchie"},
+    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: 1, itemName: "Whiskered Wailer"},
   ];
 
   const handlePickerOpen = () => {
@@ -58,17 +58,33 @@ function PageQueen() {
   const sacrificeToQueen = (input) => {
     switch (input.value) {
       case pickerOptions[0].itemID:
-        gainBonus(input.amount);
+        gainBonus(input);
+      break;
+      case pickerOptions[1].itemID:
+        gainBonus(input);
       break;
       default:
       break;
     }
   }
 
-  const gainBonus = (amount) => {
-    if (resources.fish >= amount) {
-      setResources(r => ({...r, fish: r.fish - (1 * amount), worms: r.worms - (1 * amount)}));
-      alert("Yum!");
+  const gainBonus = (input) => {
+    let amount = input.amount;
+    let fishID = input.value;
+    if (resources.fishes[fishID] >= amount) {
+      let newFishes = resources.fishes;
+      newFishes[fishID] -= 1 * amount;
+      setResources(r => ({...r, fishes: r.fishes = newFishes}));
+      
+      let fishData = GLOBALS.DB.FISH[fishID];
+
+      let rarityTable = [1,3,7,15,30];
+      let fishWorms = rarityTable[fishData.rarity];
+      
+      fishWorms += fishData['moreWorms'] || 0;
+
+      setResources(r => ({...r, fish: r.fish - (1 * amount), worms: r.worms + (fishWorms * amount)}));
+      _context.refs.toastmanager['fireToast']("success", "Yum!");
     }
   };
 

@@ -14,7 +14,7 @@ FlexList.propTypes = {
   dontTranslate: PropTypes.bool,
   collapsible: PropTypes.bool,
   noHeader: PropTypes.bool,
-  headerText: PropTypes.element,
+  headerText: PropTypes.string,
   mode: PropTypes.string.isRequired,
   minHeight: PropTypes.number,
   maxHeight: PropTypes.number,

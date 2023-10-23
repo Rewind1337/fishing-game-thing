@@ -1,7 +1,15 @@
 import GLOBALS from '../../globals/Globals';
 
 let getHomeFish = function (modifiers) {
-  return GLOBALS.DB.FISHING.LOCATIONS[0];
+  let unlocks = modifiers['homeUnlocks'] || [];
+
+  let subLocation = {id: 0, name: 'Your very own spot.', fish: [0]};
+
+  if (unlocks.includes('wailer')) {
+    subLocation.fish.push(1);
+  }
+
+  return subLocation;
 }
 
 let getFailMitigation = function (modifiers) {
@@ -31,6 +39,7 @@ let canCatch = function (fish, bait, time) {
   }
 
   let timeArray = [
+    [0, 1],
     [0.25, 0.75],
     [0.75, 0.25],
     [0.25, 0.5],
@@ -38,17 +47,16 @@ let canCatch = function (fish, bait, time) {
     [0.75, 0],
     [0, 0.25],
     [0.9, 0.1],
-    [0.4, 0.6],
-    [0, 1]
+    [0.4, 0.6]
   ];
 
-  let time1 = timeArray[fish.timeOfDay][0];
-  let time2 = timeArray[fish.timeOfDay][1];
+  let startTime = timeArray[fish.timeOfDay][0];
+  let endTime = timeArray[fish.timeOfDay][1];
 
-  if (time1 <= time2) {
-    return (time >= time1 & time <= time2);
+  if (startTime <= endTime) {
+    return (time >= startTime & time <= endTime);
   }
-  return (time >= time1 | time <= time2);
+  return (time >= startTime | time <= endTime);
 };
 
 let getFish = function (location, time, modifiers) {
@@ -59,7 +67,7 @@ let getFish = function (location, time, modifiers) {
     name: "404 fish not found",
     rarity: 4,
     baitNeeded: 0,
-    timeOfDay: 8,
+    timeOfDay: 0,
     flavor: "You might want to notify the devs, you shouldn't be fishing here.",
   };
   let justANibble = {
@@ -67,8 +75,8 @@ let getFish = function (location, time, modifiers) {
     name: "Guess it's nothing.",
     rarity: 1,
     baitNeeded: 0,
-    timeOfDay: 8,
-    flavor: "poggers! you caught nil",
+    timeOfDay: 0,
+    flavor: "poggers! You caught nil.",
   };
 
   let bait = modifiers['bait'] || 0;
@@ -79,10 +87,8 @@ let getFish = function (location, time, modifiers) {
     return errorFish;
   }
 
-  let locationDat = {};
-  if (location == -1) {
-    locationDat = getHomeFish(modifiers);
-  } else {
+  let locationDat = {id: -1, name: 'Your Personal Spot', sublocations: [0], fish: [-1]};
+  if (location[0] >= 0) {
     locationDat = GLOBALS.DB.FISHING.LOCATIONS[location[0]];
   }
 
@@ -91,12 +97,18 @@ let getFish = function (location, time, modifiers) {
     return errorFish;
   }
 
-  let sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[location[1]];
-
-  if (sublocationDat.fish.length == 0) {
-    return errorFish;
+  let sublocationDat = {};
+  if (location[0] == -1) {
+    sublocationDat = getHomeFish(modifiers);
+  } else {
+    sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[locationDat.sublocations[location[1]]];
   }
 
+  if (sublocationDat.fish.length == 0) {
+    console.warn("Warning, player is fishing somewhere where there are no fish! ["+location[0]+","+location[1],"]");
+    return errorFish;
+  }
+  
   // Generate the fishing list with weight per item
   let fishList = [];
   let totalWeight = 0;
