@@ -77,7 +77,10 @@ function PageFishingZone() {
       // Only fishes at night right now.
       let toastText = "";
 
-      let caughtFish = getFish(0, 0, 1, 0.75);
+      let location = [-1, 0];
+      let dayTime = 0.75;
+      let caughtFish = getFish(location, dayTime, {'bait':1});
+
       if (caughtFish.id >= 0) {
         toastText = "Caught a(n): " + caughtFish.name;
         setResources(r => ({...r, fish: r.fish + 1}));

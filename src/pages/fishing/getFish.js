@@ -1,5 +1,18 @@
 import GLOBALS from '../../globals/Globals';
 
+let getHomeFish = function (modifiers) {
+  return GLOBALS.DB.FISHING.LOCATIONS[0];
+}
+
+let getFailMitigation = function (modifiers) {
+  let lure = modifiers['lure'] || 0;
+  lure = lure * (lure > 0 ? 1 : 0);
+  
+  let mitigationTable = [0, 1];
+
+  return mitigationTable[lure];
+}
+
 let getWeight = function (fish) {
   let rarityTable = [
     100,
@@ -38,7 +51,9 @@ let canCatch = function (fish, bait, time) {
   return (time >= time1 | time <= time2);
 };
 
-let getFish = function (location, sublocation, bait, time) {
+let getFish = function (location, time, modifiers) {
+
+  // Null and Error results
   let errorFish = {
     id: -2,
     name: "404 fish not found",
@@ -56,24 +71,33 @@ let getFish = function (location, sublocation, bait, time) {
     flavor: "poggers! you caught nil",
   };
 
-  if (location < 0 || location > GLOBALS.DB.FISHING.LOCATIONS.length) {
-    console.warn("Warning, player escaped the confines of the game! Invalid location!");
+  let bait = modifiers['bait'] || 0;
+
+  // Valid Location and Sublocation checks
+  if (location[0] < -1 || location[0] > GLOBALS.DB.FISHING.LOCATIONS.length) {
+    console.warn("Warning, player escaped the confines of the game! Invalid location ["+location[0]+","+location[1],"]!");
     return errorFish;
   }
 
-  let locationDat = GLOBALS.DB.FISHING.LOCATIONS[location];
+  let locationDat = {};
+  if (location == -1) {
+    locationDat = getHomeFish(modifiers);
+  } else {
+    locationDat = GLOBALS.DB.FISHING.LOCATIONS[location[0]];
+  }
 
-  if (!(sublocation in locationDat.sublocations)) {
-    console.warn("Warning, player escaped the confines of the game! Invalid sublocation!");
+  if (!(location[1] in locationDat.sublocations)) {
+    console.warn("Warning, player escaped the confines of the game! Invalid sublocation ["+location[0]+","+location[1],"]!");
     return errorFish;
   }
 
-  let sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[location];
+  let sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[location[1]];
 
   if (sublocationDat.fish.length == 0) {
     return errorFish;
   }
 
+  // Generate the fishing list with weight per item
   let fishList = [];
   let totalWeight = 0;
   for (let fishId of sublocationDat.fish) {
@@ -87,13 +111,18 @@ let getFish = function (location, sublocation, bait, time) {
   totalWeight += getWeight(justANibble);
   fishList.push({ 'fish': justANibble, 'cumWeight': totalWeight });
 
-  let noFailBias = 0;
+  // Bias at 1 reduces fail chance to 0
+  let noFailBias = getFailMitigation(modifiers);
+
+  // Choose a random fish from the weighted list of fish
   let randomRoll = (Math.random() - noFailBias * (totalWeight - getWeight(justANibble))) * totalWeight;
   for (let result of fishList) {
     if (randomRoll < result.cumWeight) {
       return result['fish'];
     }
   }
+
+  // Fallback
   return justANibble;
 };
 
