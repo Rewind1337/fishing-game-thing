@@ -9,6 +9,7 @@ import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import ResourceCard from '../../components/resources/ResourceCard';
+import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 import MilestoneCard from './MilestoneCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
@@ -23,6 +24,8 @@ import { faFish, faWorm, faHurricane } from '@fortawesome/free-solid-svg-icons';
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
+import aspectHook from '../../utility/aspectHook';  // eslint-disable-line no-unused-vars
+import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
 import './Queen.scss'
@@ -34,7 +37,8 @@ function PageQueen() {
   const _context = useContext(SaveContext);
   _context; // to prevent the no-unused-vars, remove if actually used somewhere else
 
-  const [resources, setResources] = useState(resourceHook(_context))
+  const [resources, setResources] = useState(resourceHook(_context));
+  const [aspects, setAspects] = useState(aspectHook(_context));
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
   const pickerOptions = [
@@ -82,6 +86,13 @@ function PageQueen() {
       let fishWorms = rarityTable[fishData.rarity];
       
       fishWorms += fishData['moreWorms'] || 0;
+      fishWorms = ~~(fishWorms * (1 + Math.sqrt(aspects.wormPower)));
+
+      let newAspects = aspects;
+      for (let aspectName in fishData['aspects']) {
+        newAspects[aspectName] += fishData['aspects'][aspectName] * amount;
+      }
+      setAspects(newAspects);
 
       setResources(r => ({...r, fish: r.fish - (1 * amount), worms: r.worms + (fishWorms * amount)}));
       _context.refs.toastmanager['fireToast']("success", "Yum!");
@@ -90,7 +101,8 @@ function PageQueen() {
 
   useEffect(() => {
     _context.setSave({resources: {...resources}});
-  }, [resources]) // eslint-disable-line react-hooks/exhaustive-deps
+    _context.setSave({aspects: {...aspects}});
+  }, [resources, aspects]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const milestoneProgress = (
     <div className='milestone-progress'>
@@ -106,25 +118,28 @@ function PageQueen() {
 
   const aspectList = (
     <FlexList headerText="Aspects" mode='list'>
-      <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} />
-      <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} />
-      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0} />
-      <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} />
-      <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} />
-      <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} />
-      <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0} />
-      <AspectCard c="🜲" name="Regulus" color='hsl(290deg, 100%, 90%)' amount={0} />
-      <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0} />
-      <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"} />
-      <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"} />
-      <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} />
+      <AspectCard c="𓃇" name="Worm" color='hsl(290deg, 100%, 90%)' amount={format(aspects.wormPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Worm Gain'} />
+      <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} effect={'aaa'} />
+      <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} effect={'aaa'} />
+      <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
+      <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜲" name="Regulus" color='hsl(30deg, 100%, 65%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
+      <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"} effect={'aaa'} />
+      <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} effect={'aaa'} />
     </FlexList>
   );
+  
+  const fishCollection = getFishingCollection(resources);
 
   const resourceList = (
-    <FlexList headerText="Resources" mode="list">
+    <FlexList collapsible headerText={"All Resources"} mode="list">
       <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
-      <ResourceCard icon={<FontAwesomeIcon icon={faFish} />} iconcolor="hsl(235deg, 100%, 90%)" name="Fish" value={resources.fish} cap={0} perSec={0}></ResourceCard>
+      <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
     </FlexList>
   );
 

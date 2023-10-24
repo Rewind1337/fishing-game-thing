@@ -25,9 +25,10 @@ import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import getFish from './getFish';
+import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
-import './Fishing.scss'
+import './Fishing.scss';
 
 // Route: "/fishing"
 function PageFishingZone() {
@@ -87,8 +88,8 @@ function PageFishingZone() {
         toastText = "Caught a"+vowelN+": " + caughtFish.name;
         setResources(r => ({...r, fish: r.fish + 1}));
 
-        let newFishes = resources.fishes
-        newFishes[caughtFish.id] += 1;
+        let newFishes = resources.fishes;
+        newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
         setResources(r => ({...r, fishes: r.fishes = newFishes}));
 
         _context.refs.toastmanager['fireToast']("success", toastText);
@@ -168,24 +169,7 @@ function PageFishingZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fishCollection = [
-    {
-      icon: <FontAwesomeIcon icon={faFish} />,
-      iconcolor: 'hsl(235deg, 100%, 90%)',
-      name: 'Muddie Munchie',
-      value: resources.fishes[0],
-      cap: 0,
-      perSec: 0,
-    },
-    {
-      icon: <FontAwesomeIcon icon={faFish} />,
-      iconcolor: 'hsl(235deg, 100%, 90%)',
-      name: 'Whiskered Wailer',
-      value: resources.fishes[1],
-      cap: 0,
-      perSec: 0,
-    },
-  ]
+  const fishCollection = getFishingCollection(resources);
 
   const handleFishingButtonClick = (onTrip) => {
     (isFishing ? attemptCatch(onTrip) : startFishing(onTrip));

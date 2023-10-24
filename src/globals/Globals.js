@@ -67,6 +67,7 @@ const GLOBALS = {
                 baitNeeded: BAIT.WORMS,
                 timeOfDay: TIME.ALWAYS,
                 flavor: "The Muddy Munchie is a common fish found in murky pools of water. It feeds on small creatures like worms and insects, which it can easily find in the muddy bottom.",
+                aspects: {'wormPower': 0.1},
                 moreWorms: 2,
             },
             {

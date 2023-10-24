@@ -22,6 +22,8 @@ import { faBoreHole, faFish, faFloppyDisk, faWorm } from '@fortawesome/free-soli
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
+import aspectHook from '../../utility/aspectHook';
+import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
 import './Gathering.scss'
@@ -32,7 +34,8 @@ function PageGatheringZone() {
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
 
-  const [resources, setResources] = useState(resourceHook(_context))
+  const [resources, setResources] = useState(resourceHook(_context));
+  const [aspects, setAspects] = useState(aspectHook(_context));
 
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
@@ -94,15 +97,22 @@ function PageGatheringZone() {
     )
   }
 
+  let getWormTime = function() {
+    let timeModifier = 1 + aspects.wormPower;
+    timeModifier = (timeModifier < 5 ? timeModifier : 5);
+
+    return GLOBALS.GATHERING.WORMDIG.TIME / timeModifier;
+  };
+
   const startDiggingWorms = () => {
     setDiggingWorms(true)
     
-    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.WORMDIG.TIME, 500);
+    _context.refs.sidebar['addBadgeTimer'](4, getWormTime(), 500);
   }
 
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
-      let randomGain = 1 + ~~(Math.random() * 3);
+      let randomGain = 1 + ~~(Math.sqrt(aspects.wormPower) + Math.random() * 2 * (1 + Math.sqrt(aspects.wormPower / 10)));
       setResources(r => ({...r, worms: r.worms + randomGain}));
       setDiggingWorms(false)
       setCanCollectWorms(false)
@@ -219,16 +229,7 @@ function PageGatheringZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fishCollection = [
-    {
-      icon: <FontAwesomeIcon icon={faFish} />,
-      iconcolor: 'hsl(235deg, 100%, 90%)',
-      name: 'Fish',
-      value: resources.fish,
-      cap: 0,
-      perSec: 0,
-    },
-  ]
+  const fishCollection = getFishingCollection(resources);
 
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.GATHERING} title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>

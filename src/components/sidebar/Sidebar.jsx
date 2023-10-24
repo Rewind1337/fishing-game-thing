@@ -62,18 +62,18 @@ function Sidebar() {
 
   const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {
     clearBadgeDataFor(page);
-    
-    let nameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+
+    let nameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"];
     
     let rightnow = Date.now();
-    let whenItFinishes = rightnow + (duration * pageTickSpeed)
+    let whenItFinishes = rightnow + (duration * pageTickSpeed);
 
     if (localStorage.getItem("badge-data") == undefined) {
-      localStorage.setItem("badge-data", JSON.stringify({[nameMap[page]]: [whenItFinishes]}))
+      localStorage.setItem("badge-data", JSON.stringify({[nameMap[page]]: [whenItFinishes]}));
     } else {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
       allBadgeData[nameMap[page]].push(whenItFinishes);
-      localStorage.setItem("badge-data", JSON.stringify(allBadgeData))
+      localStorage.setItem("badge-data", JSON.stringify(allBadgeData));
     }
   }
 
