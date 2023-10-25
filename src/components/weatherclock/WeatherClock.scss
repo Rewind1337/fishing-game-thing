@@ -1,7 +1,7 @@
 #weather-clock {
     min-width: 270px;
     max-width: 270px;
-    height: 105px;
+    height: 100%;
     border-radius: 4px;
     padding-left: 10px;
     padding-right: 10px;
@@ -29,6 +29,12 @@
     }
 }
 
+.weather-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .weather-bar-icon {
     margin-bottom: 8px;
     padding: 0 2px;
@@ -37,8 +43,5 @@
 }
 
 .weather-bar {
-    padding-bottom: 0px;
-    margin-bottom: 8px;
-    border-bottom: 3px solid white;
     z-index: 5;
 }

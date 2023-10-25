@@ -14,7 +14,7 @@ FlexList.propTypes = {
   dontTranslate: PropTypes.bool,
   collapsible: PropTypes.bool,
   noHeader: PropTypes.bool,
-  headerText: PropTypes.element,
+  headerText: PropTypes.string,
   mode: PropTypes.string.isRequired,
   minHeight: PropTypes.number,
   maxHeight: PropTypes.number,
@@ -47,7 +47,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, collapsible
         <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
           <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
             <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
-              <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
+              <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer', width: (mode == "compact" ? "calc(100% - 1px)" : "calc(100% - 2px)")}}>
                 <KeyboardArrowDownIcon/><h4>{headerText}</h4>
               </div>
             </Paper>

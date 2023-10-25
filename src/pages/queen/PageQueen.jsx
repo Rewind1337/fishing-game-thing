@@ -10,6 +10,7 @@ import ActionButton from '../../components/ActionButton';  // eslint-disable-lin
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import ResourceCard from '../../components/resources/ResourceCard';
 import MilestoneCard from './MilestoneCard';
+import AspectCard from './AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI
@@ -26,7 +27,6 @@ import resourceHook from '../../utility/resourceHook';  // eslint-disable-line n
 
 // CSS Styles
 import './Queen.scss'
-import AspectCard from './AspectCard';
 
 // Route: "/queen"
 function PageQueen() {

@@ -18,7 +18,7 @@ const LANG_NL = {
         "collect": "something else",
         
         // Fishing Page Buttons
-        "throw out your fishing rod boi": "Throw out your Rod",
+        "throw out your rod": "Throw out your Rod",
         "attempt to reel it in": "Throw out your Rod",
         "prepare fishing trip": "Prepare Fishing Trip",
         "start fishing trip": "Start Fishing Trip",
@@ -31,6 +31,7 @@ const LANG_NL = {
         "rods": "Rods",
         "hooks": "Hooks",
         "bait": "Bait",
+        "fish": "German Fisch",
         "lures": "Lures"
     }
 }

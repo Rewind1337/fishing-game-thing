@@ -44,7 +44,7 @@ let data = {
     },
     refs: {},
     setRefs : (r) => {
-        data.refs = Object.assign({}, data.refs, r);
+        data.refs = updateDict(data.refs, r)
         console.log(data.refs);
     }
 };

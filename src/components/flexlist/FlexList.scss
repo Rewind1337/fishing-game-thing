@@ -55,6 +55,19 @@
         }
     }
 
+    &-compact {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1px;
+        padding: 2px;
+    
+        > * {
+            width: min-content;
+            margin: 0 1px;
+        }
+    }
+
     &-tabs {
         display: flex;
         flex-direction: row;

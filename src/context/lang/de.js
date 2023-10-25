@@ -18,7 +18,7 @@ const LANG_DE = {
         "collect": "Einsammeln",
         
         // Fishing Page Buttons
-        "throw out your fishing rod boi": "Wirf deine Rute aus",
+        "throw out your rod": "Wirf deine Rute aus",
         "attempt to reel it in": "Zieh den Fang ran",
         "prepare fishing trip": "Angelausflug vorbereiten",
         "start fishing trip": "Angelausflug starten",
@@ -31,6 +31,7 @@ const LANG_DE = {
         "rods": "Ruten",
         "hooks": "Haken",
         "bait": "Köder",
+        "fish": "Fische",
         "lures": "Lockmittel"
     }
 }

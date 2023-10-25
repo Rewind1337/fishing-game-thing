@@ -31,6 +31,7 @@ const LANG_US = {
         "rods": "Rods",
         "hooks": "Hooks",
         "bait": "Bait",
+        "fish": "Fish",
         "lures": "Lures"
     }
 }

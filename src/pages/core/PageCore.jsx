@@ -128,7 +128,7 @@ function PageCore({pageID, title, contentClasses, children}) {
                 {children}
               </Grid>
             </div>
-            <Grid id="content-bottom" container spacing={0}>
+            <Grid id="content-bottom" className="hide-mobile show-tablet-up" container spacing={0}>
               <Grid mobile="auto">
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}></Paper>
               </Grid>

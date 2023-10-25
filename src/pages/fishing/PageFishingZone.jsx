@@ -181,8 +181,8 @@ function PageFishingZone() {
       <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
     </Grid>
 
-    <Grid container mobile={12} maxHeight={200} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
-      <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
+    <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
+      <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />

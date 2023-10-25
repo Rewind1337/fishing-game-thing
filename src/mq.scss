@@ -1,25 +1,29 @@
 .show-mobile,
 .show-tablet-down, .show-tablet, .show-tablet-up,
 .show-desktop-down, .show-desktop, .show-desktop-up,
-.show-widescreen {display: none}
+.show-widescreen {display: none !important}
 
 .hide-mobile,
 .hide-tablet-down, .hide-tablet, .hide-tablet-up,
 .hide-desktop-down, .hide-desktop, .hide-desktop-up,
-.hide-widescreen {display: block}
+.hide-widescreen {display: block !important}
 
 @media only screen and (min-width: 0px) and (max-width: 639px) {
     #root {
         min-width: 500px;
     }
 
-    .show-mobile {display: block}
-    .show-tablet-down {display: block}
-    .show-desktop-down {display: block}
+    .show-mobile {display: block !important}
+    .show-tablet-down {display: block !important}
+    .show-desktop-down {display: block !important}
 
-    .hide-mobile {display: none}
-    .hide-tablet-down {display: none}
-    .hide-desktop-down {display: none}
+    .MuiGrid2-root.show-mobile {display: flex !important}
+    .MuiGrid2-root.show-tablet-down {display: flex !important}
+    .MuiGrid2-root.show-desktop-down {display: flex !important}
+
+    .hide-mobile {display: none !important}
+    .hide-tablet-down {display: none !important}
+    .hide-desktop-down {display: none !important}
 
     #sidebar {
         opacity: 0 !important;
@@ -28,6 +32,10 @@
         &.mobile.visible {
             opacity: 1 !important;
         }
+    }
+
+    #weather-clock {
+        font-size: 14px;
     }
 
     .MuiDialog-container {
@@ -43,15 +51,20 @@
 }
 
 @media only screen and (min-width: 640px) and (max-width: 1023px) {
-    .show-tablet-down {display: block}
-    .show-tablet {display: block}
-    .show-tablet-up {display: block}
-    .show-desktop-down {display: block}
+    .show-tablet-down {display: block !important}
+    .show-tablet {display: block !important}
+    .show-tablet-up {display: block !important}
+    .show-desktop-down {display: block !important}
 
-    .hide-tablet-down {display: none}
-    .hide-tablet {display: none}
-    .hide-tablet-up {display: none}
-    .hide-desktop-down {display: none}
+    .MuiGrid2-root.show-tablet-down {display: flex !important}
+    .MuiGrid2-root.show-tablet {display: flex !important}
+    .MuiGrid2-root.show-tablet-up {display: flex !important}
+    .MuiGrid2-root.show-desktop-down {display: flex !important}
+
+    .hide-tablet-down {display: none !important}
+    .hide-tablet {display: none !important}
+    .hide-tablet-up {display: none !important}
+    .hide-desktop-down {display: none !important}
     
     #sidebar {
         &.expanded {
@@ -61,25 +74,34 @@
 }
 
 @media only screen and (min-width: 1024px) and (max-width: 1599px) {
-    .show-tablet-up {display: block}
-    .show-desktop-down {display: block}
-    .show-desktop {display: block}
-    .show-desktop-up {display: block}
+    .show-tablet-up {display: block !important}
+    .show-desktop-down {display: block !important}
+    .show-desktop {display: block !important}
+    .show-desktop-up {display: block !important}
 
-    .hide-tablet-up {display: none}
-    .hide-desktop-down {display: none}
-    .hide-desktop {display: none}
-    .hide-desktop-up {display: none}
+    .MuiGrid2-root.show-tablet-up {display: flex !important}
+    .MuiGrid2-root.show-desktop-down {display: flex !important}
+    .MuiGrid2-root.show-desktop {display: flex !important}
+    .MuiGrid2-root.show-desktop-up {display: flex !important}
+
+    .hide-tablet-up {display: none !important}
+    .hide-desktop-down {display: none !important}
+    .hide-desktop {display: none !important}
+    .hide-desktop-up {display: none !important}
 }
 
 @media only screen and (min-width: 1600px) {
-    .show-tablet-up {display: block}
-    .show-desktop-up {display: block}
-    .show-widescreen {display: block}
+    .show-tablet-up {display: block !important}
+    .show-desktop-up {display: block !important}
+    .show-widescreen {display: block !important}
+    
+    .MuiGrid2-root.show-tablet-up {display: flex !important}
+    .MuiGrid2-root.show-desktop-up {display: flex !important}
+    .MuiGrid2-root.show-widescreen {display: flex !important}
 
-    .hide-tablet-up {display: none}
-    .hide-desktop-up {display: none}
-    .hide-widescreen {display: none}
+    .hide-tablet-up {display: none !important}
+    .hide-desktop-up {display: none !important}
+    .hide-widescreen {display: none !important}
     
     #sidebar {
         &.expanded {
