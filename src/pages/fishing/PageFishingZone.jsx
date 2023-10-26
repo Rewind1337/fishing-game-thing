@@ -41,6 +41,7 @@ function PageFishingZone() {
   const [fishProgress, setFishProgress] = useState(_context.save.fishing.fishProgress || false)
   const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: -1, max: -1})
   let fishProgressMax = GLOBALS.FISHING.TIME
+  let fishProgressPerTick = GLOBALS.FISHING.SPEED
 
   const [fishingTripStatus, setFishingTripStatus] = useState(GLOBALS.ENUMS.TRIPSTATUS.IDLE)
   const [fishingTripData, setFishingTripData] = useState({});
@@ -123,7 +124,7 @@ function PageFishingZone() {
       if (fishProgress >= fishProgressMax-1) {
         setFishing(false)
       }
-      setFishProgress((old) => (old >= (fishProgressMax-1) ? 0 : old + 1));
+      setFishProgress((old) => (old >= (fishProgressMax-1) ? 0 : old + fishProgressPerTick));
     }
   }
 

@@ -5,12 +5,11 @@ import SaveContext from '../context/SaveContext';
 function ToastManager() {
     const _context = useContext(SaveContext);
 
-    function SlideTransition(props) {return <Slide {...props} direction="up" />}
-
     const [state, setState] = useState({open: false, severity: "success", text: "Test Message"});
 
     const setRefs = _context.setRefs;
 
+    function SlideTransition(props) {return <Slide {...props} direction="up" />}
     const transition = SlideTransition
 
     const fireToast = (severity, text) => {

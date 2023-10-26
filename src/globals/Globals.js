@@ -204,18 +204,23 @@ const GLOBALS = {
             ],
         },
 
+        // ITEMS
+        // CHECK itemtypes.md
+
         // RODS
 
         ROD: [
             {
                 id: 0,
                 name: "Old Rod",
-                coolness: 1,
+                catchWindow: 20,
+                baseSpeed: 1,
             },
             {
                 id: 1,
-                name: "Supreme Rod of the Greek Fishing Gods",
-                coolness: 1.3,
+                name: "New Rod",
+                catchWindow: 30,
+                baseSpeed: 1,
             },
         ],
 
@@ -225,22 +230,37 @@ const GLOBALS = {
             {
                 id: BAIT.NOTHING,
                 name: "Nothing",
+                fishingLuck: 1,
+                multiFish: 0,
+                breakChance: 0,
             },
             {
                 id: BAIT.WORMS,
                 name: "Worms",
+                fishingLuck: 1.1,
+                multiFish: 0,
+                breakChance: 80,
             },
             {
                 id: BAIT.FISH,
                 name: "Fish",
+                fishingLuck: 1.15,
+                multiFish: 0.05,
+                breakChance: 95,
             },
             {
                 id: BAIT.INSECTS,
                 name: "Insects",
+                fishingLuck: 1.2,
+                multiFish: 0,
+                breakChance: 100,
             },
             {
                 id: BAIT.GLOWWORMS,
                 name: "Glow Worms",
+                fishingLuck: 1.6,
+                multiFish: 0.1,
+                breakChance: 90,
             },
         ],
 
@@ -250,6 +270,18 @@ const GLOBALS = {
             {
                 id: 0,
                 name: "Rusty Hook",
+                multiCatch: 0,
+                catchMultiplierChance: 0,
+                catchMultiplierAmount: 0,
+                breakChance: 0,
+            },
+            {
+                id: 1,
+                name: "New Hook",
+                multiCatch: 0,
+                catchMultiplierChance: 0.1,
+                catchMultiplierAmount: 2,
+                breakChance: 5,
             },
         ],
 
@@ -259,10 +291,18 @@ const GLOBALS = {
             {
                 id: 0,
                 name: "Wiggly Lure",
+                fishingLuck: 1.25,
+                fishingSpeed: 50, // 10% of 500
+                duration: 10,
+                attracts: [RARITY.COMMON, RARITY.UNCOMMON],
             },
             {
                 id: 1,
                 name: "Meaty Lure",
+                fishingLuck: 1.4,
+                fishingSpeed: 75, // 10% of 500
+                duration: 6,
+                attracts: [RARITY.UNCOMMON, RARITY.RARE],
             },
         ],
     },
@@ -271,6 +311,7 @@ const GLOBALS = {
 
     FISHING: {
         TIME: 60,
+        SPEED: 1,
     },
 
     // GATHERING PAGE GLOBALS

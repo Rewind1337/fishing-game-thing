@@ -63,16 +63,21 @@ function Sidebar() {
   const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {
     clearBadgeDataFor(page);
     
-    let nameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+    let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+    let thePage = pageNameMap[page];
     
     let rightnow = Date.now();
     let whenItFinishes = rightnow + (duration * pageTickSpeed)
 
     if (localStorage.getItem("badge-data") == undefined) {
-      localStorage.setItem("badge-data", JSON.stringify({[nameMap[page]]: [whenItFinishes]}))
+      localStorage.setItem("badge-data", JSON.stringify({[thePage]: [whenItFinishes]}))
     } else {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      allBadgeData[nameMap[page]].push(whenItFinishes);
+      if (allBadgeData[thePage] == undefined) {
+        allBadgeData[thePage] = [whenItFinishes];
+      } else {
+        allBadgeData[thePage].push(whenItFinishes);
+      }
       localStorage.setItem("badge-data", JSON.stringify(allBadgeData))
     }
   }
@@ -94,24 +99,51 @@ function Sidebar() {
   }
 
   const checkForBadgeData = (page) => {
+    let singlePageCheck = true;
+    if (page == undefined) {
+      singlePageCheck = false;
+    }
+    
+    let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      let n = 0;
-      for (let t in allBadgeData.gathering) {
-        if (allBadgeData.gathering[t] < Date.now()) {
-          console.log("gathering", t, true)
-          n++;
+      if (singlePageCheck) {
+        let n = 0;
+        let thePage = pageNameMap[page];
+        let pageTimers = allBadgeData[thePage];
+        for (let t in pageTimers) {
+          if (pageTimers[t] < Date.now()) {
+            console.log(thePage, t, true)
+            n++;
+          }
         }
+
+        let newData = sidebarBadgeData
+        newData[page] = n;
+        setSidebarBadgeData(newData);
+
+      } else {
+        let newData = sidebarBadgeData
+        for (let key in allBadgeData) {
+          let n = 0;
+          let thePage = key;
+          let pageTimers = allBadgeData[thePage];
+          for (let t in pageTimers) {
+            if (pageTimers[t] < Date.now()) {
+              console.log(thePage, t, true)
+              n++;
+            }
+          }
+          newData[thePage] = n;
+        }
+        setSidebarBadgeData(newData);
       }
-  
-      let newData = sidebarBadgeData
-      newData[page] = n;
-      setSidebarBadgeData(newData);
     }
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {checkForBadgeData(4)}, 1000);
+    const timer = setInterval(() => {checkForBadgeData()}, 1000);
 
     return () => {
       clearInterval(timer);
@@ -126,6 +158,7 @@ function Sidebar() {
       'setMobileSidebarVisible' : setMobileSidebarVisible,
       'setSidebarUnlocks' : setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
+      'checkForBadgeData' : checkForBadgeData,
       'addBadgeTimer' : addBadgeTimer}});
     setMouseOver(false);
     setLoaded(true);
