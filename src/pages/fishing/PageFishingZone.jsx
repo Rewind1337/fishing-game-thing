@@ -35,6 +35,8 @@ function PageFishingZone() {
 
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
+  let localTimestamp = useRef(Date.now());
+  let ticksDone = useRef(0);
 
   const [resources, setResources] = useState(resourceHook(_context))
 
@@ -79,9 +81,15 @@ function PageFishingZone() {
       // Only fishes at night right now.
       let toastText = "";
 
+      // home
       let location = [-1, 0];
+      
       let dayTime = 0.85;
-      let caughtFish = getFish(location, dayTime, {'bait':1, 'homeUnlocks':['wailer']});
+
+      let modifiers = {'bait':1};
+      // let modifiers = {'bait':1, 'homeUnlocks':['wailer']};
+
+      let caughtFish = getFish(location, dayTime, modifiers);
 
       if (caughtFish.id >= 0) {
         let vowelN = (['aeiouy'].includes(caughtFish.name[0].toLowerCase()) ? "n" : "");
@@ -131,11 +139,37 @@ function PageFishingZone() {
   }
   
   const pageTick = () => {
+    let currentTime = Date.now();
+    let deltaTime = currentTime - localTimestamp.current;
+
+    if (ticksDone.current.isNaN) {ticksDone = 0;}
+
+    // console.log("Ticks Done", ticksDone.current);
+    // console.log("PageTick Drift", deltaTime - 500);
+
+    /*
+    // Discreet Version
+    let ticksToDo = ~~((deltaTime + 100) / 500);
+    localTimestamp.current = localTimestamp.current + ticksToDo * 500;
+
+    updateTick(ticksToDo);
+    ticksDone.current += ticksToDo;
+    */
+
+    // Fractional Ticks Version
+    let ticksToDo = deltaTime / 500;
+    localTimestamp.current = localTimestamp.current + deltaTime;
+    updateTick(ticksToDo);
+
+    ticksDone.current += ticksToDo;
+  }
+
+  const updateTick = (ticks) => {
     if (isFishing == true) {
-      if (fishProgress >= fishProgressMax-1) {
+      if (fishProgress >= fishProgressMax - 1) {
         setFishing(false)
       }
-      setFishProgress((old) => (old >= (fishProgressMax-1) ? 0 : old + 1));
+      setFishProgress((old) => (old >= (fishProgressMax - 1) ? 0 : old + 1 * ticks));
     }
   }
 
@@ -157,11 +191,7 @@ function PageFishingZone() {
     let flooredToSec = ~~(deltaTimeInMs / 500);
     let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
 
-    for (let i = 0; i < cappedToMaxTicks; i++) {
-      if (isFishing) {
-        pageTick();
-      }
-    }
+    updateTick(cappedToMaxTicks);
   }, [])
 
   // Save Variables to LS after tick
