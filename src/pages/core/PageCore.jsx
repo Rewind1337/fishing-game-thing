@@ -24,7 +24,11 @@ PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     contentClasses: PropTypes.string,
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+      PropTypes.object,
+    ]),
 };
 
 function PageCore({pageID, title, contentClasses, children}) {
@@ -42,7 +46,9 @@ function PageCore({pageID, title, contentClasses, children}) {
  
   useEffect(() => {
     console.log("mount", title)
-    if (_context.save.sidebar.unlocks[pageID] == false) {window.location = "/home"} else {
+    if (_context.save.sidebar.unlocks[pageID] == false) {
+      window.location = "/home"
+    } else {
       setLoaded(true);
     }
 
@@ -51,6 +57,11 @@ function PageCore({pageID, title, contentClasses, children}) {
     }, 50);
     
   }, [])
+
+  useEffect(() => {
+    _context.refs.sidebar['checkForBadgeData']();
+  })
+  
 
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
 

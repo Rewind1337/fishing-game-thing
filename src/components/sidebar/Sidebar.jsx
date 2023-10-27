@@ -59,11 +59,10 @@ function Sidebar() {
 
   const savedSidebarBadgeData = _context.save.sidebar.sidebarBadgeData;
   const [sidebarBadgeData, setSidebarBadgeData] = useState(savedSidebarBadgeData);
-
-  const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {
-    clearBadgeDataFor(page);
     
-    let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+  let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
+
+  const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {    
     let thePage = pageNameMap[page];
     
     let rightnow = Date.now();
@@ -85,16 +84,20 @@ function Sidebar() {
   const clearBadgeDataFor = (page) => {
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
+      
+      let changedSidebarBadgeData = sidebarBadgeData;
+
       let changedBadgeData = allBadgeData
-      for (let t in allBadgeData.gathering) {
-        if (allBadgeData.gathering[t] < Date.now()) {
-          changedBadgeData.gathering.splice(t, 1);
+      for (let key in allBadgeData) {
+        let pageData = allBadgeData[key]
+        for (let d in pageData) {
+          if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1);}
         }
+        changedSidebarBadgeData[page] = changedBadgeData[key].length;
       }
+      
       localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
-      let changedSidebarData = sidebarBadgeData;
-      changedSidebarData[page] = changedBadgeData.length;
-      setSidebarBadgeData(changedSidebarData);
+      setSidebarBadgeData(changedSidebarBadgeData);
     }
   }
 
@@ -103,8 +106,6 @@ function Sidebar() {
     if (page == undefined) {
       singlePageCheck = false;
     }
-    
-    let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
 
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
@@ -114,7 +115,6 @@ function Sidebar() {
         let pageTimers = allBadgeData[thePage];
         for (let t in pageTimers) {
           if (pageTimers[t] < Date.now()) {
-            console.log(thePage, t, true)
             n++;
           }
         }
@@ -131,7 +131,6 @@ function Sidebar() {
           let pageTimers = allBadgeData[thePage];
           for (let t in pageTimers) {
             if (pageTimers[t] < Date.now()) {
-              console.log(thePage, t, true)
               n++;
             }
           }
@@ -159,7 +158,7 @@ function Sidebar() {
       'setSidebarUnlocks' : setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
       'checkForBadgeData' : checkForBadgeData,
-      'addBadgeTimer' : addBadgeTimer}});
+      'addBadgeTimer' : addBadgeTimer}}, true);
     setMouseOver(false);
     setLoaded(true);
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps

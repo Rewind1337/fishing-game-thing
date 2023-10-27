@@ -1,11 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import GLOBALS from '../../globals/Globals';
+import SaveContext from '../../context/SaveContext.jsx';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { getWeatherFromNoise, setupWeatherNoise } from './WeatherNoise.js'
-import './WeatherClock.scss'
-import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-vars
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloud, faCloudBolt, faCloudRain, faCloudSun, faCloudSunRain, faSnowflake, faSun } from '@fortawesome/free-solid-svg-icons';
+
+import './WeatherClock.scss'
   
 function WeatherClock() {
+  const _context = useContext(SaveContext);
+
   const [currentTimestamp, setCurrentTimestamp] = useState(0)
 
   let date = new Date(Date.now() * GLOBALS.COMPONENTS.CLOCK.SPEED);
@@ -21,6 +26,8 @@ function WeatherClock() {
   const currentTimeOfDay = useRef(0)
 
   let weatherNoise = setupWeatherNoise(0, 12)
+
+  const setRefs = _context.setRefs;
 
   const tick = () => {
     let millis = (Date.now());
@@ -40,10 +47,15 @@ function WeatherClock() {
     let m = "" + date.getMinutes();
     let s = "" + date.getSeconds();
     currentTimeFormatted.current = h.padStart(2, '0') + ':' + m.padStart(2, '0') + ':' + s.padStart(2, '0')
+    
+    setRefs({weatherclock: {
+      weather: currentWeather.current,
+      time: currentTimeOfDay.current,
+    }});
   }
 
   useEffect(() => {
-    const timer = setInterval(tick, 1000 / 15);
+    const timer = setInterval(tick, 100);
 
     return () => {
       clearInterval(timer);

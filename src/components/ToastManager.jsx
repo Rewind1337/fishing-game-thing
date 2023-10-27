@@ -30,7 +30,7 @@ function ToastManager() {
     };
   
     useEffect(() => {
-      setRefs({toastmanager: {'fireToast' : fireToast}});
+      setRefs({toastmanager: {'fireToast' : fireToast}}, true);
     }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
     return (

@@ -267,8 +267,6 @@ function PageGatheringZone() {
       }
     }
 
-    console.log(grid);
-
     return (
       <Grid container mobile={12}>
 
