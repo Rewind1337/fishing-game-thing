@@ -33,6 +33,7 @@ PageCore.propTypes = {
 
 function PageCore({pageID, title, contentClasses, children}) {
   const _context = useContext(SaveContext);
+  
   const _lang = useContext(LanguageContext);
 
   const [selectedLanguage, setSelectedLanguage] = useState(_lang.languageFile.language);
@@ -50,6 +51,7 @@ function PageCore({pageID, title, contentClasses, children}) {
       window.location = "/home"
     } else {
       setLoaded(true);
+      document.title = title;
     }
 
     setTimeout(() => {
