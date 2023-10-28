@@ -44,6 +44,7 @@ function PageFishingZone() {
   const [fishProgress, setFishProgress] = useState(_context.save.fishing.fishProgress || false)
   const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: -1, max: -1})
   let fishProgressMax = GLOBALS.FISHING.TIME
+  let fishProgressPerTick = GLOBALS.FISHING.SPEED
 
   const [fishingTripStatus, setFishingTripStatus] = useState(GLOBALS.ENUMS.TRIPSTATUS.IDLE)
   const [fishingTripData, setFishingTripData] = useState({});
@@ -169,7 +170,7 @@ function PageFishingZone() {
       if (fishProgress >= fishProgressMax - 1) {
         setFishing(false)
       }
-      setFishProgress((old) => (old >= (fishProgressMax - 1) ? 0 : old + 1 * ticks));
+      setFishProgress((old) => (old >= (fishProgressMax - 1) ? 0 : old + fishProgressPerTick * ticks));
     }
   }
 
@@ -214,8 +215,8 @@ function PageFishingZone() {
       <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
     </Grid>
 
-    <Grid container mobile={12} maxHeight={200} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
-      <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
+    <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
+      <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />

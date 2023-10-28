@@ -36,17 +36,20 @@ let data = {
             sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
         }
     },
-    setSave : (s) => {
+    setSave : (s, log = false) => {
         data.save = updateDict(data.save, s);
         localStorage.setItem("game-save", JSON.stringify(data.save));
+
+        if (log) console.log(data.save);
     },
     updateToLocalStorage : () => {
         localStorage.setItem("game-save", JSON.stringify(data.save));
     },
     refs: {},
-    setRefs : (r) => {
+    setRefs : (r, log = false) => {
         data.refs = updateDict(data.refs, r);
-        console.log(data.refs);
+
+        if (log) console.log(data.refs);
     }
 };
 

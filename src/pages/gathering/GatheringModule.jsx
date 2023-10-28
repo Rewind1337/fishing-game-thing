@@ -33,7 +33,7 @@ function GatheringModule({isUnlocked = false, icon, iconColor, progressColor, he
       <Box sx={{display: 'flex',flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}}>
   
         <Box sx={{zIndex: 101}}>
-          <CircularProgressWithLabel fontSize='15px' icon={icon} iconcolor={iconColor} sx={{padding: "5px",color: progressColor}} color={progressColor} size={bigSize} thickness={4} variant="determinate" value={progress / progressMax * 100} />
+          <CircularProgressWithLabel fontSize='15px' iconOffsetTop={"-15%"} textOffsetTop={"40%"} iconSize={"30px"} icon={icon} iconcolor={iconColor} sx={{padding: "5px",color: progressColor}} color={progressColor} size={bigSize} thickness={4} variant="determinate" value={progress / progressMax * 100} />
         </Box>
   
         {autoUnlocked && <Box sx={{ position: 'relative', top: '50%' }}>

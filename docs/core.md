@@ -1,5 +1,12 @@
 # Doc to keep track of what to do
 
+### Cool Symbols
+fish: 𓆛 𓆜 𓆝 𓆞 𓆟
+insects: 𓆤 𓆣 𓆧 𓆨 𓆢
+other stuff: 𓃇 𓆇 𓆰
+enemies: 𓂙 𓅷 𓅾 𓅸 𓅹 𓅓 𓅔 𓅕 𓅖 𓅗 𓅱 𓅲 𓅳 𓅴 𓅵 𓅶
+ornate stuff: 𓄈 𓄉 𓄊 𓄤 𓄥 𓄾 𓄸 𓇚 𓊥 𓋂 𓋅 𓋏 𓏣 𓋇 𓋈
+
 # Gathering Page
 
 ### Actions

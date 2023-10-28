@@ -24,11 +24,16 @@ PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     contentClasses: PropTypes.string,
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+      PropTypes.object,
+    ]),
 };
 
 function PageCore({pageID, title, contentClasses, children}) {
   const _context = useContext(SaveContext);
+  
   const _lang = useContext(LanguageContext);
 
   const [selectedLanguage, setSelectedLanguage] = useState(_lang.languageFile.language);
@@ -39,11 +44,18 @@ function PageCore({pageID, title, contentClasses, children}) {
     _lang.setLanguageFile(languageFile);
     setSelectedLanguage(languageFile.language)
   }
+
+  const coreTick = () => {
+    _context.refs.sidebar['checkForBadgeData'](pageID);
+  }
  
   useEffect(() => {
     console.log("mount", title)
-    if (_context.save.sidebar.unlocks[pageID] == false) {window.location = "/home"} else {
+    if (_context.save.sidebar.unlocks[pageID] == false) {
+      window.location = "/home"
+    } else {
       setLoaded(true);
+      document.title = title;
     }
 
     setTimeout(() => {
@@ -51,6 +63,19 @@ function PageCore({pageID, title, contentClasses, children}) {
     }, 50);
     
   }, [])
+
+  useEffect(() => {
+    _context.refs.sidebar['checkForBadgeData'](pageID);
+    _context.refs.sidebar['clearBadgeDataFor'](pageID);
+  })
+  
+  useEffect(() => {
+    const timer = setInterval(coreTick, 500);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [])
+  
 
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -129,7 +154,7 @@ function PageCore({pageID, title, contentClasses, children}) {
                 {children}
               </Grid>
             </div>
-            <Grid id="content-bottom" container spacing={0}>
+            <Grid id="content-bottom" className="hide-mobile show-tablet-up" container spacing={0}>
               <Grid mobile="auto">
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}></Paper>
               </Grid>

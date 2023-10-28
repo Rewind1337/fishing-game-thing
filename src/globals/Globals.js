@@ -43,6 +43,48 @@ const TRIPSTATUS = {
     TRIP_ACTIVE: 2,
 }
 
+const PETS = {
+    EARTHWORM_JIM: 0,
+    FLOPPY: 1,
+    LIL_GEODE: 2,
+    SHRIMPY: 3,
+    CARD_SHARK: 4,
+}
+
+const ENCOUNTERTYPES = {
+    GATHERING: {
+        FLUFF: 100,
+        FIND_PET: 101,
+        FIND_SPECIAL: 102,
+        FIND_RESOURCES: 103,
+    },
+    FISHING: {
+        FLUFF: 200,
+        FIND_PET: 201,
+        FIND_SPECIAL: 202,
+    },
+    ADVENTURE: {
+        FLUFF: 300,
+    },
+}
+
+const GATHERINGTYPES = {
+    ALL: 0,
+    WORMS: 1,
+    ARTIFACTS: 2,
+    MINING: 3
+}
+
+const AUTOMATION = {
+    WORMS: 0,
+    ARTIFACTS: 1,
+    MINING: 2,
+    FISHING: {
+        SHRIMPY: 3,
+        CARD_SHARK: 4,
+    }
+}
+
 const PAGES = {
     HOME: 0,
     INVENTORY: 1,
@@ -160,6 +202,50 @@ const GLOBALS = {
             },
         ],
 
+        // PETS
+
+        PETS: {
+            GATHERING: [
+                {
+                    id: PETS.EARTHWORM_JIM,
+                    name: "Earthworm Jim",
+                    enablesAuto: true,
+                    autoFor: AUTOMATION.WORMS,
+                    autoSpeed: 1/4
+                },
+                {
+                    id: PETS.FLOPPY,
+                    name: "Floppy",
+                    enablesAuto: true,
+                    autoFor: AUTOMATION.ARTIFACTS,
+                    autoSpeed: 1/6
+                },
+                {
+                    id: PETS.LIL_GEODE,
+                    name: "Lil' Geode",
+                    enablesAuto: true,
+                    autoFor: AUTOMATION.MINING,
+                    autoSpeed: 1/10
+                },
+            ],
+            FISHING: [
+                {
+                    id: PETS.SHRIMPY,
+                    name: "Shrimpy",
+                    enablesAuto: true,
+                    autoFor: AUTOMATION.FISHING.SHRIMPY,
+                },
+                {
+                    id: PETS.CARD_SHARK,
+                    name: "Card Shark",
+                    enablesAuto: true,
+                    autoFor: AUTOMATION.FISHING.CARD_SHARK,
+                    autoSpeed: "no idea"
+                },
+            ],
+            ADVENTURE: [],
+        },
+
         // ADVENTURE STUFF
 
         ADVENTURE: {
@@ -171,15 +257,11 @@ const GLOBALS = {
                 {id: NODETYPES.RESOURCES, type: 'resources'},
                 {id: NODETYPES.BOSS, type: 'boss'},
                 {id: NODETYPES.START, type: 'start'},
-                {id: NODETYPES.END, type: 'boss'},
+                {id: NODETYPES.END, type: 'end'},
             ],
             ENCOUNTERS: [
                 {
-                    id: 0,
-                    type: 'fluff',
-                    title: 'Its Raining Meatballs',
-                    encounter: [],
-                    reward: [],
+                    type: ENCOUNTERTYPES.ADVENTURE.FLUFF,
                 },
             ],
             ENEMIES: [
@@ -204,7 +286,80 @@ const GLOBALS = {
             LOCATIONS: [
                 {id: 0, name: 'Local Waterhole', sublocations: [0, 1, 2, 3], fish: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
             ],
+            ENCOUNTERS: [
+                {
+                    id: 0,
+                    type: ENCOUNTERTYPES.FISHING.FLUFF,
+                    chance: 0.05,
+                },
+                {
+                    id: 1,
+                    type: ENCOUNTERTYPES.FISHING.FIND_PET,
+                    chance: 0.02,
+                    reward: PETS.SHRIMPY
+                },
+                {
+                    id: 2,
+                    type: ENCOUNTERTYPES.FISHING.FIND_PET,
+                    chance: 0.002,
+                    reward: PETS.CARD_SHARK
+                },
+                {
+                    id: 3,
+                    type: ENCOUNTERTYPES.FISHING.FIND_SPECIAL,
+                    chance: 0.01,
+                },
+            ]
         },
+
+        // GATHERING STUFF
+
+        GATHERING: {
+            ENCOUNTERS: [
+                {
+                    id: 0,
+                    type: ENCOUNTERTYPES.GATHERING.FLUFF,
+                    source: GATHERINGTYPES.ALL,
+                    chance: 0.05,
+                },
+                {
+                    id: 1,
+                    type: ENCOUNTERTYPES.GATHERING.FIND_PET,
+                    source: GATHERINGTYPES.WORMS,
+                    chance: 0.03,
+                    reward: PETS.EARTHWORM_JIM
+                },
+                {
+                    id: 2,
+                    type: ENCOUNTERTYPES.GATHERING.FIND_PET,
+                    source: GATHERINGTYPES.ARTIFACTS,
+                    chance: 0.02,
+                    reward: PETS.FLOPPY
+                },
+                {
+                    id: 3,
+                    type: ENCOUNTERTYPES.GATHERING.FIND_PET,
+                    source: GATHERINGTYPES.MINING,
+                    chance: 0.01,
+                    reward: PETS.LIL_GEODE
+                },
+                {
+                    id: 4,
+                    type: ENCOUNTERTYPES.GATHERING.FIND_RESOURCES,
+                    source: GATHERINGTYPES.ALL,
+                    chance: 0.08,
+                },
+                {
+                    id: 5,
+                    type: ENCOUNTERTYPES.GATHERING.FIND_SPECIAL,
+                    source: GATHERINGTYPES.ALL,
+                    chance: 0.005,
+                },
+            ]
+        },
+
+        // ITEMS
+        // CHECK itemtypes.md
 
         // RODS
 
@@ -212,12 +367,14 @@ const GLOBALS = {
             {
                 id: 0,
                 name: "Old Rod",
-                coolness: 1,
+                catchWindow: 20,
+                baseSpeed: 1,
             },
             {
                 id: 1,
-                name: "Supreme Rod of the Greek Fishing Gods",
-                coolness: 1.3,
+                name: "New Rod",
+                catchWindow: 30,
+                baseSpeed: 1,
             },
         ],
 
@@ -227,22 +384,37 @@ const GLOBALS = {
             {
                 id: BAIT.NOTHING,
                 name: "Nothing",
+                fishingLuck: 1,
+                multiFish: 0,
+                breakChance: 0,
             },
             {
                 id: BAIT.WORMS,
                 name: "Worms",
+                fishingLuck: 1.1,
+                multiFish: 0,
+                breakChance: 80,
             },
             {
                 id: BAIT.FISH,
                 name: "Fish",
+                fishingLuck: 1.15,
+                multiFish: 0.05,
+                breakChance: 95,
             },
             {
                 id: BAIT.INSECTS,
                 name: "Insects",
+                fishingLuck: 1.2,
+                multiFish: 0,
+                breakChance: 100,
             },
             {
                 id: BAIT.GLOWWORMS,
                 name: "Glow Worms",
+                fishingLuck: 1.6,
+                multiFish: 0.1,
+                breakChance: 90,
             },
         ],
 
@@ -252,6 +424,18 @@ const GLOBALS = {
             {
                 id: 0,
                 name: "Rusty Hook",
+                multiCatch: 0,
+                catchMultiplierChance: 0,
+                catchMultiplierAmount: 0,
+                breakChance: 0,
+            },
+            {
+                id: 1,
+                name: "New Hook",
+                multiCatch: 0,
+                catchMultiplierChance: 0.1,
+                catchMultiplierAmount: 2,
+                breakChance: 5,
             },
         ],
 
@@ -261,10 +445,18 @@ const GLOBALS = {
             {
                 id: 0,
                 name: "Wiggly Lure",
+                fishingLuck: 1.25,
+                fishingSpeed: 50, // 10% of 500
+                duration: 10,
+                attracts: [RARITY.COMMON, RARITY.UNCOMMON],
             },
             {
                 id: 1,
                 name: "Meaty Lure",
+                fishingLuck: 1.4,
+                fishingSpeed: 75, // 10% of 500
+                duration: 6,
+                attracts: [RARITY.UNCOMMON, RARITY.RARE],
             },
         ],
     },
@@ -273,6 +465,7 @@ const GLOBALS = {
 
     FISHING: {
         TIME: 60,
+        SPEED: 1,
     },
 
     // GATHERING PAGE GLOBALS
@@ -305,10 +498,9 @@ const GLOBALS = {
     },
 
     ENUMS: {
-        RARITY, BAIT, TIME,
-        NODETYPES,
-        TRIPSTATUS,
-        PAGES
+        RARITY, BAIT, TIME, 
+        NODETYPES, GATHERINGTYPES, ENCOUNTERTYPES, TRIPSTATUS,
+        PAGES, AUTOMATION, PETS
     }
 }
 

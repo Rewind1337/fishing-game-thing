@@ -11,6 +11,7 @@ import CircularProgressWithLabel from '../../components/progress/CircularProgres
 import ResourceCard from '../../components/resources/ResourceCard';
 import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 import MilestoneCard from './MilestoneCard';
+import AspectCard from './AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI
@@ -29,7 +30,6 @@ import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
 import './Queen.scss'
-import AspectCard from './AspectCard';
 
 // Route: "/queen"
 function PageQueen() {

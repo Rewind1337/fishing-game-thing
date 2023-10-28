@@ -51,67 +51,106 @@ function Sidebar() {
 
   const sidebarHeaderText = (mqMobile ? 'Game • Thing' : (mouseOver ? 'Game • Thing' : 'G • T'));
 
-  const savedFolderStates = _context.save.sidebar.states;
-  const [folderStates, setFolderStates] = useState(savedFolderStates);
+  const [folderStates, setFolderStates] = useState(_context.save.sidebar.states);
+  const [sidebarUnlocks, setSidebarUnlocks] = useState(_context.save.sidebar.unlocks);
 
-  const savedSidebarUnlocks = _context.save.sidebar.unlocks;
-  const [sidebarUnlocks, setSidebarUnlocks] = useState(savedSidebarUnlocks);
+  const [sidebarBadgeData, setSidebarBadgeData] = useState(_context.save.sidebar.sidebarBadgeData);
+    
+  let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
 
-  const savedSidebarBadgeData = _context.save.sidebar.sidebarBadgeData;
-  const [sidebarBadgeData, setSidebarBadgeData] = useState(savedSidebarBadgeData);
-
-  const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {
-    clearBadgeDataFor(page);
-
-    let nameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"];
+  const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {    
+    let thePage = pageNameMap[page];
     
     let rightnow = Date.now();
     let whenItFinishes = rightnow + (duration * pageTickSpeed);
 
     if (localStorage.getItem("badge-data") == undefined) {
-      localStorage.setItem("badge-data", JSON.stringify({[nameMap[page]]: [whenItFinishes]}));
+      localStorage.setItem("badge-data", JSON.stringify({[thePage]: [whenItFinishes]}))
     } else {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      allBadgeData[nameMap[page]].push(whenItFinishes);
-      localStorage.setItem("badge-data", JSON.stringify(allBadgeData));
+      if (allBadgeData[thePage] == undefined) {
+        allBadgeData[thePage] = [whenItFinishes];
+      } else {
+        allBadgeData[thePage].push(whenItFinishes);
+      }
+      localStorage.setItem("badge-data", JSON.stringify(allBadgeData))
     }
   }
 
-  const clearBadgeDataFor = (page) => {
+  const clearBadgeDataFor = (page = -1) => {
+    let singlePage = (page !== -1);
+
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      let changedBadgeData = allBadgeData
-      for (let t in allBadgeData.gathering) {
-        if (allBadgeData.gathering[t] < Date.now()) {
-          changedBadgeData.gathering.splice(t, 1);
+      let changedSidebarBadgeData = sidebarBadgeData;
+
+      let changedBadgeData = allBadgeData;
+      let didChange = false;
+
+      if (singlePage) {
+        let pageData = allBadgeData[pageNameMap[page]]
+        for (let d in pageData) {
+          if (pageData[d] < Date.now()) {changedBadgeData[pageNameMap[page]].splice(d, 1); didChange = true;}
+        }
+        if (didChange) {
+          changedSidebarBadgeData[page] = changedBadgeData[pageNameMap[page]].length;
+        }
+      } else {
+        for (let key in allBadgeData) {
+          let pageData = allBadgeData[key]
+          for (let d in pageData) {
+            if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1); didChange = true;}
+          }
+          if (didChange) {
+            changedSidebarBadgeData[page] = changedBadgeData[key].length;
+          }
         }
       }
+        
       localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
-      let changedSidebarData = sidebarBadgeData;
-      changedSidebarData[page] = changedBadgeData.length;
-      setSidebarBadgeData(changedSidebarData);
+      setSidebarBadgeData(changedSidebarBadgeData);
     }
   }
 
-  const checkForBadgeData = (page) => {
+  const checkForBadgeData = (page = -1) => {
+    let singlePage = (page !== -1);
+
+    let newData = sidebarBadgeData;
+
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      let n = 0;
-      for (let t in allBadgeData.gathering) {
-        if (allBadgeData.gathering[t] < Date.now()) {
-          console.log("gathering", t, true)
-          n++;
+      if (singlePage) {
+        let n = 0;
+        let thePage = pageNameMap[page];
+        let pageTimers = allBadgeData[thePage];
+        for (let t in pageTimers) {
+          if (pageTimers[t] < Date.now()) {
+            n++;
+          }
         }
+
+        newData[page] = n;
+        setSidebarBadgeData(newData);
+
+      } else {
+        for (let key in allBadgeData) {
+          let n = 0;
+          let thePage = key;
+          let pageTimers = allBadgeData[thePage];
+          for (let t in pageTimers) {
+            if (pageTimers[t] < Date.now()) {
+              n++;
+            }
+          }
+          newData[pageNameMap.indexOf(thePage)] = n;
+        }
+        setSidebarBadgeData(newData);
       }
-  
-      let newData = sidebarBadgeData
-      newData[page] = n;
-      setSidebarBadgeData(newData);
     }
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {checkForBadgeData(4)}, 1000);
+    const timer = setInterval(() => {checkForBadgeData()}, 1000);
 
     return () => {
       clearInterval(timer);
@@ -126,7 +165,8 @@ function Sidebar() {
       'setMobileSidebarVisible' : setMobileSidebarVisible,
       'setSidebarUnlocks' : setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
-      'addBadgeTimer' : addBadgeTimer}});
+      'checkForBadgeData' : checkForBadgeData,
+      'addBadgeTimer' : addBadgeTimer}}, true);
     setMouseOver(false);
     setLoaded(true);
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps

@@ -74,7 +74,7 @@ function PageAdventureZone() {
 
 
   AdventureMapView.propTypes = {
-    data: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
   };
 
   // test visualisation
