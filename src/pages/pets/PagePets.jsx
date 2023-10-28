@@ -6,9 +6,11 @@ import PageCore from '../core/PageCore';
 
 // Components
 import FlexList from '../../components/flexlist/FlexList';
-import GridCell from '../../components/grid/GridCell';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import PetCard from './PetCard';
+
+// MUI
+import Grid from '@mui/material/Unstable_Grid2';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -24,21 +26,17 @@ function PagePets() {
   
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.PETS} title="Pets" contentClasses={'pets'}>
-      <GridCell gridPosition='top-left'>
-        This is where like a big view would go
-      </GridCell>
-      <GridCell gridPosition='right-side'>
-        <FlexList headerElement={<h4>{"Owned Pets"}</h4>} mode="list" maxHeight={800} minHeight={400}>
-          <PetCard srcImg='./src/assets/bg-pets.png' name='Sister'/>
-          <PetCard srcImg='./src/assets/bg-pets.png' name='Brother'/>
-        </FlexList>
-      </GridCell>
-      <GridCell gridPosition='bottom-left'>
-        actions?
-      </GridCell>
-      <GridCell gridPosition='bottom-right'>
-        send out / dispatch / whatever
-      </GridCell>
+      <Grid container mobile={12} flexGrow={1}spacing={0.5}>
+        <Grid mobile={8}>
+          
+        </Grid>
+        <Grid mobile={4} maxHeight={600}>
+          <FlexList headerText="Owned Pets" mode="list">
+            <PetCard srcImg='./src/assets/bg-pets.png' name='Sister'/>
+            <PetCard srcImg='./src/assets/bg-pets.png' name='Brother'/>
+          </FlexList>
+        </Grid>
+      </Grid>
     </PageCore>
   )
 }

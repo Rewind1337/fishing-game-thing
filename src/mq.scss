@@ -1,0 +1,97 @@
+.show-mobile,
+.show-tablet-down, .show-tablet, .show-tablet-up,
+.show-desktop-down, .show-desktop, .show-desktop-up,
+.show-widescreen {display: none}
+
+.hide-mobile,
+.hide-tablet-down, .hide-tablet, .hide-tablet-up,
+.hide-desktop-down, .hide-desktop, .hide-desktop-up,
+.hide-widescreen {display: block}
+
+@media only screen and (min-width: 0px) and (max-width: 639px) {
+    #root {
+        min-width: 500px;
+    }
+
+    .show-mobile {display: block}
+    .show-tablet-down {display: block}
+    .show-desktop-down {display: block}
+
+    .hide-mobile {display: none}
+    .hide-tablet-down {display: none}
+    .hide-desktop-down {display: none}
+
+    #sidebar {
+        opacity: 0 !important;
+        transition: left 0.15s ease!important;
+
+        &.mobile.visible {
+            opacity: 1 !important;
+        }
+    }
+
+    .MuiDialog-container {
+        > .MuiPaper-root {
+            position: absolute;
+            bottom: 4% !important;
+            margin-top: 0 !important;
+            padding: 1% !important;
+            width: 99% !important;
+            min-width: 500px !important;
+        }
+    }
+}
+
+@media only screen and (min-width: 640px) and (max-width: 1023px) {
+    .show-tablet-down {display: block}
+    .show-tablet {display: block}
+    .show-tablet-up {display: block}
+    .show-desktop-down {display: block}
+
+    .hide-tablet-down {display: none}
+    .hide-tablet {display: none}
+    .hide-tablet-up {display: none}
+    .hide-desktop-down {display: none}
+    
+    #sidebar {
+        &.expanded {
+            width: 200px;
+        }
+    }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1599px) {
+    .show-tablet-up {display: block}
+    .show-desktop-down {display: block}
+    .show-desktop {display: block}
+    .show-desktop-up {display: block}
+
+    .hide-tablet-up {display: none}
+    .hide-desktop-down {display: none}
+    .hide-desktop {display: none}
+    .hide-desktop-up {display: none}
+}
+
+@media only screen and (min-width: 1600px) {
+    .show-tablet-up {display: block}
+    .show-desktop-up {display: block}
+    .show-widescreen {display: block}
+
+    .hide-tablet-up {display: none}
+    .hide-desktop-up {display: none}
+    .hide-widescreen {display: none}
+    
+    #sidebar {
+        &.expanded {
+            width: 400px;
+        }
+    }
+
+    .MuiDialog-container {
+        > .MuiPaper-root {
+            padding: 1% !important;
+            min-width: 600px !important;
+            max-width: 1600px !important;
+        }
+    }
+}

@@ -1,9 +1,9 @@
-
-
 .picker-dialog {
+    z-index: 11000 !important;
     > .MuiDialog-container {
+        z-index: 11000 !important;
         > .MuiPaper-root {
-            top: -200px;
+            z-index: 11000 !important;
             padding: 16px;
             min-width: 600px;
             max-width: 1200px;
@@ -12,9 +12,11 @@
 }
 
 .basic-dialog {
+    z-index: 11000 !important;
     > .MuiDialog-container {
+        z-index: 11000 !important;
         > .MuiPaper-root {
-            top: -100px;
+            z-index: 11000 !important;
             padding: 32px;
             min-width: 600px;
             max-width: 1200px;

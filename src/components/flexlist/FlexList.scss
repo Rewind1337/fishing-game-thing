@@ -4,8 +4,6 @@
     padding-top: 1px;
     border-radius: 4px;
 
-    > * {border: 1px solid gray;}
-
     &-header {
         position: sticky;
         top: 0px;
@@ -18,25 +16,24 @@
         width: calc(100% - 2px);
         text-align: left;
         text-indent: 8px;
-        background-color: rgba(255, 255, 255, 0.15);
         margin: 1px 1px;
         white-space: nowrap;
     
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 4px !important;
-        /* visualisation, remove if not needed anymore */
-        border: 1px solid gray;
-        /* */
     }
 
     &-wrapper {
         padding-top: 1px;
         width: calc(100% - 1px);
         transition: height 0.5s ease;
+        border-radius: 4px !important;
     }
 
     &-list {
         flex-direction: column;
         flex-wrap: nowrap;
+        gap: 4px;
     
         > * {
             flex-basis: calc(100% - 2px);
@@ -50,6 +47,7 @@
     &-flex {
         flex-direction: row;
         flex-wrap: wrap;
+        gap: 4px;
     
         > * {
             width: calc(50% - 2px);
@@ -62,16 +60,6 @@
         flex-direction: row;
         justify-content: flex-start;
         width: 100%;
+        margin-bottom: 2px;
     }
-}
-
-.grid-scrolled .flexlist-header {
-    flex-basis: calc(100%);
-    width: calc(100%);
-    margin: 0px;
-    text-indent: 9px;
-
-    background-color: rgb(82, 82, 82);
-
-    transition: top 0.1s ease;
 }

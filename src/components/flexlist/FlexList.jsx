@@ -6,6 +6,7 @@ import useTranslation from '../../context/useTranslation'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState } from 'react';
+import { Paper } from '@mui/material';
 
 FlexList.propTypes = {
   id: PropTypes.string,
@@ -13,7 +14,7 @@ FlexList.propTypes = {
   dontTranslate: PropTypes.bool,
   collapsible: PropTypes.bool,
   noHeader: PropTypes.bool,
-  headerText: PropTypes.element,
+  headerText: PropTypes.string,
   mode: PropTypes.string.isRequired,
   minHeight: PropTypes.number,
   maxHeight: PropTypes.number,
@@ -33,29 +34,35 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, collapsible
   if (collapsible) {
     if (collapsed) {
       return (
-        <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
-          <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
-            <KeyboardArrowRightIcon/><h4>{headerText}</h4>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+          <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
+            <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
+              <KeyboardArrowRightIcon/><h4>{headerText}</h4>
+            </div>
           </div>
-        </div>
+        </Paper>
       );
     } else {
       return (
-        <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
-          <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
-            <KeyboardArrowDownIcon/><h4>{headerText}</h4>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+          <div id={id} className={"flexlist-wrapper " + mode + (collapsed ? ' collapsed' : ' expanded')}>
+            <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
+              <div onClick={() => {setCollapsed(!collapsed)}} className={"flexlist-header"} style={{marginTop: gap + "px", cursor: 'pointer'}}>
+                <KeyboardArrowDownIcon/><h4>{headerText}</h4>
+              </div>
+            </Paper>
+            <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
+              {children}
+            </div>
           </div>
-          <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
-            {children}
-          </div>
-        </div>
+        </Paper>
       );
     }
   }
 
   return (
     <div id={id} className={"flexlist-wrapper " + mode}>
-      {!noHeader && <div className={"flexlist-header"} style={{marginTop: gap + "px"}}><h4>{headerText}</h4></div>}
+      {!noHeader && <div className={"flexlist-header"} style={{marginTop: gap + "px", backgroundColor: 'rgba(0, 0, 0, 0.7)'}}><h4>{headerText}</h4></div>}
       <div className={"flexlist flexlist-" + mode} style={{minHeight: minHeight, maxHeight: maxHeight}}>
         {children}
       </div>

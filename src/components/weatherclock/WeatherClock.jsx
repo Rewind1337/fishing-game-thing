@@ -69,7 +69,6 @@ function WeatherClock() {
         W:{currentWeather.current.toFixed(5)} &nbsp; &nbsp; &nbsp; TOD:{currentTimeOfDay.current.toFixed(5)}
       </div>
       <div className="weather-bar">
-        <div id="weather-bar-dongle" style={{position: 'fixed', left: (currentWeather.current * 300) + "px", top: "85px", backgroundColor: 'white', width: "3.5px", height: "15px"}}></div>
         
         <FontAwesomeIcon style={{height: '20px', position: 'relative', top: '5px', left: '-39px'}} className={iconClasses} icon={faCloudBolt} />
         <FontAwesomeIcon style={{height: '20px', position: 'relative', top: '5px', left: '-26px'}} className={iconClasses} icon={faCloudSunRain} />

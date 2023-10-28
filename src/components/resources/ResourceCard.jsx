@@ -7,6 +7,7 @@ import './resource.scss';
 
 ResourceCard.propTypes = {
   icon: PropTypes.object.isRequired,
+  collection: PropTypes.bool,
   langpath: PropTypes.string,
   dontTranslate: PropTypes.bool,
   iconcolor: PropTypes.string,
@@ -18,17 +19,11 @@ ResourceCard.propTypes = {
   paperBorder: PropTypes.bool,
 };
   
-function ResourceCard({icon, dontTranslate = false, langpath = "resources", iconcolor, height, name, value, cap, perSec, paperBorder}) {
+function ResourceCard({icon, collection, dontTranslate = false, langpath = "resources", iconcolor, height, name, value, cap, perSec}) {
   name = useTranslation(langpath, name, dontTranslate);
-  
-  const paperSX = {
-    backgroundColor: 'rgba(0, 0, 0, 0.0)', 
-    height: height,
-    borderLeft: (paperBorder ? '1px solid rgba(255, 255, 255, 0.3)': '')
-  }
 
   return (
-  <Paper title={name} elevation={1} sx={paperSX} className="resource-card">
+  <Paper title={name} elevation={1} sx={{backgroundColor: (collection ? 'rgba(0, 0, 0, 0.55)' : 'rgba(0, 0, 0, 0.4)'),  height: height}} className="resource-card">
     <div className="resource-card-icon" style={{color: iconcolor}}>{icon}</div>
     <div className="resource-card-name">{name}</div>
     <div className="resource-card-value">{value}{(cap ? ' / ' + cap : '')}</div>
