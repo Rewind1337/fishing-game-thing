@@ -9,7 +9,6 @@ import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import ResourceCard from '../../components/resources/ResourceCard';
-import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 import MilestoneCard from './MilestoneCard';
 import AspectCard from './AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
@@ -26,7 +25,7 @@ import { faFish, faWorm, faHurricane } from '@fortawesome/free-solid-svg-icons';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 import aspectHook from '../../utility/aspectHook';  // eslint-disable-line no-unused-vars
-import getFishingCollection from '../inventory/getFishingCollection';
+import FishCollection from '../inventory/FishCollection';
 
 // CSS Styles
 import './Queen.scss'
@@ -133,13 +132,11 @@ function PageQueen() {
       <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} effect={'aaa'} />
     </FlexList>
   );
-  
-  const fishCollection = getFishingCollection(resources);
 
   const resourceList = (
     <FlexList collapsible headerText={"All Resources"} mode="list">
       <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
-      <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+      <FishCollection resources={resources}/>
     </FlexList>
   );
 
@@ -168,23 +165,23 @@ function PageQueen() {
       <SacrificeModal options={pickerOptions} header="Sacrifice Fish Picker" open={pickerModalOpen} onClose={handlePickerClose}/>
 
       <Grid container mobile={12} flexGrow={1} spacing={0.5}>
-        <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} overflow={"auto"}>
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} flexGrow={1} overflow={"auto"}>
           {resourceList}
         </Grid>
-        <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} overflow={"auto"}>
+        <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} flexGrow={1} overflow={"auto"}>
           {resourceList}
           {aspectList}
         </Grid>
-        <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} overflow={"auto"}>
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} flexGrow={1} overflow={"auto"}>
           {aspectList}
         </Grid>
-        <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} overflow={"auto"}>
+        <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} flexGrow={1} overflow={"auto"}>
           {milestoneProgress}
         </Grid>
-        <Grid mobile={6} desktop={6} maxHeight={{mobile: 300, desktop: 325}} overflow={"auto"}>
+        <Grid mobile={6} desktop={6} maxHeight={{mobile: 300, desktop: 325}} flexGrow={1} overflow={"auto"}>
           {milestoneList}
         </Grid>
-        <Grid className="hide-tablet-down show-desktop-up" desktop={6} widescreen={6} maxHeight={{mobile: 300, desktop: 325}} spacing={0.5}>
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} widescreen={6} maxHeight={{mobile: 300, desktop: 325}} flexGrow={1} spacing={0.5}>
           {milestoneProgress}
         </Grid>
       </Grid>

@@ -176,23 +176,6 @@ a {text-decoration: none; color: $text-light;}
 
 .MuiPaper-root, .MuiStack-root {margin: 0 auto;}
 
-.MuiCircularProgress-root {
-    margin: 4px;
-    margin-bottom: 0px;
-    border-radius: 50%;
-    background-color: $border-dark;
-    border: 1px solid $border-light;
-}
-
-.MuiLinearProgress-bar {
-    transition: transform 0.5s linear !important;
-}
-
-.MuiCircularProgress-indeterminate > .MuiCircularProgress-svg > circle {
-    animation: none !important;
-}
-
-
 .unicode {
     width: 36px;
     display: grid;

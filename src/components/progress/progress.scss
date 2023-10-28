@@ -1,4 +1,22 @@
+@import './../../variables.scss';
+
 .MuiCircularProgress-circle {transition: stroke-dashoffset 0.5s linear !important;}
+
+.MuiCircularProgress-root {
+    margin: 4px;
+    margin-bottom: 0px;
+    border-radius: 50%;
+    background-color: $border-dark;
+    border: 1px solid $border-light;
+}
+
+.MuiLinearProgress-bar {
+    transition: transform 0.1s linear !important;
+}
+
+.MuiCircularProgress-indeterminate > .MuiCircularProgress-svg > circle {
+    animation: none !important;
+}
 
 @for $i from 1 through 9 {
     .MuiCircularProgress-indeterminate.anim-segments-#{$i} > svg > circle {stroke-dasharray: calc(60px / $i), calc(60px / $i);}

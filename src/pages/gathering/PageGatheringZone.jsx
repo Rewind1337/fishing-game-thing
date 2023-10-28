@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import ResourceCard from '../../components/resources/ResourceCard';
-import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
 import GatheringModule from './GatheringModule';
 import BasicModal from '../../components/modal/BasicModal';
 import Unicode from '../../components/Unicode'
@@ -19,13 +18,13 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoreHole, faFish, faFloppyDisk, faSeedling, faWorm } from '@fortawesome/free-solid-svg-icons';
+import { faBoreHole, faFloppyDisk, faSeedling, faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import aspectHook from '../../utility/aspectHook';
-import getFishingCollection from '../inventory/getFishingCollection';
+import FishCollection from '../inventory/FishCollection';
 
 // CSS Styles
 import './Gathering.scss'
@@ -46,7 +45,10 @@ function PageGatheringZone() {
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
   const [canCollectWorms, setCanCollectWorms] = useState(false);
-  const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED) // 1 per tick
+
+  let getWormSpeed = function() {return (1 + aspects.wormPower < 5 ? 1 + aspects.wormPower : 5);};
+  
+  const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED * getWormSpeed()) // 1 per tick
   let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
   const autoDiggingWormsUnlocked = false;
 
@@ -103,28 +105,11 @@ function PageGatheringZone() {
     )
   }
 
-  // since this gets called everytime youclick the button, might aswell put the logic for updating the speed in here too
-  let getWormSpeed = function() {
-    let speedModifier = 1 + aspects.wormPower;
-    speedModifier = (speedModifier < 5 ? speedModifier : 5); // why cap it at all (lenny face) maybe have it be logarhithmic or something
-
-    return speedModifier;
-  };
-
   const startDiggingWorms = () => {
     setDiggingWorms(true)
-    
     let wormSpeed = getWormSpeed();
-    console.log(wormSpeed);
-    
-    /* 
-    this was not a state before and it was just using a constant 1 each tick. 
-    your time modifier thing is working , it just wasnt showing on the gathering loop
-    unsure if this is how you want it, but you need to set the progressPerTick for the thing to actually finish faster
-    */
     setWormProgressPerTick(1 * wormSpeed);
 
-    // since getWormTime() absolutely returns the correct "time", this should also just work
     _context.refs.sidebar['addBadgeTimer'](4, wormProgressMax / wormSpeed, 500);
   }
 
@@ -270,9 +255,6 @@ function PageGatheringZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fishCollection = getFishingCollection(resources);
-
-
   function SeedCard({ c, onClick }) {
     return (
       <Paper onClick={onClick} title={c} className='seed-card' elevation={1} sx={{ border: '1px solid rgba(255, 255, 255, 0.4)', backgroundColor: 'rgba(0, 0, 0, 0.1)', borderRadius: '4px', display: 'grid', alignItems: 'center' }}>
@@ -398,7 +380,7 @@ function PageGatheringZone() {
       <Grid mobile={12} tablet={6} desktop={4} maxHeight={{ mobile: 600, tablet: 800 }} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
-          <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+          <FishCollection resources={resources}/>
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
 

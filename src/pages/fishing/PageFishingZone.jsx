@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';  // eslint-disable-line no-unused-vars
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
 import ResourceCard from '../../components/resources/ResourceCard';
-import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
+import FishCollection from '../inventory/FishCollection';
 import FishingTripMap from './FishingTripMap';
 
 // MUI
@@ -19,13 +19,12 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
+import { faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import getFish from './getFish';
-import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
 import './Fishing.scss';
@@ -88,7 +87,7 @@ function PageFishingZone() {
       let dayTime = 0.85;
 
       let modifiers = {'bait':1};
-      // let modifiers = {'bait':1, 'homeUnlocks':['wailer']};
+      modifiers = {'bait':1, 'homeUnlocks':['wailer']};
 
       let caughtFish = getFish(location, dayTime, modifiers);
 
@@ -200,8 +199,6 @@ function PageFishingZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fishCollection = getFishingCollection(resources);
-
   const handleFishingButtonClick = (onTrip) => {
     (isFishing ? attemptCatch(onTrip) : startFishing(onTrip));
   }
@@ -219,7 +216,7 @@ function PageFishingZone() {
       <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
-          <ResourceCollectionCard collection={fishCollection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+          <FishCollection resources={resources}/>
         </FlexList>
       </Grid>
       <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0}>
