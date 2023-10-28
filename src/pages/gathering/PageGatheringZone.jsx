@@ -164,6 +164,8 @@ function PageGatheringZone() {
   }
 
   const pageTick = () => {
+    _context.refs.sidebar['clearBadgeDataFor'](4);
+    
     if (isDiggingWorms == true) {
       setWormProgress((old) => (old >= (wormProgressMax - 1) ? wormProgressMax : old + wormProgressPerTick));
       if (wormProgress >= wormProgressMax - 1) {
@@ -188,7 +190,6 @@ function PageGatheringZone() {
 
   // Tick Interval for page loop
   useEffect(() => {
-    _context.refs.sidebar['clearBadgeDataFor'](4);
     const timer = setInterval(pageTick, 500);
     return () => {
       clearInterval(timer);

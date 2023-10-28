@@ -87,13 +87,17 @@ function Sidebar() {
       
       let changedSidebarBadgeData = sidebarBadgeData;
 
-      let changedBadgeData = allBadgeData
+      let changedBadgeData = allBadgeData;
+      let didChange = false;
+
       for (let key in allBadgeData) {
         let pageData = allBadgeData[key]
         for (let d in pageData) {
-          if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1);}
+          if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1); didChange = true;}
         }
-        changedSidebarBadgeData[page] = changedBadgeData[key].length;
+        if (didChange) {
+          changedSidebarBadgeData[page] = changedBadgeData[key].length;
+        }
       }
       
       localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
@@ -107,6 +111,8 @@ function Sidebar() {
       singlePageCheck = false;
     }
 
+    let newData = sidebarBadgeData;
+
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
       if (singlePageCheck) {
@@ -119,12 +125,10 @@ function Sidebar() {
           }
         }
 
-        let newData = sidebarBadgeData
         newData[page] = n;
         setSidebarBadgeData(newData);
 
       } else {
-        let newData = sidebarBadgeData
         for (let key in allBadgeData) {
           let n = 0;
           let thePage = key;
@@ -134,7 +138,7 @@ function Sidebar() {
               n++;
             }
           }
-          newData[thePage] = n;
+          newData[pageNameMap.indexOf(thePage)] = n;
         }
         setSidebarBadgeData(newData);
       }
