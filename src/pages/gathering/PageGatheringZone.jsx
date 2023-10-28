@@ -24,6 +24,8 @@ import { faBoreHole, faFish, faFloppyDisk, faSeedling, faWorm } from '@fortaweso
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
+import aspectHook from '../../utility/aspectHook';
+import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
 import './Gathering.scss'
@@ -33,15 +35,18 @@ import CircularProgressWithLabel from '../../components/progress/CircularProgres
 // Route: "/gathering"
 function PageGatheringZone() {
 
-  const _context = useContext(SaveContext)
-  let _allTimeStamps = useRef(_context.save.pageTimestamps)
+  const _context = useContext(SaveContext);
+  let _allTimeStamps = useRef(_context.save.pageTimestamps);
+  let localTimestamp = useRef(Date.now());
+  let ticksDone = useRef(0);
 
-  const [resources, setResources] = useState(resourceHook(_context))
+  const [resources, setResources] = useState(resourceHook(_context));
+  const [aspects, setAspects] = useState(aspectHook(_context));
 
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
   const [canCollectWorms, setCanCollectWorms] = useState(false);
-  let wormProgressPerTick = GLOBALS.GATHERING.WORMDIG.SPEED // 1 per tick
+  const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED) // 1 per tick
   let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
   const autoDiggingWormsUnlocked = false;
 
@@ -98,16 +103,35 @@ function PageGatheringZone() {
     )
   }
 
+  // since this gets called everytime youclick the button, might aswell put the logic for updating the speed in here too
+  let getWormSpeed = function() {
+    let speedModifier = 1 + aspects.wormPower;
+    speedModifier = (speedModifier < 5 ? speedModifier : 5); // why cap it at all (lenny face) maybe have it be logarhithmic or something
+
+    return speedModifier;
+  };
+
   const startDiggingWorms = () => {
     setDiggingWorms(true)
+    
+    let wormSpeed = getWormSpeed();
+    console.log(wormSpeed);
+    
+    /* 
+    this was not a state before and it was just using a constant 1 each tick. 
+    your time modifier thing is working , it just wasnt showing on the gathering loop
+    unsure if this is how you want it, but you need to set the progressPerTick for the thing to actually finish faster
+    */
+    setWormProgressPerTick(1 * wormSpeed);
 
-    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.WORMDIG.TIME, 500);
+    // since getWormTime() absolutely returns the correct "time", this should also just work
+    _context.refs.sidebar['addBadgeTimer'](4, wormProgressMax / wormSpeed, 500);
   }
 
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
-      let randomGain = 1 + ~~(Math.random() * 3);
-      setResources(r => ({ ...r, worms: r.worms + randomGain }));
+      let randomGain = 1 + ~~(Math.sqrt(aspects.wormPower) + Math.random() * 2 * (1 + Math.sqrt(aspects.wormPower / 10)));
+      setResources(r => ({...r, worms: r.worms + randomGain}));
       setDiggingWorms(false)
       setCanCollectWorms(false)
       setWormProgress(0)
@@ -166,22 +190,48 @@ function PageGatheringZone() {
   const pageTick = () => {
     _context.refs.sidebar['clearBadgeDataFor'](4);
     
+    let currentTime = Date.now();
+    let deltaTime = currentTime - localTimestamp.current;
+
+    if (ticksDone.current.isNaN) {ticksDone = 0;}
+
+    // console.log("Ticks Done", ticksDone.current);
+    // console.log("PageTick Drift", deltaTime - 500);
+
+    /*
+    // Discreet Version
+    let ticksToDo = ~~((deltaTime + 100) / 500);
+    localTimestamp.current = localTimestamp.current + ticksToDo * 500;
+
+    updateTick(ticksToDo);
+    ticksDone.current += ticksToDo;
+    */
+
+    // Fractional Ticks Version
+    let ticksToDo = deltaTime / 500;
+    localTimestamp.current = localTimestamp.current + deltaTime;
+    updateTick(ticksToDo);
+
+    ticksDone.current += ticksToDo;
+  }
+
+  const updateTick = (ticks) => {
     if (isDiggingWorms == true) {
-      setWormProgress((old) => (old >= (wormProgressMax - 1) ? wormProgressMax : old + wormProgressPerTick));
+      setWormProgress((old) => (old >= (wormProgressMax - 1) ? wormProgressMax : old + wormProgressPerTick * ticks));
       if (wormProgress >= wormProgressMax - 1) {
         setCanCollectWorms(true)
       }
     }
 
     if (isDiggingArtifacts == true) {
-      setArtifactProgress((old) => (old >= (artifactProgressMax - 1) ? artifactProgressMax : old + artifactProgressPerTick));
+      setArtifactProgress((old) => (old >= (artifactProgressMax - 1) ? artifactProgressMax : old + artifactProgressPerTick * ticks));
       if (artifactProgress >= artifactProgressMax - 1) {
         setCanCollectArtifacts(true)
       }
     }
 
     if (isMining == true) {
-      setMiningProgress((old) => (old >= (miningProgressMax - 1) ? miningProgressMax : old + miningProgressPerTick));
+      setMiningProgress((old) => (old >= (miningProgressMax - 1) ? miningProgressMax : old + miningProgressPerTick * ticks));
       if (miningProgress >= miningProgressMax - 1) {
         setCanCollectMining(true)
       }
@@ -190,9 +240,10 @@ function PageGatheringZone() {
 
   // Tick Interval for page loop
   useEffect(() => {
-    const timer = setInterval(pageTick, 500);
+    let tickTimer = setInterval(pageTick, 500);
+    
     return () => {
-      clearInterval(timer);
+      clearInterval(tickTimer);
     };
 
   }, [wormProgress, artifactProgress, miningProgress, resources, isDiggingWorms, isDiggingArtifacts, isMining]);  // eslint-disable-line react-hooks/exhaustive-deps
@@ -209,12 +260,8 @@ function PageGatheringZone() {
     let flooredToSec = ~~(deltaTimeInMs / 500);
     let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
 
-    for (let i = 0; i < cappedToMaxTicks; i++) {
-      if (isDiggingWorms || isDiggingArtifacts || isMining) {
-        pageTick();
-      }
-    }
-
+    updateTick(cappedToMaxTicks);
+    
     contextSave();
   }, [])
 
@@ -223,16 +270,7 @@ function PageGatheringZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fishCollection = [
-    {
-      icon: <FontAwesomeIcon icon={faFish} />,
-      iconcolor: 'hsl(235deg, 100%, 90%)',
-      name: 'Fish',
-      value: resources.fish,
-      cap: 0,
-      perSec: 0,
-    },
-  ]
+  const fishCollection = getFishingCollection(resources);
 
 
   function SeedCard({ c, onClick }) {

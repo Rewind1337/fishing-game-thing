@@ -117,7 +117,8 @@ function PageCore({pageID, title, contentClasses, children}) {
           <ActionButton color="inventory" variant="contained" text='Cheat' sx={{ height: "80%", width: "100%" }} func={() => {
             let oldSave = JSON.parse(localStorage.getItem("game-save"));
             oldSave.resources.worms = 1000;
-            oldSave.resources.fish = 1000;
+            oldSave.resources.fish += 1000;
+            oldSave.resources.fishes[0] += 1000;
             oldSave.resources.artifacts = 1000;
             let newSave = JSON.stringify(oldSave);
             localStorage.setItem("game-save", newSave);

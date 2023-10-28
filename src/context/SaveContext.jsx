@@ -24,6 +24,7 @@ let data = {
     save: {
         pageTimestamps: {},
         resources: {},
+        aspects: {},
         fishing: {},
         gathering: {},
         inventory: {},

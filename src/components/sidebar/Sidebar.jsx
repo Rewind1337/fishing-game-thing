@@ -62,7 +62,7 @@ function Sidebar() {
     let thePage = pageNameMap[page];
     
     let rightnow = Date.now();
-    let whenItFinishes = rightnow + (duration * pageTickSpeed)
+    let whenItFinishes = rightnow + (duration * pageTickSpeed);
 
     if (localStorage.getItem("badge-data") == undefined) {
       localStorage.setItem("badge-data", JSON.stringify({[thePage]: [whenItFinishes]}))
@@ -189,6 +189,22 @@ function Sidebar() {
       PropTypes.node
     ])
   };
+
+  function unlockSidebar(id, unlocked) {
+    let unlocks = _context.save.sidebar.unlocks;
+    unlocks[id] = unlocked;
+
+    let newSidebar = _context.save.sidebar;
+    newSidebar['unlocks'] = unlocks;
+    setSave({sidebar : newSidebar});
+    setSidebarUnlocks(unlocks);
+  }
+
+  useEffect(() => {
+    setRefs({sidebar : {'unlocker' : unlockSidebar}});
+    return () => {}
+  }, [])
+  
 
   function SidebarFolder({ id, isToggled, height = 0, text, flex, canToggle, children }) {
     const [visible, setVisible] = useState(isToggled);

@@ -25,15 +25,18 @@ import { faFish, faWorm } from '@fortawesome/free-solid-svg-icons';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import getFish from './getFish';
+import getFishingCollection from '../inventory/getFishingCollection';
 
 // CSS Styles
-import './Fishing.scss'
+import './Fishing.scss';
 
 // Route: "/fishing"
 function PageFishingZone() {
 
   const _context = useContext(SaveContext)
   let _allTimeStamps = useRef(_context.save.pageTimestamps)
+  let localTimestamp = useRef(Date.now());
+  let ticksDone = useRef(0);
 
   const [resources, setResources] = useState(resourceHook(_context))
 
@@ -79,17 +82,34 @@ function PageFishingZone() {
       // Only fishes at night right now.
       let toastText = "";
 
-      let caughtFish = getFish(0, 0, 1, 0.75);
+      // home
+      let location = [-1, 0];
+      
+      let dayTime = 0.85;
+
+      let modifiers = {'bait':1};
+      // let modifiers = {'bait':1, 'homeUnlocks':['wailer']};
+
+      let caughtFish = getFish(location, dayTime, modifiers);
+
       if (caughtFish.id >= 0) {
-        toastText = "Caught a(n): " + caughtFish.name;
+        let vowelN = (['aeiouy'].includes(caughtFish.name[0].toLowerCase()) ? "n" : "");
+        toastText = "Caught a"+vowelN+": " + caughtFish.name;
         setResources(r => ({...r, fish: r.fish + 1}));
+
+        let newFishes = resources.fishes;
+        newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
+        setResources(r => ({...r, fishes: r.fishes = newFishes}));
+
+        _context.refs.toastmanager['fireToast']("success", toastText);
+
       } else if (caughtFish.id == -1) {
         toastText = "Just a nibble.";
+        _context.refs.toastmanager['fireToast']("info", toastText);
       } else if (caughtFish.id <= -2) {
         toastText = "You broke the game, fish not found!";
+        _context.refs.toastmanager['fireToast']("error", toastText);
       }
-      
-      _context.refs.toastmanager['fireToast']("info", toastText);
     
       stopFishing();
 
@@ -120,11 +140,37 @@ function PageFishingZone() {
   }
   
   const pageTick = () => {
+    let currentTime = Date.now();
+    let deltaTime = currentTime - localTimestamp.current;
+
+    if (ticksDone.current.isNaN) {ticksDone = 0;}
+
+    // console.log("Ticks Done", ticksDone.current);
+    // console.log("PageTick Drift", deltaTime - 500);
+
+    /*
+    // Discreet Version
+    let ticksToDo = ~~((deltaTime + 100) / 500);
+    localTimestamp.current = localTimestamp.current + ticksToDo * 500;
+
+    updateTick(ticksToDo);
+    ticksDone.current += ticksToDo;
+    */
+
+    // Fractional Ticks Version
+    let ticksToDo = deltaTime / 500;
+    localTimestamp.current = localTimestamp.current + deltaTime;
+    updateTick(ticksToDo);
+
+    ticksDone.current += ticksToDo;
+  }
+
+  const updateTick = (ticks) => {
     if (isFishing == true) {
-      if (fishProgress >= fishProgressMax-1) {
+      if (fishProgress >= fishProgressMax - 1) {
         setFishing(false)
       }
-      setFishProgress((old) => (old >= (fishProgressMax-1) ? 0 : old + fishProgressPerTick));
+      setFishProgress((old) => (old >= (fishProgressMax - 1) ? 0 : old + fishProgressPerTick * ticks));
     }
   }
 
@@ -146,11 +192,7 @@ function PageFishingZone() {
     let flooredToSec = ~~(deltaTimeInMs / 500);
     let cappedToMaxTicks = Math.min(7200, flooredToSec) // * aspect stuff * other stuff
 
-    for (let i = 0; i < cappedToMaxTicks; i++) {
-      if (isFishing) {
-        pageTick();
-      }
-    }
+    updateTick(cappedToMaxTicks);
   }, [])
 
   // Save Variables to LS after tick
@@ -158,16 +200,7 @@ function PageFishingZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fishCollection = [
-    {
-      icon: <FontAwesomeIcon icon={faFish} />,
-      iconcolor: 'hsl(235deg, 100%, 90%)',
-      name: 'Fish',
-      value: resources.fish,
-      cap: 0,
-      perSec: 0,
-    },
-  ]
+  const fishCollection = getFishingCollection(resources);
 
   const handleFishingButtonClick = (onTrip) => {
     (isFishing ? attemptCatch(onTrip) : startFishing(onTrip));
