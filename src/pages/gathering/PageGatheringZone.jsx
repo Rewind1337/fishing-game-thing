@@ -216,7 +216,6 @@ function PageGatheringZone() {
     }
 
     contextSave();
-    _context.refs.sidebar['clearBadgeDataFor'](4);
   }, [])
 
   // Save Variables to LS after tick

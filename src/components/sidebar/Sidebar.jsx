@@ -51,14 +51,10 @@ function Sidebar() {
 
   const sidebarHeaderText = (mqMobile ? 'Game • Thing' : (mouseOver ? 'Game • Thing' : 'G • T'));
 
-  const savedFolderStates = _context.save.sidebar.states;
-  const [folderStates, setFolderStates] = useState(savedFolderStates);
+  const [folderStates, setFolderStates] = useState(_context.save.sidebar.states);
+  const [sidebarUnlocks, setSidebarUnlocks] = useState(_context.save.sidebar.unlocks);
 
-  const savedSidebarUnlocks = _context.save.sidebar.unlocks;
-  const [sidebarUnlocks, setSidebarUnlocks] = useState(savedSidebarUnlocks);
-
-  const savedSidebarBadgeData = _context.save.sidebar.sidebarBadgeData;
-  const [sidebarBadgeData, setSidebarBadgeData] = useState(savedSidebarBadgeData);
+  const [sidebarBadgeData, setSidebarBadgeData] = useState(_context.save.sidebar.sidebarBadgeData);
     
   let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
 
@@ -81,41 +77,49 @@ function Sidebar() {
     }
   }
 
-  const clearBadgeDataFor = (page) => {
+  const clearBadgeDataFor = (page = -1) => {
+    let singlePage = (page !== -1);
+
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      
       let changedSidebarBadgeData = sidebarBadgeData;
 
       let changedBadgeData = allBadgeData;
       let didChange = false;
 
-      for (let key in allBadgeData) {
-        let pageData = allBadgeData[key]
+      if (singlePage) {
+        let pageData = allBadgeData[pageNameMap[page]]
         for (let d in pageData) {
-          if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1); didChange = true;}
+          if (pageData[d] < Date.now()) {changedBadgeData[pageNameMap[page]].splice(d, 1); didChange = true;}
         }
         if (didChange) {
-          changedSidebarBadgeData[page] = changedBadgeData[key].length;
+          changedSidebarBadgeData[page] = changedBadgeData[pageNameMap[page]].length;
+        }
+      } else {
+        for (let key in allBadgeData) {
+          let pageData = allBadgeData[key]
+          for (let d in pageData) {
+            if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1); didChange = true;}
+          }
+          if (didChange) {
+            changedSidebarBadgeData[page] = changedBadgeData[key].length;
+          }
         }
       }
-      
+        
       localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
       setSidebarBadgeData(changedSidebarBadgeData);
     }
   }
 
-  const checkForBadgeData = (page) => {
-    let singlePageCheck = true;
-    if (page == undefined) {
-      singlePageCheck = false;
-    }
+  const checkForBadgeData = (page = -1) => {
+    let singlePage = (page !== -1);
 
     let newData = sidebarBadgeData;
 
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
-      if (singlePageCheck) {
+      if (singlePage) {
         let n = 0;
         let thePage = pageNameMap[page];
         let pageTimers = allBadgeData[thePage];

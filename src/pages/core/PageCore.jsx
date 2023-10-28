@@ -44,6 +44,10 @@ function PageCore({pageID, title, contentClasses, children}) {
     _lang.setLanguageFile(languageFile);
     setSelectedLanguage(languageFile.language)
   }
+
+  const coreTick = () => {
+    _context.refs.sidebar['checkForBadgeData'](pageID);
+  }
  
   useEffect(() => {
     console.log("mount", title)
@@ -61,8 +65,16 @@ function PageCore({pageID, title, contentClasses, children}) {
   }, [])
 
   useEffect(() => {
-    _context.refs.sidebar['checkForBadgeData']();
+    _context.refs.sidebar['checkForBadgeData'](pageID);
+    _context.refs.sidebar['clearBadgeDataFor'](pageID);
   })
+  
+  useEffect(() => {
+    const timer = setInterval(coreTick, 500);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [])
   
 
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
