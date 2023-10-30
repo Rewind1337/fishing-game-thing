@@ -30,14 +30,14 @@ function ActionButton({ sx = {}, dontTranslate = false, link, langpath = "button
 
     const handleClick = () => {func()}
 
-    const classes = 'actionbutton '
+    const classes = ('actionbutton ' + (onlyIcon ? 'icon-only ' : ''))
 
     if (variant == "contained") {
         sx.border = "1px solid white";
     }
 
     if (onlyIcon) {
-        return (<IconButton color={color} disabled={disabled} id={id} variant={variant} onClick={handleClick}>{icon}</IconButton>)
+        return (<IconButton sx={sx} color={color} disabled={disabled} id={id} variant={variant} className={classes} onClick={handleClick}>{icon}</IconButton>)
     }
 
     if (link) {

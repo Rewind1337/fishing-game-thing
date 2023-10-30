@@ -244,7 +244,7 @@ function PageFishingZone() {
         </Grid>
       </Grid>
       <Grid className="hide-tablet-down show-desktop-up" mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)', width: "100%"}}>
           <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
         </Paper>
       </Grid>
@@ -299,7 +299,7 @@ function PageFishingZone() {
       </Grid>
 
       <Grid className="show-tablet-down hide-desktop-up" mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
+        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)', width: "100%"}}>
           <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
         </Paper>
       </Grid>

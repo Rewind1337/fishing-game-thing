@@ -18,9 +18,22 @@
         text-indent: 8px;
         margin: 1px 1px;
         white-space: nowrap;
+
+        color: rgb(215, 215, 215);
+        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.2));
     
         border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 4px !important;
+
+        &-text {
+
+            &:hover {
+                color: rgb(255, 255, 255);
+                filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.66));
+            }
+        }
+
+        &-buttons {}
     }
 
     &-wrapper {
@@ -33,13 +46,12 @@
     &-list {
         flex-direction: column;
         flex-wrap: nowrap;
-        gap: 4px;
+        gap: 2px;
     
         > * {
             flex-basis: calc(100% - 2px);
             width: calc(100% - 2px);
             border-radius: 4px;
-            margin: 0px 1px;
             height: auto;
         }
     }
@@ -47,11 +59,11 @@
     &-flex {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 4px;
+        gap: 2px;
     
         > * {
             width: calc(50% - 2px);
-            margin: 0 1px;
+            flex-grow: 1;
         }
     }
 
@@ -64,7 +76,6 @@
     
         > * {
             width: min-content;
-            margin: 0 1px;
         }
     }
 

@@ -23,7 +23,7 @@ function ResourceCard({icon, collection, dontTranslate = false, langpath = "reso
   name = useTranslation(langpath, name, dontTranslate);
 
   return (
-  <Paper title={name} elevation={1} sx={{backgroundColor: (collection ? 'rgba(0, 0, 0, 0.55)' : 'rgba(0, 0, 0, 0.4)'),  height: height}} className="resource-card">
+  <Paper title={name} elevation={1} sx={{height: height}} className={("resource-card " + (collection ? 'collection ' : ''))}>
     <div className="resource-card-icon" style={{color: iconcolor}}>{icon}</div>
     <div className="resource-card-name">{name}</div>
     <div className="resource-card-value">{value}{(cap ? ' / ' + cap : '')}</div>

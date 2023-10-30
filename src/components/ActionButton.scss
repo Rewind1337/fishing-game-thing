@@ -23,6 +23,15 @@ button {
             outline-offset: 3px;
             outline: 3px solid rgba(255, 255, 255, 0.8);
         }
+
+        &.icon-only {
+            display: grid;
+            align-items: center;
+            height: 40px;
+            width: 40px;
+            padding: 2px;
+            border-radius: 50%;
+        }
     }
 }
 

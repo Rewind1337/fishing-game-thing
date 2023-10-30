@@ -1,10 +1,16 @@
 .resource-card {
     display: flex;
     flex-direction: row;
-    width: calc(100% - 2px);
     height: auto;
     padding: 2px;
     border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.4) !important;
+
+    &.collection {
+        margin: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
 
     * {
         align-self: center;
@@ -49,6 +55,6 @@
     }
 }
 
-.resource-collection-card-header:hover, .flexlist-header:hover {
+.resource-collection-card-header:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }

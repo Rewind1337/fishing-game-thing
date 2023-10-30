@@ -3,7 +3,6 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import SaveContext from '../../context/SaveContext';
 import GLOBALS from '../../globals/Globals';
 import PageCore from '../core/PageCore';
-import PropTypes from 'prop-types';
 
 // Components
 import FlexList from '../../components/flexlist/FlexList';
@@ -11,14 +10,13 @@ import ActionButton from '../../components/ActionButton';  // eslint-disable-lin
 import ResourceCard from '../../components/resources/ResourceCard';
 import GatheringModule from './GatheringModule';
 import BasicModal from '../../components/modal/BasicModal';
-import Unicode from '../../components/Unicode'
 
 // MUI 
 import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoreHole, faFloppyDisk, faSeedling, faWorm } from '@fortawesome/free-solid-svg-icons';
+import { faBoreHole, faFloppyDisk, faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -28,8 +26,6 @@ import FishCollection from '../inventory/FishCollection';
 
 // CSS Styles
 import './Gathering.scss'
-import { Paper } from '@mui/material';
-import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -40,7 +36,7 @@ function PageGatheringZone() {
   let ticksDone = useRef(0);
 
   const [resources, setResources] = useState(resourceHook(_context));
-  const [aspects, setAspects] = useState(aspectHook(_context));
+  const [aspects, ] = useState(aspectHook(_context));
 
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
@@ -255,152 +251,33 @@ function PageGatheringZone() {
     contextSave();
   }, [pageTick])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  function SeedCard({ c, onClick }) {
-    return (
-      <Paper onClick={onClick} title={c} className='seed-card' elevation={1} sx={{ border: '1px solid rgba(255, 255, 255, 0.4)', backgroundColor: 'rgba(0, 0, 0, 0.1)', borderRadius: '4px', display: 'grid', alignItems: 'center' }}>
-        <Unicode c={c} color="pink"></Unicode>
-      </Paper>);
-  }
-
-  SeedCard.propTypes = {
-    c: PropTypes.string,
-    onClick: PropTypes.func,
-  }
-
-  function FarmCell({row, col, selectedSeed, setGridRowCol}) {
-
-    const [cropState, setCropState] = useState({active: false, id: 0, name: "Test Seed"})
-
-    return (<div className='farm-cell'>
-      {cropState.active && <>
-        <div className='farm-cell-name'>{cropState.name}</div>
-        <div className='farm-cell-progress'>
-          <CircularProgressWithLabel fontSize='12px' iconOffsetTop="-15%" iconSize="12px" textOffsetTop="40%" icon={<FontAwesomeIcon icon={faSeedling} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
-        </div>
-        <div className='farm-cell-buttons' style={{display: "flex"}}>
-          <ActionButton color='queen' text={"Uproot"} variant='text'></ActionButton>
-          <ActionButton color='gathering' text={"Collect"} variant='text'></ActionButton>
-        </div>
-      </>}
-      {(!cropState.active && selectedSeed.current == -1) && <>
-        <div className='farm-cell-name'>No Seed</div>
-      </>}
-      {(!cropState.active && selectedSeed.current != -1) && <>
-        <div className='farm-cell-name hover-effect'>Click to Plant</div>
-      </>}
-    </div>);
-  }
-  
-  FarmCell.propTypes = {
-    row: PropTypes.number.isRequired,
-    col: PropTypes.number.isRequired,
-    selectedSeed: PropTypes.number.isRequired,
-    setGridRowCol: PropTypes.func.isRequired,
-  }
-
-  function FarmGrid({width, height, grid, selectedSeed, setGridFull, setGridRowCol}) {
-    const buildGrid = () => {
-      let _grid = [];
-      let n = 0;
-      for (let i = 0; i < height; i++) {
-        _grid.push([])
-        for (let j = 0; j < width; j++, n++) {
-          _grid[i].push(n)
-        }
-      }
-      setGridFull(_grid);
-    }
-
-    useEffect(() => {
-      buildGrid();
-    }, [])
-
-    return (
-      <Grid container mobile={12}>
-        {grid.map((el, row) => {
-          return (
-            <Grid container key={row} mobile={12} minHeight={300 / height}>
-              {el.map((el, col) => {
-                return (
-                  <Grid container key={col} mobile={"auto"} flexGrow={1} justifyContent={"center"}>
-                    <FarmCell row={row} col={col} selectedSeed={selectedSeed} setGridRowCol={setGridRowCol}/>
-                  </Grid>
-              )})}
-            </Grid>
-        )})}
-      </Grid>
-    );
-  }
-
-  FarmGrid.propTypes = {
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    grid: PropTypes.array.isRequired,
-    selectedSeed: PropTypes.number.isRequired,
-    setGridFull: PropTypes.func.isRequired,
-    setGridRowCol: PropTypes.func.isRequired,
-  }
-
-  function FarmModule() {
-    const selectedSeed = useRef(-1)
-    const [grid, setGridFull] = useState([])
-    const setGridRowCol = (row, col, data) => {
-      let changedGrid = grid;
-      changedGrid[row][col] = data;
-      setGridFull(changedGrid)
-    }
-
-    return (
-      <>
-        <Grid mobile={12} width={"100%"} paddingLeft={0} marginTop={1}>
-          <Paper elevation={1} sx={{ width: "100%", border: '1px solid rgba(255, 255, 255, 0.5)', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}>
-            <FlexList mode='compact' collapsible headerText='Seeds'>
-              <SeedCard c="0" onClick={() => {selectedSeed.current = 0}} />
-              <SeedCard c="1" onClick={() => {selectedSeed.current = 1}}  />
-              <SeedCard c="2" onClick={() => {selectedSeed.current = 2}}  />
-              <SeedCard c="3" onClick={() => {selectedSeed.current = 3}}  />
-            </FlexList>
-          </Paper>
-        </Grid>
-
-        <Grid mobile={12} width={"100%"} paddingLeft={0}>
-          <Paper elevation={1} sx={{ border: '1px solid rgba(255, 255, 255, 0.5)', backgroundColor: 'rgba(0, 0, 0, 0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center' }}>
-            <FarmGrid width={2} height={1} grid={grid} selectedSeed={selectedSeed} setGridFull={setGridFull} setGridRowCol={setGridRowCol}></FarmGrid>
-          </Paper>
-        </Grid>
-      </>
-    )
-  }
-
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.GATHERING} title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
 
       <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
 
       <Grid mobile={12} tablet={6} desktop={4} maxHeight={{ mobile: 600, tablet: 800 }} overflow={"auto"}>
-        <FlexList collapsible headerText={"All Resources"} mode="list">
+        <FlexList collapsible switchable headerText={"All Resources"} mode="list">
           <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
           <FishCollection resources={resources}/>
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
 
         <Grid className="hide-mobile show-tablet-up" container mobile={12} tablet={6} desktop={6} maxHeight={{ mobile: 200, tablet: 400 }} overflow={"auto"}>
-          {/*
-          <FarmModule/>
-          */}
+          {/* Farm would go here*/}
         </Grid>
 
       </Grid>
 
       <Grid container mobile={"auto"} tablet={6} desktop={8} maxHeight={{ mobile: 400, tablet: 600 }} overflow={"auto"} sx={{ flexGrow: '1' }} spacing={0.5}>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={3} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm} />} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms} />
+          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm} />} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms} />
         </Grid>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule isUnlocked={isArtifactsUnlocked} header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={faFloppyDisk} />} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts} />
+          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isArtifactsUnlocked} header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={faFloppyDisk} />} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts} />
         </Grid>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule isUnlocked={isMiningUnlocked} header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={faBoreHole} />} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining} />
+          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isMiningUnlocked} header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={faBoreHole} />} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining} />
         </Grid>
       </Grid>
 
