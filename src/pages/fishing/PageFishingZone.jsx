@@ -70,7 +70,7 @@ function PageFishingZone() {
       _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
       return;
     }
-    if (resourceHook.worms <= multiCatch) {
+    if (resources.worms <= multiCatch) {
       _context.refs.toastmanager['fireToast']("warning", "You dont have enough Worms for this hook!");
       return;
     }

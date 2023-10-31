@@ -451,7 +451,7 @@ const GLOBALS = {
             {
                 id: 2,
                 name: "Splithook",
-                multiCatch: 4,
+                multiCatch: 1,
                 fishingBarColor: genericHookBarColor,
                 canCatch: genericHookCanCatch,
             },
