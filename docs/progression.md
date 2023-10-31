@@ -1,18 +1,21 @@
 # Progression Notes
 
-### Tabs and how to unlock
+## Tabs and how to unlock
+
 0. Home : unlocked from the beginning
 1. Gathering : unlocked from the beginning
 2. Fishing : collecting worms once
 3. Queen : Milestone 1 : Fishing Trips
 4. Pets : Finding any Pet : (Fishing Trips, Gathering, Encounters)
 
-### Fishing Locations and how to unlock
+## Fishing Locations and how to unlock
+
 1. Local Water Hole : unlocked after catching a few fish
 2. Next Location : does not exist
 
-### Flow Chart
-```
+## Flow Chart
+
+```txt
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
                                                                                                               │
                       wormloop                                                                                │

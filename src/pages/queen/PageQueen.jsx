@@ -8,7 +8,6 @@ import PageCore from '../core/PageCore';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
-import ResourceCard from '../../components/resources/ResourceCard';
 import MilestoneCard from './MilestoneCard';
 import AspectCard from './AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
@@ -19,16 +18,17 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish, faWorm, faHurricane } from '@fortawesome/free-solid-svg-icons';
+import { faFish, faHurricane } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 import aspectHook from '../../utility/aspectHook';  // eslint-disable-line no-unused-vars
-import FishCollection from '../inventory/FishCollection';
+import FishCollection from '../../components/resources/FishCollection';
 
 // CSS Styles
 import './Queen.scss'
+import BaitCollection from '../../components/resources/BaitCollection';
 
 // Route: "/queen"
 function PageQueen() {
@@ -75,10 +75,6 @@ function PageQueen() {
     let amount = input.amount;
     let fishID = input.value;
     if (resources.fishes[fishID] >= amount) {
-      let newFishes = resources.fishes;
-      newFishes[fishID] -= 1 * amount;
-      setResources(r => ({...r, fishes: r.fishes = newFishes}));
-      
       let fishData = GLOBALS.DB.FISH[fishID];
 
       let rarityTable = [1,3,7,15,30];
@@ -93,7 +89,14 @@ function PageQueen() {
       }
       setAspects(newAspects);
 
-      setResources(r => ({...r, fish: r.fish - (1 * amount), worms: r.worms + (fishWorms * amount)}));
+      // remove fish
+      let newFishes = resources.fishes;
+      newFishes[fishID] = newFishes[fishID] - (1 * amount);
+      // add worms
+      let newBait = resources.bait;
+      newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + (fishWorms * amount);
+      setResources(r => ({...r, fishes: r.fishes = newFishes}));
+
       _context.refs.toastmanager['fireToast']("success", "Yum!");
     }
   };
@@ -135,7 +138,7 @@ function PageQueen() {
 
   const resourceList = (
     <FlexList collapsible headerText={"All Resources"} mode="list">
-      <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
+      <BaitCollection resources={resources}/>
       <FishCollection resources={resources}/>
     </FlexList>
   );

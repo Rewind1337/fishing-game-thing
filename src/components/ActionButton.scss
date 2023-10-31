@@ -1,6 +1,6 @@
 button {
     &.actionbutton {
-        display: block;
+        display: flex;
         border-radius: 4px;
         width: 100%;
         padding: 4px 6px;
@@ -22,6 +22,7 @@ button {
         &:hover {
             outline-offset: 3px;
             outline: 3px solid rgba(255, 255, 255, 0.8);
+            z-index: 10000;
         }
 
         &.icon-only {

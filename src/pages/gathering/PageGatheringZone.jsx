@@ -22,10 +22,11 @@ import { faBoreHole, faFloppyDisk, faWorm } from '@fortawesome/free-solid-svg-ic
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import aspectHook from '../../utility/aspectHook';
-import FishCollection from '../inventory/FishCollection';
+import FishCollection from '../../components/resources/FishCollection';
 
 // CSS Styles
 import './Gathering.scss'
+import BaitCollection from '../../components/resources/BaitCollection';
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -112,7 +113,9 @@ function PageGatheringZone() {
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
       let randomGain = 1 + ~~(Math.sqrt(aspects.wormPower) + Math.random() * 2 * (1 + Math.sqrt(aspects.wormPower / 10)));
-      setResources(r => ({...r, worms: r.worms + randomGain}));
+      let newBait = resources.bait;
+      newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + randomGain || randomGain;
+      setResources(r => ({...r, bait: newBait}));
       setDiggingWorms(false)
       setCanCollectWorms(false)
       setWormProgress(0)
@@ -124,7 +127,7 @@ function PageGatheringZone() {
         handleModalOpen();
       }
 
-      if (resources.worms >= 15) { setArtifactsUnlocked(true) }
+      if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] >= 15) { setArtifactsUnlocked(true) }
 
       if (_context.save.sidebar.unlocks[3] == false) {
         let modifiedUnlocks = _context.save.sidebar.unlocks;
@@ -258,7 +261,7 @@ function PageGatheringZone() {
 
       <Grid mobile={12} tablet={6} desktop={4} maxHeight={{ mobile: 600, tablet: 800 }} overflow={"auto"}>
         <FlexList collapsible switchable headerText={"All Resources"} mode="list">
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
+          <BaitCollection resources={resources}/>
           <FishCollection resources={resources}/>
           {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
