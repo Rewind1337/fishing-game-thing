@@ -16,7 +16,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoreHole, faFloppyDisk, faWorm } from '@fortawesome/free-solid-svg-icons';
+import { faBoreHole, faFloppyDisk, faHeart, faLocust, faMagnifyingGlass, faTriangleExclamation, faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -39,6 +39,7 @@ function PageGatheringZone() {
 
   const [resources, setResources] = useState(resourceHook(_context));
   const [aspects, ] = useState(aspectHook(_context));
+  const [pets, setPets] = useState(_context.save.pets || []);
 
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
@@ -67,18 +68,72 @@ function PageGatheringZone() {
   const autoMiningUnlocked = false;
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalIcon, setModalIcon] = useState(<FontAwesomeIcon icon={faWorm} />);
-  const [modalText, setModalText] = useState("This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long This is the default value, please enjoy this value while it is on screen, as it may not live very long");
+  const [modalIcon, setModalIcon] = useState(<></>);
   const [modalHeader, setModalHeader] = useState("Cool header hehe");
+  const [modalText, setModalText] = useState("This is the default value, please enjoy this value while it is on screen");
 
-  const generateModalContent = () => {
-    setModalIcon(modalIcon);
-    setModalText(modalText);
-    setModalHeader(modalHeader);
+  const getValidEncounters = (source) => {
+    let validEncounters = [];
+    for (let i in GLOBALS.DB.GATHERING.ENCOUNTERS) {
+      let encounter = GLOBALS.DB.GATHERING.ENCOUNTERS[i];
+      if (encounter.source == source || encounter.source == GLOBALS.ENUMS.GATHERINGTYPES.ALL) {
+        if (encounter.type == GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_PET) {
+          if (!pets.includes(encounter.reward)) {
+            validEncounters.push(encounter)
+          }
+        } else {
+          validEncounters.push(encounter)
+        }
+      }
+    }
+    return validEncounters;
   }
 
-  const handleModalOpen = () => {
-    generateModalContent();
+  const generateModalContent = (encounter) => {
+    let petNameMap = ["Earthworm Jim", "Floppy", "Lil' Geode"]
+    switch (encounter.type) {
+      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_PET:{
+        setModalIcon(<FontAwesomeIcon icon={faHeart}/>);
+        setModalHeader("You found a new Pet!");
+        setModalText(petNameMap[encounter.reward] + " has found you and wants to stay with you.");
+        
+        let newPets = pets;
+        newPets.push(encounter.reward)
+        setPets(newPets);
+      break;}
+      
+      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_RESOURCES:{
+        let randomResources = ~~(Math.random() * 15 * (1 + aspects.wormPower))
+        let newBait = resources.bait;
+        newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + randomResources || randomResources;
+        setResources(r => ({...r, bait: newBait}));
+        setModalIcon(<FontAwesomeIcon icon={faWorm}/>);
+        setModalHeader("You found additional Worms!");
+        setModalText(randomResources + " Worms were attending a Party and you grab them with a bucket");
+      break;}
+      
+      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_SPECIAL:{
+        setModalIcon(<FontAwesomeIcon icon={faLocust}/>);
+        setModalHeader("This is not implemented yet");
+        setModalText("So good luck doing anything with this");
+      break;}
+      
+      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FLUFF:{
+        setModalIcon(<FontAwesomeIcon icon={faMagnifyingGlass} />);
+        setModalHeader("You see a small Spider smoke Weed");
+        setModalText("Not sure what you should do with this, but you decide to enjoy it while it lasts");
+      break;}
+
+      default:
+        setModalIcon(<FontAwesomeIcon icon={faTriangleExclamation}/>);
+        setModalHeader("Default Header");
+        setModalText("This is the default value, please enjoy this value while it is on screen");
+      break;
+    }
+  }
+
+  const handleModalOpen = (encounter) => {
+    generateModalContent(encounter);
     setModalOpen(true);
   };
 
@@ -87,6 +142,24 @@ function PageGatheringZone() {
     if (value.value == 'close') { setModalOpen(false) }
   };
 
+  const checkForEncounters = (source) => {
+    let validEncounters = getValidEncounters(source);
+    let possibleEncounters = [];
+    for (let i = 0; i < validEncounters.length; i++) {
+      let r = ~~(Math.random() * 100)
+      if (r > validEncounters[i].chance) {
+        possibleEncounters.push(validEncounters[i])
+      }
+    }
+
+    let r = ~~(Math.random() * possibleEncounters.length)
+    let selectedEncounter = possibleEncounters[r];
+
+    console.log(validEncounters, possibleEncounters, selectedEncounter)
+    if (selectedEncounter != undefined)
+      handleModalOpen(selectedEncounter);
+  }
+
   const contextSave = () => {
     _allTimeStamps.current.gathering = Date.now();
 
@@ -94,6 +167,7 @@ function PageGatheringZone() {
       {
         pageTimestamps: _allTimeStamps.current,
         resources: { ...resources },
+        pets: pets,
         gathering: {
           isDiggingWorms: isDiggingWorms, wormProgress: wormProgress,
           isArtifactsUnlocked: isArtifactsUnlocked, isDiggingArtifacts: isDiggingArtifacts, artifactProgress: artifactProgress,
@@ -121,12 +195,9 @@ function PageGatheringZone() {
       setCanCollectWorms(false)
       setWormProgress(0)
 
-      _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Worms");
+      checkForEncounters(GLOBALS.ENUMS.GATHERINGTYPES.WORMS)
 
-      let r = ~~(Math.random() * 100)
-      if (r == 0) {
-        handleModalOpen();
-      }
+      _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Worms");
 
       if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] >= 15) { setArtifactsUnlocked(true) }
 
@@ -151,6 +222,8 @@ function PageGatheringZone() {
       setDiggingArtifacts(false)
       setCanCollectArtifacts(false)
       setArtifactProgress(0)
+      
+      checkForEncounters(GLOBALS.ENUMS.GATHERINGTYPES.ARTIFACTS)
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Artifacts");
     }
@@ -167,6 +240,8 @@ function PageGatheringZone() {
       setMining(false)
       setCanCollectMining(false)
       setMiningProgress(0)
+      
+      checkForEncounters(GLOBALS.ENUMS.GATHERINGTYPES.MINING)
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + 0 + " of anything, you hacker");
     }
@@ -248,7 +323,7 @@ function PageGatheringZone() {
     updateTick(cappedToMaxTicks);
     
     contextSave();
-  }, [])
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
   // Save Variables to LS after tick
   useEffect(() => {
