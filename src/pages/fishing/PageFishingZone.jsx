@@ -8,18 +8,13 @@ import PropTypes from 'prop-types';  // eslint-disable-line no-unused-vars
 // Components
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
-import ResourceCard from '../../components/resources/ResourceCard';
-import FishCollection from '../inventory/FishCollection';
+import FishCollection from '../../components/resources/FishCollection';
 import FishingTripMap from './FishingTripMap';
 
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
 import { Paper } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-
-// Icons / SVG
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -28,6 +23,7 @@ import getFish from './getFish';
 
 // CSS Styles
 import './Fishing.scss';
+import BaitCollection from '../../components/resources/BaitCollection';
 
 // Route: "/fishing"
 function PageFishingZone() {
@@ -61,12 +57,14 @@ function PageFishingZone() {
   }
 
   const startFishing = (onTrip) => {
-    if (resources.worms == 0) {
+    if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] == 0) {
       _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
       return;
     }
 
-    setResources(r => ({...r, worms: r.worms - 1}));
+    let newBait = resources.bait;
+    newBait[GLOBALS.ENUMS.BAIT.WORMS] -= 1;
+    setResources(r => ({...r, bait: newBait}));
     setFishing(true)
     let tickMiddle = 10 + Math.round(Math.random() * 40);
     setTickRange({min: tickMiddle - 10, max: tickMiddle + 10})
@@ -94,7 +92,6 @@ function PageFishingZone() {
       if (caughtFish.id >= 0) {
         let vowelN = (['aeiouy'].includes(caughtFish.name[0].toLowerCase()) ? "n" : "");
         toastText = "Caught a"+vowelN+": " + caughtFish.name;
-        setResources(r => ({...r, fish: r.fish + 1}));
 
         let newFishes = resources.fishes;
         newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
@@ -215,7 +212,7 @@ function PageFishingZone() {
     <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
       <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
-          <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
+          <BaitCollection resources={resources}/>
           <FishCollection resources={resources}/>
         </FlexList>
       </Grid>

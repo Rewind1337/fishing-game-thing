@@ -18,18 +18,41 @@ const updateDict = (oldDict, newDict, hardSave = false) => {
     }
   
     return oldDict;
-  };
+};
+
+const _currentVersion = -1000;
 
 let data = {
     save: {
+        version: _currentVersion,
         pageTimestamps: {},
         resources: {},
         aspects: {},
         fishing: {},
         gathering: {},
-        inventory: {},
-        character: {},
-        pets: {},
+        inventory: {
+            equipment: { // fishing equipment
+                rods: [0],
+                bait: [],
+                lures: [],
+                hooks: [],
+            },
+            gear: { // adventuring gear
+
+            },
+        },
+        character: {
+            equipment: { // fishing equipment
+                rod: 0,
+                bait: null,
+                lure: null,
+                hook: null,
+            },
+            gear: { // adventuring gear
+
+            },
+        },
+        pets: [],
         sidebar: {
             states: [true, true, true],
             unlocks: [true, false, false, false, true, false, false, true],
@@ -55,7 +78,9 @@ let data = {
 
 if (localStorage.getItem("game-save") != null) {
     let _temp = JSON.parse(localStorage.getItem("game-save"));
-    data.setSave(_temp);
+    if (_temp.version == _currentVersion) {
+        data.setSave(_temp);
+    }
 }
 
 const SaveContext = createContext(data);

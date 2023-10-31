@@ -18,11 +18,18 @@ import resourceHook from '../../utility/resourceHook';  // eslint-disable-line n
 // CSS Styles
 import './Inventory.scss'
 import { Paper } from '@mui/material';
+import FishCollection from '../../components/resources/FishCollection';
+import BaitCollection from '../../components/resources/BaitCollection';
 
 // Route: "/inventory"
 function PageInventory() {
 
   const _context = useContext(SaveContext);  // eslint-disable-line no-unused-vars
+
+  const [resources, ] = useState(resourceHook(_context));
+
+  const inventory = _context.save.inventory;
+  const character = _context.save.character;
 
   const [mainTabIndex, setMainTabIndex] = useState(0)
 
@@ -38,13 +45,23 @@ function PageInventory() {
     setOtherTabIndex(other);
   }
 
-  const listRods = (
+  const equippedRod = (
+      <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={GLOBALS.DB.ROD[character.equipment.rod].id} className='inventory-card rod'>
+        <div className='inventory-card-buttons'>
+          <ActionButton text={"Equip"} />
+        </div>
+        <div className='inventory-card-name'>{GLOBALS.DB.ROD[character.equipment.rod].name}</div>
+      </Paper>
+  )
+
+  const listOwnedRods = (inventory.equipment.rods.length > 0 && 
     <FlexList collapsible mode='list' headerText="Rods">
-      {GLOBALS.DB.ROD.map((r) => {
+      {inventory.equipment.rods.map((_r) => {
+        let r = GLOBALS.DB.ROD[_r]
         return (
           <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={r.id} className='inventory-card rod'>
             <div className='inventory-card-buttons'>
-              <ActionButton text={"Equip"} />
+              <ActionButton text={(_r == character.equipment.rod ? 'Equipped' : 'Equip')} />
             </div>
             <div className='inventory-card-name'>{r.name}</div>
           </Paper>
@@ -53,13 +70,14 @@ function PageInventory() {
     </FlexList>
   );
 
-  const listHooks = (
+  const listOwnedHooks = (inventory.equipment.hooks.length > 0 && 
     <FlexList collapsible mode='list' headerText='Hooks'>
-      {GLOBALS.DB.HOOK.map((h) => {
+      {inventory.equipment.hooks.map((_h) => {
+        let h = GLOBALS.DB.HOOK[_h];
         return (
           <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={h.id} className='inventory-card hook'>
             <div className='inventory-card-buttons'>
-              <ActionButton text={"Equip"} />
+              <ActionButton text={(_h == character.equipment.hook ? 'Equipped' : 'Equip')} />
             </div>
             <div className='inventory-card-name'>{h.name}</div>
           </Paper>
@@ -68,13 +86,14 @@ function PageInventory() {
     </FlexList>
   );
 
-  const listBait = (
+  const listOwnedBait = (inventory.equipment.bait.length > 0 && 
     <FlexList collapsible mode='list' headerText='Bait'>
-      {GLOBALS.DB.BAIT.map((b) => {
+      {inventory.equipment.bait.map((_b) => {
+        let b = GLOBALS.DB.HOOK[_b];
         return (
           <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={b.id} className='inventory-card bait'>
             <div className='inventory-card-buttons'>
-              <ActionButton text={"Equip"} />
+              <ActionButton text={(_b == character.equipment.bait ? 'Equipped' : 'Equip')} />
             </div>
             <div className='inventory-card-name'>{b.name}</div>
           </Paper>
@@ -83,13 +102,14 @@ function PageInventory() {
     </FlexList>
   );
 
-  const listLures = (
+  const listOWnedLures = (inventory.equipment.lures.length > 0 && 
     <FlexList collapsible mode='list' headerText='Lures'>
-      {GLOBALS.DB.LURE.map((l) => {
+      {inventory.equipment.lures.map((_l) => {
+        let l = GLOBALS.DB.LURE[_l];
         return (
           <Paper key={l.id} elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} className='inventory-card lure'>
             <div className='inventory-card-buttons'>
-              <ActionButton text={"Equip"} />
+              <ActionButton text={(_l == character.equipment.lure ? 'Equipped' : 'Equip')} />
             </div>
             <div className='inventory-card-name'>{l.name}</div>
           </Paper>
@@ -98,26 +118,32 @@ function PageInventory() {
     </FlexList>
   );
 
+  const makeFish = (val, index) => {
+    let DB_FISH = GLOBALS.DB.FISH[index];
+
+    return (
+    <Paper key={index} elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} className='fish-card'>
+      <div className='fish-card-image'></div>
+      <div className='fish-card-data'>
+        <div className='fish-card-data-name'>{DB_FISH.name}&nbsp;{val}</div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '32px' }}>
+          <div className='fish-card-data-rarity'>rarity: {DB_FISH.rarity}</div>
+          <div className='fish-card-data-baitneeded'>bait: {DB_FISH.baitNeeded}</div>
+        </div>
+        <div className='fish-card-data-flavor'>{DB_FISH.flavor}</div>
+      </div>
+      <div className='fish-card-buttons'>
+        <ActionButton text={"Test"} />
+        <ActionButton text={"Test"} />
+      </div>
+    </Paper>
+    )
+  }
+
   const listFish = (
-    <FlexList mode='list' headerText="Fish">
-      {GLOBALS.DB.FISH.map((f) => {
-        return (
-          <Paper key={f.id} elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} className='fish-card'>
-            <div className='fish-card-image'></div>
-            <div className='fish-card-data'>
-              <div className='fish-card-data-name'>{f.name}</div>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '32px' }}>
-                <div className='fish-card-data-rarity'>rarity: {f.rarity}</div>
-                <div className='fish-card-data-baitneeded'>bait: {f.baitNeeded}</div>
-              </div>
-              <div className='fish-card-data-flavor'>{f.flavor}</div>
-            </div>
-            <div className='fish-card-buttons'>
-              <ActionButton text={"Test"} />
-              <ActionButton text={"Test"} />
-            </div>
-          </Paper>
-        );
+    <FlexList collapsible switchable mode='list' headerText="Fish">
+      {resources.fishes.map((val, index) => {
+        if (val > 0) {return makeFish(val, index)}
       })}
     </FlexList>
   );
@@ -135,10 +161,10 @@ function PageInventory() {
 
           <FlexList mode='list' headerText={mainTabHeaders[mainTabIndex]}>
             {mainTabIndex == 0 && <>
-              {listRods}
-              {listHooks}
-              {listBait}
-              {listLures}
+              {listOwnedRods}
+              {listOwnedHooks}
+              {listOwnedBait}
+              {listOWnedLures}
             </>}
             {mainTabIndex == 1 && <>This is {mainTabHeaders[1]} Stuff</>}
             {mainTabIndex == 2 && <>This is {mainTabHeaders[2]} Stuff</>}
@@ -155,8 +181,12 @@ function PageInventory() {
           </Paper>
 
           <FlexList mode='list' headerText={otherTabHeaders[otherTabIndex]}>
-            {otherTabIndex == 0 && <>This is {otherTabHeaders[0]} Stuff</>}
-            {otherTabIndex == 1 && listFish}
+            {otherTabIndex == 0 && <>
+              <BaitCollection resources={resources}/>
+            </>}
+            {otherTabIndex == 1 && <>
+              <FishCollection resources={resources}/>
+            </>}
             {otherTabIndex == 2 && <>This is {otherTabHeaders[2]} Stuff</>}
           </FlexList>
         </Grid>
