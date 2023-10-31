@@ -46,7 +46,8 @@ function PageCore({pageID, title, contentClasses, children}) {
   }
 
   const coreTick = () => {
-    _context.refs.sidebar['checkForBadgeData'](pageID);
+    _context.refs.sidebar['clearBadgeDataFor'](pageID);
+    _context.refs.sidebar['checkForBadgeData']();
   }
  
   useEffect(() => {
@@ -65,9 +66,12 @@ function PageCore({pageID, title, contentClasses, children}) {
   }, [])
 
   useEffect(() => {
-    _context.refs.sidebar['checkForBadgeData'](pageID);
     _context.refs.sidebar['clearBadgeDataFor'](pageID);
-  })
+
+    setTimeout(() => {
+      _context.refs.sidebar['checkForBadgeData']();
+    }, 50);
+  }, [])
   
   useEffect(() => {
     const timer = setInterval(coreTick, 500);

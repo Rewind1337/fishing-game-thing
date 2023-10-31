@@ -10,10 +10,11 @@ const updateDict = (oldDict, newDict, hardSave = false) => {
         }
         return newDict;
     }
+    /*
     if (typeof oldDict !== 'object') {
-        console.log(oldDict, newDict);
         return newDict;
     }
+    */
 
     for (let key in newDict) {
         if (key in oldDict) {
@@ -33,15 +34,34 @@ let data = {
         aspects: {},
         fishing: {},
         gathering: {},
-        inventory: {},
-        character: {
-            hook: 2,
+        inventory: {
+            equipment: { // fishing equipment
+                rods: [0],
+                bait: [],
+                lures: [],
+                hooks: [],
+            },
+            gear: { // adventuring gear
+
+            },
         },
-        pets: {},
+        character: {
+            equipment: { // fishing equipment
+                rod: 0,
+                bait: null,
+                lure: null,
+                hook: 2,
+            },
+            gear: { // adventuring gear
+
+            },
+        },
+        pets: [],
         sidebar: {
             states: [true, true, true],
             unlocks: [true, false, false, false, true, false, false, true],
             sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
+            currentPage: 0,
         }
     },
     setSave : (s, log = false) => {

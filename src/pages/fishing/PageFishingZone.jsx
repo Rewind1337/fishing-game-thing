@@ -45,7 +45,7 @@ function PageFishingZone() {
   let fishProgressMax = GLOBALS.FISHING.TIME
   let fishProgressPerTick = GLOBALS.FISHING.SPEED
 
-  const [equipment, setEquipment] = useState(_context.save.character);
+  const [equipment, setEquipment] = useState(_context.save.character.equipment);
 
   const [fishingTripStatus, setFishingTripStatus] = useState(GLOBALS.ENUMS.TRIPSTATUS.IDLE)
   const [fishingTripData, setFishingTripData] = useState({});
