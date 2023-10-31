@@ -41,9 +41,11 @@ function PageFishingZone() {
 
   const [isFishing, setFishing] = useState(_context.save.fishing.isFishing || false)
   const [fishProgress, setFishProgress] = useState(_context.save.fishing.fishProgress || false)
-  const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: -1, max: -1})
+  const [tickRange, setTickRange] = useState(_context.save.fishing.tickRange || {min: [-1], max: [-1], catch: 0})
   let fishProgressMax = GLOBALS.FISHING.TIME
   let fishProgressPerTick = GLOBALS.FISHING.SPEED
+
+  const [equipment, setEquipment] = useState(_context.save.character);
 
   const [fishingTripStatus, setFishingTripStatus] = useState(GLOBALS.ENUMS.TRIPSTATUS.IDLE)
   const [fishingTripData, setFishingTripData] = useState({});
@@ -61,15 +63,34 @@ function PageFishingZone() {
   }
 
   const startFishing = (onTrip) => {
-    if (resources.worms == 0) {
+    let hook = GLOBALS.DB.HOOK[equipment.hook];
+    let multiCatch = hook.multiCatch;
+
+    if (resources.worms <= 0) {
       _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
       return;
     }
+    if (resourceHook.worms <= multiCatch) {
+      _context.refs.toastmanager['fireToast']("warning", "You dont have enough Worms for this hook!");
+      return;
+    }
 
-    setResources(r => ({...r, worms: r.worms - 1}));
-    setFishing(true)
-    let tickMiddle = 10 + Math.round(Math.random() * 40);
-    setTickRange({min: tickMiddle - 10, max: tickMiddle + 10})
+    setResources(r => ({...r, worms: r.worms - (multiCatch + 1)}));
+    setFishing(true);
+
+    let tickWidth = 20;
+    let tickMiddle = tickWidth/2 + Math.round(Math.random() * 30);
+    let newTickRange = {min: [tickMiddle - tickWidth/2], max: [tickMiddle + tickWidth/2], catch: 0};
+
+    for (let i = 1; i <= multiCatch; i++) {
+      let timeLeft = 60 - newTickRange.max[i-1];
+      tickWidth = Math.min(timeLeft / 2, tickWidth / 2);
+      tickMiddle = newTickRange.max[i-1] + tickWidth / 2 + Math.round(Math.random() * (timeLeft - 2 * tickWidth));
+
+      newTickRange.min.push(tickMiddle - tickWidth/2);
+      newTickRange.max.push(tickMiddle + tickWidth/2);
+    }
+    setTickRange(newTickRange);
 
     if (onTrip) {
       console.log("wow look at you, youre on a trip");
@@ -77,7 +98,9 @@ function PageFishingZone() {
   }
 
   const attemptCatch = (onTrip) => {
-    if (fishProgress >= tickRange.min && fishProgress <= tickRange.max) {
+    let hook = GLOBALS.DB.HOOK[equipment.hook];
+
+    if (hook.canCatch(fishProgress, tickRange)) {
       // Only fishes at night right now.
       let toastText = "";
 
@@ -100,17 +123,32 @@ function PageFishingZone() {
         newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
         setResources(r => ({...r, fishes: r.fishes = newFishes}));
 
+        if (hook.multiCatch > 0 && hook.multiCatch > tickRange.catch) {
+          toastText += ", but there's another chance!";
+        } else { toastText += "!"}
+
         _context.refs.toastmanager['fireToast']("success", toastText);
 
       } else if (caughtFish.id == -1) {
-        toastText = "Just a nibble.";
+        toastText = "Just a nibble";
+
+        if (hook.multiCatch > 0 && hook.multiCatch > tickRange.catch) {
+          toastText += ", but there's another chance!";
+        } else { toastText += "."}
+
         _context.refs.toastmanager['fireToast']("info", toastText);
       } else if (caughtFish.id <= -2) {
         toastText = "You broke the game, fish not found!";
         _context.refs.toastmanager['fireToast']("error", toastText);
       }
-    
-      stopFishing();
+      
+      if (hook.multiCatch > 0 && hook.multiCatch > tickRange.catch) {
+        let newTickRange = tickRange;
+        newTickRange.catch += 1;
+        setTickRange(newTickRange);
+      } else {
+        stopFishing();
+      }
 
       if (onTrip) {
         console.log("wow look at you, you attempted a catch on a trip");
@@ -124,7 +162,7 @@ function PageFishingZone() {
   const stopFishing = () => {
     setFishing(false);
     setFishProgress(0);
-    setTickRange({min: -1, max: -1})
+    setTickRange({min: [-1], max: [-1], catch: 0})
   }
 
   const setTripTo = (n) => {
@@ -209,7 +247,7 @@ function PageFishingZone() {
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
     <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
-      <LinearProgress variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
+      <LinearProgress variant="determinate" color={GLOBALS.DB.HOOK[equipment.hook].fishingBarColor(fishProgress, tickRange)} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
     </Grid>
 
     <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>

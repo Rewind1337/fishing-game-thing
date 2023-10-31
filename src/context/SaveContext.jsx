@@ -1,5 +1,7 @@
 import { createContext } from 'react';
 
+import GLOBALS from '../globals/Globals';
+
 const updateDict = (oldDict, newDict, hardSave = false) => {
     if (typeof newDict !== 'object') {
         if (typeof oldDict === 'object' && !hardSave) {
@@ -8,7 +10,11 @@ const updateDict = (oldDict, newDict, hardSave = false) => {
         }
         return newDict;
     }
-  
+    if (typeof oldDict !== 'object') {
+        console.log(oldDict, newDict);
+        return newDict;
+    }
+
     for (let key in newDict) {
         if (key in oldDict) {
             oldDict[key] = updateDict(oldDict[key], newDict[key], hardSave);
@@ -28,7 +34,9 @@ let data = {
         fishing: {},
         gathering: {},
         inventory: {},
-        character: {},
+        character: {
+            hook: 2,
+        },
         pets: {},
         sidebar: {
             states: [true, true, true],
