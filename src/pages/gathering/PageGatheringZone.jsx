@@ -27,6 +27,7 @@ import FishCollection from '../../components/resources/FishCollection';
 // CSS Styles
 import './Gathering.scss'
 import BaitCollection from '../../components/resources/BaitCollection';
+import Farm from './Farm';
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -267,7 +268,7 @@ function PageGatheringZone() {
         </FlexList>
 
         <Grid className="hide-mobile show-tablet-up" container mobile={12} tablet={6} desktop={6} maxHeight={{ mobile: 200, tablet: 400 }} overflow={"auto"}>
-          {/* Farm would go here*/}
+          <Farm/>
         </Grid>
 
       </Grid>

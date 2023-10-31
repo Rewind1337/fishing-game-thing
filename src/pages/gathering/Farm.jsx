@@ -10,6 +10,7 @@ import { faSeedling } from '@fortawesome/free-solid-svg-icons';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Paper } from '@mui/material';
 import FlexList from '../../components/flexlist/FlexList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 function SeedCard({ c, onClick }) {
@@ -43,7 +44,7 @@ function SeedCard({ c, onClick }) {
         <div className='farm-cell-name'>No Seed</div>
       </>}
       {(!cropState.active && selectedSeed.current != -1) && <>
-        <div className='farm-cell-name hover-effect'>Click to Plant</div>
+        <div onClick={() => {setCropState({active: true, id: selectedSeed, name: "Test Seed"})}} className='farm-cell-name hover-effect'>Click to Plant</div>
       </>}
     </div>);
   }
