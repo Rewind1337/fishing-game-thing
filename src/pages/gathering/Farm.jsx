@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import Unicode from '../../components/Unicode'
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
@@ -11,6 +11,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { Paper } from '@mui/material';
 import FlexList from '../../components/flexlist/FlexList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SaveContext from '../../context/SaveContext';
 
 
 function SeedCard({ c, onClick }) {
@@ -27,7 +28,19 @@ function SeedCard({ c, onClick }) {
 
   function FarmCell({row, col, selectedSeed, setGridRowCol}) {
 
-    const [cropState, setCropState] = useState({active: false, id: 0, name: "Test Seed"})
+    const [cropState, setCropState] = useState({active: false})
+
+    const handleClick = (row, col) => {
+      console.log(selectedSeed)
+      let cropData = {
+        active: true, 
+        id: selectedSeed,
+        name: selectedSeed.current.toString() + "-Plant"
+      }
+
+      setCropState(cropData);
+      setGridRowCol(row, col, cropData)
+    }
 
     return (<div className='farm-cell'>
       {cropState.active && <>
@@ -44,7 +57,7 @@ function SeedCard({ c, onClick }) {
         <div className='farm-cell-name'>No Seed</div>
       </>}
       {(!cropState.active && selectedSeed.current != -1) && <>
-        <div onClick={() => {setCropState({active: true, id: selectedSeed, name: "Test Seed"})}} className='farm-cell-name hover-effect'>Click to Plant</div>
+        <div onClick={() => {handleClick(row, col)}} className='farm-cell-name hover-effect'>Click to Plant</div>
       </>}
     </div>);
   }
@@ -99,14 +112,24 @@ function SeedCard({ c, onClick }) {
     setGridRowCol: PropTypes.func.isRequired,
   }
 
-  function Farm() {
+  function Farm({farmWidth, farmHeight}) {
+    const _context = useContext(SaveContext)
+    const _farm = _context.save.farm
+
     const selectedSeed = useRef(-1)
-    const [grid, setGridFull] = useState([])
+    const [grid, setGridFull] = useState(_farm.grid || [])
     const setGridRowCol = (row, col, data) => {
       let changedGrid = grid;
       changedGrid[row][col] = data;
       setGridFull(changedGrid)
     }
+
+    //  const setSave = _context.setSave;
+
+    useEffect(() => {
+      //  setSave({farm: {grid: grid}}, true)
+    }, [grid])
+    
 
     return (
       <>
@@ -123,11 +146,16 @@ function SeedCard({ c, onClick }) {
 
         <Grid mobile={12} width={"100%"} paddingLeft={0}>
           <Paper elevation={1} sx={{ border: '1px solid rgba(255, 255, 255, 0.5)', backgroundColor: 'rgba(0, 0, 0, 0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center' }}>
-            <FarmGrid width={2} height={1} grid={grid} selectedSeed={selectedSeed} setGridFull={setGridFull} setGridRowCol={setGridRowCol}></FarmGrid>
+            <FarmGrid width={farmWidth} height={farmHeight} grid={grid} selectedSeed={selectedSeed} setGridFull={setGridFull} setGridRowCol={setGridRowCol}></FarmGrid>
           </Paper>
         </Grid>
       </>
     )
+  }
+
+  Farm.propTypes = {
+    farmWidth: PropTypes.number.isRequired,
+    farmHeight: PropTypes.number.isRequired,
   }
 
   export default Farm;

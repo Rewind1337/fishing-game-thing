@@ -30,6 +30,7 @@ let data = {
         aspects: {},
         fishing: {},
         gathering: {},
+        farm: {},
         inventory: {
             equipment: { // fishing equipment
                 rods: [0],
