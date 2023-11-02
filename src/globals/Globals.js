@@ -118,7 +118,8 @@ const GLOBALS = {
                 rarity: RARITY.COMMON, 
                 baitNeeded: BAIT.WORMS, 
                 timeOfDay: TIME.NIGHT_FULL, 
-                flavor: "The Whiskered Wailer is a nocturnal fish with long whiskers that help it navigate in the dark. It looks sad."
+                flavor: "The Whiskered Wailer is a nocturnal fish with long whiskers that help it navigate in the dark. It looks sad.",
+                aspects: {'tearPower': 0.1},
             },
             {
                 id: 2,
@@ -159,6 +160,7 @@ const GLOBALS = {
                 baitNeeded: BAIT.FISH,
                 timeOfDay: TIME.DAY_FULL,
                 flavor: "This fish is a unique species that lives in shallow water and burrows under the sand. It looks like an eel, but is actually a fish.",
+                aspects: {'earthPower': 0.1},
             },
             {
                 id: 7,
@@ -167,6 +169,7 @@ const GLOBALS = {
                 baitNeeded: BAIT.FISH,
                 timeOfDay: TIME.NIGHT_FULL,
                 flavor: "The Night Noodler is a rare fish that can only be found in the darkest hours of the night. It is a predator of other fish and uses its sense of smell to hunt its prey.",
+                aspects: {'fiercePower': 0.1},
             },
             {
                 id: 8, 
@@ -278,8 +281,8 @@ const GLOBALS = {
 
         FISHING: {
             SUBLOCATIONS: [
-                {id: 0, name: 'By the Shallows', fish: [0, 6]},
-                {id: 1, name: 'By the Reeds', fish: [0, 6, 7]},
+                {id: 0, name: 'By the Shallows', fish: [0, 1, 6]},
+                {id: 1, name: 'By the Reeds', fish: [0, 1, 6, 7]},
                 {id: 2, name: 'By the Trees', fish: []},
                 {id: 3, name: 'Worm Queen Shrine', hidden: true, fish: []},
             ],
