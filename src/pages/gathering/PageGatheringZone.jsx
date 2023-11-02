@@ -147,7 +147,7 @@ function PageGatheringZone() {
     let possibleEncounters = [];
     for (let i = 0; i < validEncounters.length; i++) {
       let r = ~~(Math.random() * 100)
-      if (r > validEncounters[i].chance) {
+      if (r < validEncounters[i].chance) {
         possibleEncounters.push(validEncounters[i])
       }
     }

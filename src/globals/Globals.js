@@ -2,8 +2,8 @@ const RARITY = {
     COMMON: 0,
     UNCOMMON: 1,
     RARE: 2,
-    MYTH: 3,
-    LEGEND: 4,
+    LEGEND: 3,
+    MYTH: 4,
 }
 
 const BAIT = {
@@ -187,7 +187,7 @@ const GLOBALS = {
             {
                 id: 10,
                 name: "Diamond Darter",
-                rarity: RARITY.MYTH,
+                rarity: RARITY.LEGEND,
                 baitNeeded: BAIT.FISH,
                 timeOfDay: TIME.AROUND_NOON,
                 flavor: "The Diamond Darter is one of the more valuable fish. Its sparkling diamond scales make it a true treasure for any angler.",
