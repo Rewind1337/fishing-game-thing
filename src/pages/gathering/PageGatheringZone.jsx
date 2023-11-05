@@ -28,6 +28,7 @@ import FishCollection from '../../components/resources/FishCollection';
 import './Gathering.scss'
 import BaitCollection from '../../components/resources/BaitCollection';
 import Farm from './Farm';
+import checkForEncounters from '../../utility/encounters/checkForEncounters';
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -72,31 +73,52 @@ function PageGatheringZone() {
   const [modalHeader, setModalHeader] = useState("Cool header hehe");
   const [modalText, setModalText] = useState("This is the default value, please enjoy this value while it is on screen");
 
-  const getValidEncounters = (source) => {
-    let validEncounters = [];
-    for (let i in GLOBALS.DB.GATHERING.ENCOUNTERS) {
-      let encounter = GLOBALS.DB.GATHERING.ENCOUNTERS[i];
-      if (encounter.source == source || encounter.source == GLOBALS.ENUMS.GATHERINGTYPES.ALL) {
-        if (encounter.type == GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_PET) {
-          if (!pets.includes(encounter.reward)) {
-            validEncounters.push(encounter)
-          }
-        } else {
-          validEncounters.push(encounter)
-        }
+  const parse = (orig, find, replaceValue) => {
+    let returnString = "";
+
+    if (Array.isArray(find) && Array.isArray(replaceValue)) {
+      for (let i = 0; i < find.length; i++) {
+        let startsAt = orig.indexOf(find[i]);
+
+        returnString += orig.substring(0, startsAt);
+        returnString += replaceValue[i];
+        returnString += orig.substring(startsAt + find[i].length);
       }
+
+      return returnString;
     }
-    return validEncounters;
+
+    if (Array.isArray(find) && !Array.isArray(replaceValue)
+    || (!Array.isArray(find) && Array.isArray(replaceValue))) {
+      console.warn("mismatch of inputtypes")
+      return orig;
+    }
+
+    let startsAt = orig.indexOf(find);
+
+    returnString += orig.substring(0, startsAt);
+    returnString += replaceValue;
+    returnString += orig.substring(startsAt + find.length);
+
+    return returnString;
+    
   }
 
-  const generateModalContent = (encounter) => {
+  const generateModalContent = (page, encounter) => {
+    if (encounter == undefined) return false;
+
+    let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"].map(e => e.toUpperCase())
     let petNameMap = ["Earthworm Jim", "Floppy", "Lil' Geode"]
+
+    let thePage = pageNameMap[page];
+    let theType = GLOBALS.ENUMS.ENCOUNTERNAMES[thePage][[encounter.type]];
+    
+    setModalIcon(GLOBALS.ENUMS.ENCOUNTERICONS[thePage][theType]);
+    setModalHeader(encounter.header);
+    setModalText(encounter.text);
+
     switch (encounter.type) {
       case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_PET:{
-        setModalIcon(<FontAwesomeIcon icon={faHeart}/>);
-        setModalHeader("You found a new Pet!");
-        setModalText(petNameMap[encounter.reward] + " has found you and wants to stay with you.");
-        
         let newPets = pets;
         newPets.push(encounter.reward)
         setPets(newPets);
@@ -107,58 +129,29 @@ function PageGatheringZone() {
         let newBait = resources.bait;
         newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + randomResources || randomResources;
         setResources(r => ({...r, bait: newBait}));
-        setModalIcon(<FontAwesomeIcon icon={faWorm}/>);
-        setModalHeader("You found additional Worms!");
-        setModalText(randomResources + " Worms were attending a Party and you grab them with a bucket");
+        setModalText(parse(encounter.text, "$r", randomResources));
       break;}
       
-      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_SPECIAL:{
-        setModalIcon(<FontAwesomeIcon icon={faLocust}/>);
-        setModalHeader("This is not implemented yet");
-        setModalText("So good luck doing anything with this");
-      break;}
+      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_SPECIAL:{break;}
       
-      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FLUFF:{
-        setModalIcon(<FontAwesomeIcon icon={faMagnifyingGlass} />);
-        setModalHeader("You see a small Spider smoke Weed");
-        setModalText("Not sure what you should do with this, but you decide to enjoy it while it lasts");
-      break;}
+      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FLUFF:{break;}
 
-      default:
-        setModalIcon(<FontAwesomeIcon icon={faTriangleExclamation}/>);
-        setModalHeader("Default Header");
-        setModalText("This is the default value, please enjoy this value while it is on screen");
-      break;
+      default: return false;
     }
+
+    return true;
   }
 
   const handleModalOpen = (encounter) => {
-    generateModalContent(encounter);
-    setModalOpen(true);
+    if (generateModalContent(GLOBALS.ENUMS.PAGES.GATHERING, encounter) == true) {
+      setModalOpen(true);
+    }
   };
 
   const handleModalClose = (value, reason) => {// eslint-disable-line no-unused-vars
     if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
     if (value.value == 'close') { setModalOpen(false) }
   };
-
-  const checkForEncounters = (source) => {
-    let validEncounters = getValidEncounters(source);
-    let possibleEncounters = [];
-    for (let i = 0; i < validEncounters.length; i++) {
-      let r = ~~(Math.random() * 100)
-      if (r < validEncounters[i].chance) {
-        possibleEncounters.push(validEncounters[i])
-      }
-    }
-
-    let r = ~~(Math.random() * possibleEncounters.length)
-    let selectedEncounter = possibleEncounters[r];
-
-    console.log(validEncounters, possibleEncounters, selectedEncounter)
-    if (selectedEncounter != undefined)
-      handleModalOpen(selectedEncounter);
-  }
 
   const contextSave = () => {
     _allTimeStamps.current.gathering = Date.now();
@@ -195,7 +188,7 @@ function PageGatheringZone() {
       setCanCollectWorms(false)
       setWormProgress(0)
 
-      checkForEncounters(GLOBALS.ENUMS.GATHERINGTYPES.WORMS)
+      checkForEncounters(GLOBALS.ENUMS.PAGES.GATHERING, GLOBALS.ENUMS.GATHERINGTYPES.WORMS, _context, handleModalOpen)
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Worms");
 
@@ -223,7 +216,7 @@ function PageGatheringZone() {
       setCanCollectArtifacts(false)
       setArtifactProgress(0)
       
-      checkForEncounters(GLOBALS.ENUMS.GATHERINGTYPES.ARTIFACTS)
+      checkForEncounters(GLOBALS.ENUMS.PAGES.GATHERING, GLOBALS.ENUMS.GATHERINGTYPES.ARTIFACTS, _context, handleModalOpen)
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Artifacts");
     }
@@ -241,7 +234,7 @@ function PageGatheringZone() {
       setCanCollectMining(false)
       setMiningProgress(0)
       
-      checkForEncounters(GLOBALS.ENUMS.GATHERINGTYPES.MINING)
+      checkForEncounters(GLOBALS.ENUMS.PAGES.GATHERING, GLOBALS.ENUMS.GATHERINGTYPES.MINING, _context, handleModalOpen)
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + 0 + " of anything, you hacker");
     }
@@ -254,18 +247,6 @@ function PageGatheringZone() {
     let deltaTime = currentTime - localTimestamp.current;
 
     if (ticksDone.current.isNaN) {ticksDone = 0;}
-
-    // console.log("Ticks Done", ticksDone.current);
-    // console.log("PageTick Drift", deltaTime - 500);
-
-    /*
-    // Discreet Version
-    let ticksToDo = ~~((deltaTime + 100) / 500);
-    localTimestamp.current = localTimestamp.current + ticksToDo * 500;
-
-    updateTick(ticksToDo);
-    ticksDone.current += ticksToDo;
-    */
 
     // Fractional Ticks Version
     let ticksToDo = deltaTime / 500;

@@ -1,3 +1,6 @@
+import { faGhost, faHeart, faLocust, faMagnifyingGlass, faShrimp, faTriangleExclamation, faWater, faWorm } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 const RARITY = {
     COMMON: 0,
     UNCOMMON: 1,
@@ -67,6 +70,43 @@ const ENCOUNTERTYPES = {
         FLUFF: 300,
     },
 }
+
+const ENCOUNTERNAMES = {
+    GATHERING: {
+        100: "FLUFF",
+        101: "FIND_PET",
+        102: "FIND_SPECIAL",
+        103: "FIND_RESOURCES",
+    },
+    FISHING: {
+        FLUFF: 200,
+        FIND_PET: 201,
+        FIND_SPECIAL: 202,
+    },
+    ADVENTURE: {
+        FLUFF: 300,
+    },
+}
+
+
+const ENCOUNTERICONS = {
+    DEFAULT: <FontAwesomeIcon icon={faTriangleExclamation}/>,
+    GATHERING: {
+        FLUFF: <FontAwesomeIcon icon={faMagnifyingGlass}/>,
+        FIND_PET: <FontAwesomeIcon icon={faHeart}/>,
+        FIND_SPECIAL: <FontAwesomeIcon icon={faLocust}/>,
+        FIND_RESOURCES: <FontAwesomeIcon icon={faWorm}/>,
+    },
+    FISHING: {
+        FLUFF: <FontAwesomeIcon icon={faWater}/>,
+        FIND_PET: <FontAwesomeIcon icon={faHeart}/>,
+        FIND_SPECIAL: <FontAwesomeIcon icon={faShrimp}/>,
+    },
+    ADVENTURE: {
+        FLUFF: <FontAwesomeIcon icon={faGhost}/>,
+    },
+}
+
 
 const GATHERINGTYPES = {
     ALL: 0,
@@ -294,23 +334,31 @@ const GLOBALS = {
                     id: 0,
                     type: ENCOUNTERTYPES.FISHING.FLUFF,
                     chance: 0.05,
+                    header: "",
+                    text: "",
                 },
                 {
                     id: 1,
                     type: ENCOUNTERTYPES.FISHING.FIND_PET,
                     chance: 0.02,
-                    reward: PETS.SHRIMPY
+                    reward: PETS.SHRIMPY,
+                    header: "What is this?",
+                    text: "Shrimpy has joined you in your efforts, just make sure to keep him away from flamingos!",
                 },
                 {
                     id: 2,
                     type: ENCOUNTERTYPES.FISHING.FIND_PET,
                     chance: 0.002,
-                    reward: PETS.CARD_SHARK
+                    reward: PETS.CARD_SHARK,
+                    header: "What is this?",
+                    text: "Card Shark has joined you in your efforts, seems like he knows these waters very well.",
                 },
                 {
                     id: 3,
                     type: ENCOUNTERTYPES.FISHING.FIND_SPECIAL,
                     chance: 0.01,
+                    header: "",
+                    text: "",
                 },
             ]
         },
@@ -324,39 +372,51 @@ const GLOBALS = {
                     type: ENCOUNTERTYPES.GATHERING.FLUFF,
                     source: GATHERINGTYPES.ALL,
                     chance: 0.05,
+                    header: "You see a small Spider smoke Weed",
+                    text: "Not sure what you should do with this, but you decide to enjoy it while it lasts",
                 },
                 {
                     id: 1,
                     type: ENCOUNTERTYPES.GATHERING.FIND_PET,
                     source: GATHERINGTYPES.WORMS,
                     chance: 0.03,
-                    reward: PETS.EARTHWORM_JIM
+                    reward: PETS.EARTHWORM_JIM,
+                    header: "What is this?",
+                    text: "Earthworm Jim has joined you in your efforts, dont mistake him for one of the other ones.",
                 },
                 {
                     id: 2,
                     type: ENCOUNTERTYPES.GATHERING.FIND_PET,
                     source: GATHERINGTYPES.ARTIFACTS,
                     chance: 0.02,
-                    reward: PETS.FLOPPY
+                    reward: PETS.FLOPPY,
+                    header: "What is this?",
+                    text: "Floppy has joined you in your efforts, seems to be some kind of ancient sentient storage device.",
                 },
                 {
                     id: 3,
                     type: ENCOUNTERTYPES.GATHERING.FIND_PET,
                     source: GATHERINGTYPES.MINING,
                     chance: 0.01,
-                    reward: PETS.LIL_GEODE
+                    reward: PETS.LIL_GEODE,
+                    header: "What is this?",
+                    text: "Lil' Geode has joined you in your efforts, very sturdy and very witty.",
                 },
                 {
                     id: 4,
                     type: ENCOUNTERTYPES.GATHERING.FIND_RESOURCES,
                     source: GATHERINGTYPES.ALL,
                     chance: 0.08,
+                    header: "You found additional Worms!",
+                    text: "$r Worms were attending a Party and you grab them with a bucket",
                 },
                 {
                     id: 5,
                     type: ENCOUNTERTYPES.GATHERING.FIND_SPECIAL,
                     source: GATHERINGTYPES.ALL,
                     chance: 0.005,
+                    header: "This is not implemented yet",
+                    text: "So good luck doing anything with this",
                 },
             ]
         },
@@ -502,7 +562,7 @@ const GLOBALS = {
 
     ENUMS: {
         RARITY, BAIT, TIME, 
-        NODETYPES, GATHERINGTYPES, ENCOUNTERTYPES, TRIPSTATUS,
+        NODETYPES, GATHERINGTYPES, ENCOUNTERTYPES, ENCOUNTERICONS, ENCOUNTERNAMES, TRIPSTATUS,
         PAGES, AUTOMATION, PETS
     }
 }
