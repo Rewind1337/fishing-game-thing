@@ -31,11 +31,11 @@ function SeedCard({ c, onClick }) {
     const [cropState, setCropState] = useState({active: false})
 
     const handleClick = (row, col) => {
-      console.log(selectedSeed)
       let cropData = {
         active: true, 
         id: selectedSeed,
-        name: selectedSeed.current.toString() + "-Plant"
+        name: selectedSeed.current.toString() + "-Plant",
+        ticksDone: 0,
       }
 
       setCropState(cropData);
@@ -70,20 +70,23 @@ function SeedCard({ c, onClick }) {
   }
 
   function FarmGrid({width, height, grid, selectedSeed, setGridFull, setGridRowCol}) {
-    const buildGrid = () => {
+    const buildGrid = (grid) => {
       let _grid = [];
-      let n = 0;
-      for (let i = 0; i < height; i++) {
-        _grid.push([])
-        for (let j = 0; j < width; j++, n++) {
-          _grid[i].push(n)
+      if (grid == undefined) {
+        for (let i = 0; i < height; i++) {
+          _grid.push([])
+          for (let j = 0; j < width; j++) {
+            _grid[i].push({active: false})
+          }
         }
+      } else {
+        _grid = grid;
       }
       setGridFull(_grid);
     }
 
     useEffect(() => {
-      buildGrid();
+      buildGrid(grid);
     }, [])
 
     return (
@@ -117,18 +120,18 @@ function SeedCard({ c, onClick }) {
     const _farm = _context.save.farm
 
     const selectedSeed = useRef(-1)
-    const [grid, setGridFull] = useState(_farm.grid || [])
+    const [grid, setGridFull] = useState(_farm.grid || undefined)
     const setGridRowCol = (row, col, data) => {
       let changedGrid = grid;
       changedGrid[row][col] = data;
       setGridFull(changedGrid)
     }
 
-    //  const setSave = _context.setSave;
+    const setSave = _context.setSave;
 
     useEffect(() => {
-      //  setSave({farm: {grid: grid}}, true)
-    }, [grid])
+      setSave({farm: {grid: grid}})
+    })
     
 
     return (

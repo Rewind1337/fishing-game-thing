@@ -233,6 +233,9 @@ function PageGatheringZone() {
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.GATHERING} title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
 
+      <ActionButton color="pets" fab sx={{bottom: '1rem', right: '1rem'}} func={() => {if (canCollectWorms) {collectWorms()} else if (!isDiggingWorms) {startDiggingWorms()}}} className={"show-mobile hide-tablet-up"} variant='contained' onlyIcon icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />}/>
+      {isArtifactsUnlocked && <ActionButton color="archaeology" fab sx={{bottom: '1rem', right: 'calc(1rem + 70px) !important'}} func={() => {if (canCollectArtifacts) {collectArtifacts()} else if (!isDiggingArtifacts) {startDiggingArtifacts()}}} className={"show-mobile hide-tablet-up"} variant='contained' onlyIcon icon={<FontAwesomeIcon icon={"fa-solid fa-floppy-disk"} />}/>}
+
       <Grid mobile={12} tablet={6} desktop={4} maxHeight={{ mobile: 600, tablet: 800 }} overflow={"auto"}>
         <FlexList collapsible switchable headerText={"All Resources"} mode="list">
           <BaitCollection resources={resources}/>
@@ -241,7 +244,7 @@ function PageGatheringZone() {
         </FlexList>
 
         <Grid className="hide-mobile show-tablet-up" container mobile={12} tablet={6} desktop={6} maxHeight={{ mobile: 200, tablet: 400 }} overflow={"auto"}>
-          <Farm farmWidth={3} farmHeight={1}/>
+          <Farm farmWidth={3} farmHeight={2}/>
         </Grid>
 
       </Grid>

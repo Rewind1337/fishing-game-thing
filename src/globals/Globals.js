@@ -1,9 +1,9 @@
-import { ENUMS } from "./Enums.js";
-import { DB_FISH } from "./DB_FISH.js";
-import { DB_PETS } from "./DB_PETS.js";
-import { DB_FISHING } from "./DB_FISHING.js";
-import { DB_GATHERING } from "./DB_GATHERING.js";
-import { DB_ADVENTURE } from "./DB_ADVENTURE.js";
+import ENUMS from "./Enums.js";
+import DB_FISH from "./DB_FISH.js";
+import DB_PETS from "./DB_PETS.js";
+import DB_FISHING from "./DB_FISHING.js";
+import DB_GATHERING from "./DB_GATHERING.js";
+import DB_ADVENTURE from "./DB_ADVENTURE.js";
 import { DB_RODS, DB_BAIT, DB_HOOKS, DB_LURES } from "./DB_ITEMS.js"; // Fishing Equipment
 
 const GLOBALS = {
