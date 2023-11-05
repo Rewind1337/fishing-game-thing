@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GLOBALS from "../../globals/Globals";
 
 const generateModalContent = (page, encounter, _context) => {
+
     const addPet = (index) => {
         let newPets = _context.save.pets;
         newPets.push(index)
@@ -15,62 +16,84 @@ const generateModalContent = (page, encounter, _context) => {
     let thePage = pageNameMap[page];
     let theType = GLOBALS.ENUMS.ENCOUNTERNAMES[thePage][[encounter.type]];
 
-    // this handles probably 50%+ of the encounters
     _context.refs.modal['setModalIcon'](<FontAwesomeIcon icon={GLOBALS.ENUMS.ENCOUNTERICONS[thePage][theType]}/>);
     _context.refs.modal['setModalHeader'](encounter.header);
     _context.refs.modal['setModalText'](encounter.text);
 
-    // this is the real logic
     switch (page) {
       
         case GLOBALS.ENUMS.PAGES.FISHING:{
 
             switch (encounter.type) {
+
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.FISHING.FIND_PET:{
                     addPet(encounter.reward)
                 break;}
+
+
                 
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.FISHING.FIND_RESOURCES:{
 
                 break;}
+
+
             
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.FISHING.FLUFF:{
             
                 break;}
+
+
             
                 default:{return false;}
             }
 
         break;}
+
+
+
+
 
         case GLOBALS.ENUMS.PAGES.GATHERING:{
             
             switch (encounter.type) {
+
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_PET:{
                     addPet(encounter.reward)
                 break;}
+
+
                 
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_RESOURCES:{
-                    let randomResources = ~~(Math.random() * 15 * (1 + _context.save.aspects.wormPower))
+                    let randomResources = 5 + ~~(Math.random() * 15 * (1 + _context.save.aspects.wormPower))
                     let newBait = _context.save.resources.bait;
                     newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + randomResources || randomResources;
                     //setResources(r => ({...r, bait: newBait}));
                     _context.save.resources.bait = newBait;
-                    _context.refs.modal['setModalText'].current(parse(encounter.text, "$r", randomResources));
+                    _context.refs.modal['setModalText'](parse(encounter.text, "$r", randomResources));
                 break;}
+
+
                 
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_SPECIAL:{
                     
                 break;}
+
+
             
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FLUFF:{
             
                 break;}
+
+
             
                 default:{return false;}
             }
 
         break;}
+
+
+
+
         
         case GLOBALS.ENUMS.PAGES.ADVENTURE:{
             
@@ -79,6 +102,8 @@ const generateModalContent = (page, encounter, _context) => {
                 case GLOBALS.ENUMS.ENCOUNTERTYPES.ADVENTURE.FLUFF:{
             
                 break;}
+
+
             
                 default:{return false;}
             }

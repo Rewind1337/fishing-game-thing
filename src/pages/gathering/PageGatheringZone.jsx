@@ -40,7 +40,7 @@ function PageGatheringZone() {
 
   const [resources, setResources] = useState(resourceHook(_context));
   const [aspects, ] = useState(aspectHook(_context));
-  const [pets, setPets] = useState(_context.save.pets || []);
+  const [pets, ] = useState(_context.save.pets || []);
 
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
@@ -116,9 +116,7 @@ function PageGatheringZone() {
       if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] >= 15) { setArtifactsUnlocked(true) }
 
       if (_context.save.sidebar.unlocks[3] == false) {
-        let modifiedUnlocks = _context.save.sidebar.unlocks;
-        modifiedUnlocks[3] = true;
-        _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
+        _context.refs.sidebar['modifySidebarUnlocks'](3, true);
       }
     }
   }

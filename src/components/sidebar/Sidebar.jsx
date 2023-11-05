@@ -53,6 +53,12 @@ function Sidebar() {
   const [folderStates, setFolderStates] = useState(_context.save.sidebar.states);
   const [sidebarUnlocks, setSidebarUnlocks] = useState(_context.save.sidebar.unlocks);
 
+  const modifySidebarUnlocks = (index, bool) => {
+    let modifiedUnlocks = sidebarUnlocks;
+    modifiedUnlocks[index] = bool;
+    setSidebarUnlocks(modifiedUnlocks);
+  }
+
   const [sidebarBadgeData, setSidebarBadgeData] = useState(_context.save.sidebar.sidebarBadgeData);
     
   let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
@@ -162,7 +168,8 @@ function Sidebar() {
   useEffect(() => {
     setRefs({sidebar: {
       'setMobileSidebarVisible' : setMobileSidebarVisible,
-      'setSidebarUnlocks' : setSidebarUnlocks, 
+      'modifySidebarUnlocks' : modifySidebarUnlocks,
+      'setSidebarUnlocks': setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
       'checkForBadgeData' : checkForBadgeData,
       'addBadgeTimer' : addBadgeTimer}}, true);

@@ -102,7 +102,7 @@ function PageInventory() {
     </FlexList>
   );
 
-  const listOWnedLures = (inventory.equipment.lures.length > 0 && 
+  const listOwnedLures = (inventory.equipment.lures.length > 0 && 
     <FlexList collapsible mode='list' headerText='Lures'>
       {inventory.equipment.lures.map((_l) => {
         let l = GLOBALS.DB.LURE[_l];
@@ -164,7 +164,7 @@ function PageInventory() {
               {listOwnedRods}
               {listOwnedHooks}
               {listOwnedBait}
-              {listOWnedLures}
+              {listOwnedLures}
             </>}
             {mainTabIndex == 1 && <>This is {mainTabHeaders[1]} Stuff</>}
             {mainTabIndex == 2 && <>This is {mainTabHeaders[2]} Stuff</>}
