@@ -1,6 +1,3 @@
-import { faGhost, faHeart, faLocust, faMagnifyingGlass, faShrimp, faTriangleExclamation, faWater, faWorm } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
 const RARITY = {
     COMMON: 0,
     UNCOMMON: 1,
@@ -90,20 +87,20 @@ const ENCOUNTERNAMES = {
 
 
 const ENCOUNTERICONS = {
-    DEFAULT: <FontAwesomeIcon icon={faTriangleExclamation}/>,
+    DEFAULT: "fa-solid fa-triangle-exclamation",
     GATHERING: {
-        FLUFF: <FontAwesomeIcon icon={faMagnifyingGlass}/>,
-        FIND_PET: <FontAwesomeIcon icon={faHeart}/>,
-        FIND_SPECIAL: <FontAwesomeIcon icon={faLocust}/>,
-        FIND_RESOURCES: <FontAwesomeIcon icon={faWorm}/>,
+        FLUFF: "fa-solid fa-magnifying-glass",
+        FIND_PET: "fa-solid fa-heart",
+        FIND_SPECIAL: "fa-solid fa-locust",
+        FIND_RESOURCES: "fa-solid fa-worm",
     },
     FISHING: {
-        FLUFF: <FontAwesomeIcon icon={faWater}/>,
-        FIND_PET: <FontAwesomeIcon icon={faHeart}/>,
-        FIND_SPECIAL: <FontAwesomeIcon icon={faShrimp}/>,
+        FLUFF: "fa-solid fa-water",
+        FIND_PET: "fa-solid fa-heart",
+        FIND_SPECIAL: "fa-solid fa-shrimp",
     },
     ADVENTURE: {
-        FLUFF: <FontAwesomeIcon icon={faGhost}/>,
+        FLUFF: "fa-solid fa-ghost",
     },
 }
 

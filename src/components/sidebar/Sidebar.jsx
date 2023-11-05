@@ -24,7 +24,6 @@ import Theme from '../../styles/Theme';
 import { styled } from '@mui/material/styles';
 import { Badge, useMediaQuery } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
@@ -39,7 +38,7 @@ function Sidebar() {
 
   const mobileSidebarButton = (
     <div className='mobile-sidebar-button' onClick={() => {setMobileSidebarVisible(!mobileSidebarVisible)}}>
-      <FontAwesomeIcon icon={faBars} />
+      <FontAwesomeIcon icon={"fa-solid fa-bars"} />
     </div>
   )
   

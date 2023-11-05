@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { getWeatherFromNoise, setupWeatherNoise } from './WeatherNoise.js'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloud, faCloudBolt, faCloudRain, faCloudSun, faCloudSunRain, faSnowflake, faSun } from '@fortawesome/free-solid-svg-icons';
 
 import './WeatherClock.scss'
   
@@ -89,13 +88,13 @@ function WeatherClock() {
       </div>
       <div className="weather-bar">
         
-        <FontAwesomeIcon style={(currentWeather.current > 0       && currentWeather.current < 0.14285 ? activeColor("hsl(89deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={faCloudBolt} />
-        <FontAwesomeIcon style={(currentWeather.current > 0.14285 && currentWeather.current < 0.28571 ? activeColor("hsl(149deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={faCloudSunRain} />
-        <FontAwesomeIcon style={(currentWeather.current > 0.28571 && currentWeather.current < 0.42857 ? activeColor("hsl(60deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={faSun} />
-        <FontAwesomeIcon style={(currentWeather.current > 0.42857 && currentWeather.current < 0.57142 ? activeColor("hsl(30deg, 100%, 92%)") : activeColor("white"))} className={(iconClasses)} icon={faCloudSun} />
-        <FontAwesomeIcon style={(currentWeather.current > 0.57142 && currentWeather.current < 0.71428 ? activeColor("hsl(0deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={faCloud} />
-        <FontAwesomeIcon style={(currentWeather.current > 0.71428 && currentWeather.current < 0.85714 ? activeColor("hsl(280deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={faCloudRain} />
-        <FontAwesomeIcon style={(currentWeather.current > 0.85714 && currentWeather.current < 1       ? activeColor("hsl(180deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={faSnowflake} />
+        <FontAwesomeIcon style={(currentWeather.current > 0       && currentWeather.current < 0.14285 ? activeColor("hsl(89deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-cloud-bolt"} />
+        <FontAwesomeIcon style={(currentWeather.current > 0.14285 && currentWeather.current < 0.28571 ? activeColor("hsl(149deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-cloud-sun-rain"} />
+        <FontAwesomeIcon style={(currentWeather.current > 0.28571 && currentWeather.current < 0.42857 ? activeColor("hsl(60deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-sun"} />
+        <FontAwesomeIcon style={(currentWeather.current > 0.42857 && currentWeather.current < 0.57142 ? activeColor("hsl(30deg, 100%, 92%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-cloud-sun"} />
+        <FontAwesomeIcon style={(currentWeather.current > 0.57142 && currentWeather.current < 0.71428 ? activeColor("hsl(0deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-cloud"} />
+        <FontAwesomeIcon style={(currentWeather.current > 0.71428 && currentWeather.current < 0.85714 ? activeColor("hsl(280deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-cloud-rain"} />
+        <FontAwesomeIcon style={(currentWeather.current > 0.85714 && currentWeather.current < 1       ? activeColor("hsl(180deg, 100%, 85%)") : activeColor("white"))} className={(iconClasses)} icon={"fa-solid fa-snowflake"} />
 
       </div>
       </div>

@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useRef, useState } from 'react';
+import SaveContext from '../../context/SaveContext';
 
+import FlexList from '../../components/flexlist/FlexList';
 import Unicode from '../../components/Unicode'
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import ActionButton from '../../components/ActionButton';
 
-import { faSeedling } from '@fortawesome/free-solid-svg-icons';
 // MUI 
 import Grid from '@mui/material/Unstable_Grid2';
 import { Paper } from '@mui/material';
-import FlexList from '../../components/flexlist/FlexList';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SaveContext from '../../context/SaveContext';
 
 
 function SeedCard({ c, onClick }) {
@@ -46,7 +46,7 @@ function SeedCard({ c, onClick }) {
       {cropState.active && <>
         <div className='farm-cell-name'>{cropState.name}</div>
         <div className='farm-cell-progress'>
-          <CircularProgressWithLabel fontSize='12px' iconOffsetTop="-15%" iconSize="12px" textOffsetTop="40%" icon={<FontAwesomeIcon icon={faSeedling} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
+          <CircularProgressWithLabel fontSize='12px' iconOffsetTop="-15%" iconSize="12px" textOffsetTop="40%" icon={<FontAwesomeIcon icon={"fa-solid fa-seedling"} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
         </div>
         <div className='farm-cell-buttons' style={{display: "flex"}}>
           <ActionButton color='queen' text={"Uproot"} variant='text'></ActionButton>

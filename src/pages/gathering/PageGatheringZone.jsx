@@ -9,14 +9,12 @@ import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import ResourceCard from '../../components/resources/ResourceCard';
 import GatheringModule from './GatheringModule';
-import BasicModal from '../../components/modal/BasicModal';
 
 // MUI 
 import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoreHole, faFloppyDisk, faHeart, faLocust, faMagnifyingGlass, faTriangleExclamation, faWorm } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -28,7 +26,9 @@ import FishCollection from '../../components/resources/FishCollection';
 import './Gathering.scss'
 import BaitCollection from '../../components/resources/BaitCollection';
 import Farm from './Farm';
+
 import checkForEncounters from '../../utility/encounters/checkForEncounters';
+import generateModalContent from '../../utility/encounters/generateModalContent';
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -68,89 +68,10 @@ function PageGatheringZone() {
   let miningProgressMax = GLOBALS.GATHERING.MINING.TIME; // 12min
   const autoMiningUnlocked = false;
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalIcon, setModalIcon] = useState(<></>);
-  const [modalHeader, setModalHeader] = useState("Cool header hehe");
-  const [modalText, setModalText] = useState("This is the default value, please enjoy this value while it is on screen");
-
-  const parse = (orig, find, replaceValue) => {
-    let returnString = "";
-
-    if (Array.isArray(find) && Array.isArray(replaceValue)) {
-      for (let i = 0; i < find.length; i++) {
-        let startsAt = orig.indexOf(find[i]);
-
-        returnString += orig.substring(0, startsAt);
-        returnString += replaceValue[i];
-        returnString += orig.substring(startsAt + find[i].length);
-      }
-
-      return returnString;
-    }
-
-    if (Array.isArray(find) && !Array.isArray(replaceValue)
-    || (!Array.isArray(find) && Array.isArray(replaceValue))) {
-      console.warn("mismatch of inputtypes")
-      return orig;
-    }
-
-    let startsAt = orig.indexOf(find);
-
-    returnString += orig.substring(0, startsAt);
-    returnString += replaceValue;
-    returnString += orig.substring(startsAt + find.length);
-
-    return returnString;
-    
-  }
-
-  const generateModalContent = (page, encounter) => {
-    if (encounter == undefined) return false;
-
-    let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"].map(e => e.toUpperCase())
-    let petNameMap = ["Earthworm Jim", "Floppy", "Lil' Geode"]
-
-    let thePage = pageNameMap[page];
-    let theType = GLOBALS.ENUMS.ENCOUNTERNAMES[thePage][[encounter.type]];
-    
-    setModalIcon(GLOBALS.ENUMS.ENCOUNTERICONS[thePage][theType]);
-    setModalHeader(encounter.header);
-    setModalText(encounter.text);
-
-    switch (encounter.type) {
-      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_PET:{
-        let newPets = pets;
-        newPets.push(encounter.reward)
-        setPets(newPets);
-      break;}
-      
-      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_RESOURCES:{
-        let randomResources = ~~(Math.random() * 15 * (1 + aspects.wormPower))
-        let newBait = resources.bait;
-        newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + randomResources || randomResources;
-        setResources(r => ({...r, bait: newBait}));
-        setModalText(parse(encounter.text, "$r", randomResources));
-      break;}
-      
-      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FIND_SPECIAL:{break;}
-      
-      case GLOBALS.ENUMS.ENCOUNTERTYPES.GATHERING.FLUFF:{break;}
-
-      default: return false;
-    }
-
-    return true;
-  }
-
   const handleModalOpen = (encounter) => {
-    if (generateModalContent(GLOBALS.ENUMS.PAGES.GATHERING, encounter) == true) {
-      setModalOpen(true);
+    if (generateModalContent(GLOBALS.ENUMS.PAGES.GATHERING, encounter, _context) == true) {
+      _context.refs.modal['setModalOpen'](true);
     }
-  };
-
-  const handleModalClose = (value, reason) => {// eslint-disable-line no-unused-vars
-    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
-    if (value.value == 'close') { setModalOpen(false) }
   };
 
   const contextSave = () => {
@@ -292,7 +213,7 @@ function PageGatheringZone() {
   // unmount
   useEffect(() => () => {
     // contextSave(); // this breaks the save on exit? automation works now lol
-  }, []);
+  }, []);  
 
   // mount | Catch up the Ticks
   useEffect(() => {
@@ -314,13 +235,11 @@ function PageGatheringZone() {
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.GATHERING} title="Gathering Zone" gridId="grid-gathering" contentClasses={'gathering'}>
 
-      <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
-
       <Grid mobile={12} tablet={6} desktop={4} maxHeight={{ mobile: 600, tablet: 800 }} overflow={"auto"}>
         <FlexList collapsible switchable headerText={"All Resources"} mode="list">
           <BaitCollection resources={resources}/>
           <FishCollection resources={resources}/>
-          {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={faFloppyDisk} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
+          {isArtifactsUnlocked && (<ResourceCard icon={<FontAwesomeIcon icon={"fa-solid fa-floppy-disk"} />} iconcolor="hsl(60deg, 100%, 90%)" name="Artifacts" value={resources.artifacts} cap={0} perSec={0}></ResourceCard>)}
         </FlexList>
 
         <Grid className="hide-mobile show-tablet-up" container mobile={12} tablet={6} desktop={6} maxHeight={{ mobile: 200, tablet: 400 }} overflow={"auto"}>
@@ -331,13 +250,13 @@ function PageGatheringZone() {
 
       <Grid container mobile={"auto"} tablet={6} desktop={8} maxHeight={{ mobile: 400, tablet: 600 }} overflow={"auto"} sx={{ flexGrow: '1' }} spacing={0.5}>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={faWorm} />} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms} />
+          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms} />
         </Grid>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isArtifactsUnlocked} header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={faFloppyDisk} />} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts} />
+          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isArtifactsUnlocked} header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={"fa-solid fa-floppy-disk"} />} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts} />
         </Grid>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isMiningUnlocked} header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={faBoreHole} />} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining} />
+          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isMiningUnlocked} header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={"fa-solid fa-bore-hole"} />} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining} />
         </Grid>
       </Grid>
 

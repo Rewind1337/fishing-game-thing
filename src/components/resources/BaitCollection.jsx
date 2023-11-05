@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';  // eslint-disable-line no-unused-vars
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWorm } from '@fortawesome/free-solid-svg-icons';
 import ResourceCollectionCard from './ResourceCollectionCard';
 
 BaitCollection.propTypes = {
@@ -15,7 +14,7 @@ function BaitCollection({resources}) {
   let collection = getBaitCollection(resources);
 
   return (
-    <ResourceCollectionCard collection={collection} name={'Bait-ish'} icon={<FontAwesomeIcon icon={faWorm} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+    <ResourceCollectionCard collection={collection} name={'Bait-ish'} icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
   )
 }
 
@@ -27,7 +26,7 @@ let getBaitCollection = function (resources) {
     if (bait.id != 0) {
       if (resources.bait[bait.id] >= 0) {
         collection.push({
-          icon: <FontAwesomeIcon icon={faWorm} />,
+          icon: <FontAwesomeIcon icon={"fa-solid fa-worm"} />,
           iconcolor: 'hsl(' + ((360/resources.bait.length) * bait.id) + 'deg, 100%, 90%)',
           name: bait.name,
           value: resources.bait[bait.id] || 0,

@@ -19,6 +19,9 @@ import FlagUS from '../../assets/flag-us';
 import WeatherClock from '../../components/weatherclock/WeatherClock';
 
 import Grid from '@mui/material/Unstable_Grid2';
+import BasicModal from '../../components/modal/BasicModal';
+
+import '../../assets/fa-library.js'
 
 PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
@@ -68,6 +71,26 @@ function PageCore({pageID, title, contentClasses, children}) {
     _context.refs.sidebar['checkForBadgeData'](pageID);
     _context.refs.sidebar['clearBadgeDataFor'](pageID);
   })
+
+  const setRefs = _context.setRefs;
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalIcon, setModalIcon] = useState(<></>);
+  const [modalHeader, setModalHeader] = useState("");
+  const [modalText, setModalText] = useState("");
+  
+  const handleModalClose = (value, reason) => {// eslint-disable-line no-unused-vars
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
+    if (value.value == 'close') { setModalOpen(false) }
+  };
+
+  useEffect(() => {
+    setRefs({modal: {
+      'setModalOpen' : setModalOpen,
+      'setModalIcon' : setModalIcon, 
+      'setModalHeader' : setModalHeader,
+      'setModalText' : setModalText}});
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
   useEffect(() => {
     const timer = setInterval(coreTick, 500);
@@ -130,6 +153,9 @@ function PageCore({pageID, title, contentClasses, children}) {
 
     return (
         <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
+
+        <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
+
           <div id="content" className={contentClasses}>
             <Grid id="content-top" container spacing={0}>
               <Grid mobile={"auto"}>
