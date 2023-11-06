@@ -11,7 +11,7 @@ GatheringModule.propTypes = {
     header: PropTypes.string,
     progress: PropTypes.number,
     bigSize: PropTypes.number,
-    smallSize: PropTypes.number.isRequired,
+    smallSize: PropTypes.number,
     progressMax: PropTypes.number.isRequired,
     isActive: PropTypes.bool.isRequired,
     canCollect: PropTypes.bool.isRequired,
