@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useRef, useContext, useEffect } from 'react'
 import SaveContext from '../../context/SaveContext';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
@@ -54,8 +54,10 @@ function Sidebar() {
   const [folderStates, setFolderStates] = useState(_context.save.sidebar.states);
   const [sidebarUnlocks, setSidebarUnlocks] = useState(_context.save.sidebar.unlocks);
 
+  const currentPage = useRef(_context.save.sidebar.currentPage);
+
   const [sidebarBadgeData, setSidebarBadgeData] = useState(_context.save.sidebar.sidebarBadgeData);
-    
+
   let pageNameMap = ["home","inventory","pets","fishing","gathering","adventure","queen","tutorial"]
 
   const addBadgeTimer = (page, duration, pageTickSpeed = 500) => {    
@@ -80,19 +82,23 @@ function Sidebar() {
   const clearBadgeDataFor = (page = -1) => {
     let singlePage = (page !== -1);
 
+    let didChange = false;
+
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
       let changedSidebarBadgeData = sidebarBadgeData;
 
       let changedBadgeData = allBadgeData;
-      let didChange = false;
 
       if (singlePage) {
+        currentPage.current = page;
+        
         let pageData = allBadgeData[pageNameMap[page]]
         for (let d in pageData) {
           if (pageData[d] < Date.now()) {changedBadgeData[pageNameMap[page]].splice(d, 1); didChange = true;}
         }
         if (didChange) {
+          changedSidebarBadgeData = changedSidebarBadgeData.slice();
           changedSidebarBadgeData[page] = changedBadgeData[pageNameMap[page]].length;
         }
       } else {
@@ -102,13 +108,16 @@ function Sidebar() {
             if (pageData[d] < Date.now()) {changedBadgeData[key].splice(d, 1); didChange = true;}
           }
           if (didChange) {
+            changedSidebarBadgeData = changedSidebarBadgeData.slice();
             changedSidebarBadgeData[page] = changedBadgeData[key].length;
           }
         }
       }
-        
-      localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
-      setSidebarBadgeData(changedSidebarBadgeData);
+      
+      if (didChange) {
+        localStorage.setItem("badge-data", JSON.stringify(changedBadgeData));
+        setSidebarBadgeData(changedSidebarBadgeData);
+      }
     }
   }
 
@@ -119,7 +128,12 @@ function Sidebar() {
 
     if (localStorage.getItem("badge-data") != undefined) {
       let allBadgeData = JSON.parse(localStorage.getItem("badge-data"));
+      
       if (singlePage) {
+        if (page == currentPage.current) {
+          return;
+        }
+
         let n = 0;
         let thePage = pageNameMap[page];
         let pageTimers = allBadgeData[thePage];
@@ -129,26 +143,39 @@ function Sidebar() {
           }
         }
 
-        newData[page] = n;
-        setSidebarBadgeData(newData);
+        if (n != newData[page]) {
+          newData = newData.slice();
+          newData[page] = n;
+          setSidebarBadgeData(newData);
+        }
 
       } else {
-        for (let key in allBadgeData) {
+        for (let thePage in allBadgeData) {
+          let pageIndex = pageNameMap.indexOf(thePage);
+          if (pageIndex == currentPage.current) {
+            continue;
+          }
+
           let n = 0;
-          let thePage = key;
           let pageTimers = allBadgeData[thePage];
           for (let t in pageTimers) {
             if (pageTimers[t] < Date.now()) {
               n++;
             }
           }
-          newData[pageNameMap.indexOf(thePage)] = n;
+
+          if (n != newData[pageIndex]) {
+            newData = newData.slice();
+            newData[pageIndex] = n;
+          }
         }
         setSidebarBadgeData(newData);
       }
     }
   }
 
+  /*
+  // Checks ALL pages
   useEffect(() => {
     const timer = setInterval(() => {checkForBadgeData()}, 1000);
 
@@ -157,6 +184,7 @@ function Sidebar() {
     };
 
   }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+  */
 
   const setRefs = _context.setRefs;
 
@@ -174,7 +202,7 @@ function Sidebar() {
   const setSave = _context.setSave;
 
   useEffect(() => {
-    setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, sidebarBadgeData: sidebarBadgeData}});
+    setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, sidebarBadgeData: sidebarBadgeData, currentPage: currentPage.current}});
   }, [sidebarUnlocks, setSidebarUnlocks, folderStates, setFolderStates, sidebarBadgeData, setSidebarBadgeData, setSave])
 
   SidebarFolder.propTypes = {
@@ -191,10 +219,10 @@ function Sidebar() {
   };
 
   function unlockSidebar(id, unlocked) {
-    let unlocks = _context.save.sidebar.unlocks;
+    let unlocks = _context.save.sidebar.unlocks.slice();
     unlocks[id] = unlocked;
 
-    let newSidebar = _context.save.sidebar;
+    let newSidebar = _context.save.sidebar.slice();
     newSidebar['unlocks'] = unlocks;
     setSave({sidebar : newSidebar});
     setSidebarUnlocks(unlocks);

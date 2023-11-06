@@ -96,6 +96,13 @@ const PAGES = {
     HELP: 7,
 }
 
+const genericHookCanCatch = (fishProgress, tickRange) => {return fishProgress >= tickRange.min[tickRange.catch] && fishProgress <= tickRange.max[tickRange.catch]};
+const genericHookBarColor = (fishProgress, tickRange) => {
+    let catchCountColor = ['fishing', 'gathering', 'archaeology', 'queen'];
+    let catchColor = 1 + tickRange.catch % (catchCountColor.length - 1)
+    return genericHookCanCatch(fishProgress, tickRange) ? catchCountColor[catchColor] : catchCountColor[0];
+}
+
 const GLOBALS = {
     DB: {
 
@@ -431,6 +438,8 @@ const GLOBALS = {
                 catchMultiplierChance: 0,
                 catchMultiplierAmount: 0,
                 breakChance: 0,
+                fishingBarColor: genericHookBarColor,
+                canCatch: genericHookCanCatch,
             },
             {
                 id: 1,
@@ -439,6 +448,15 @@ const GLOBALS = {
                 catchMultiplierChance: 0.1,
                 catchMultiplierAmount: 2,
                 breakChance: 5,
+                fishingBarColor: genericHookBarColor,
+                canCatch: genericHookCanCatch,
+            },
+            {
+                id: 2,
+                name: "Splithook",
+                multiCatch: 1,
+                fishingBarColor: genericHookBarColor,
+                canCatch: genericHookCanCatch,
             },
         ],
 

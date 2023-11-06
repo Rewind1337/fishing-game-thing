@@ -202,7 +202,7 @@ function PageGatheringZone() {
       if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] >= 15) { setArtifactsUnlocked(true) }
 
       if (_context.save.sidebar.unlocks[3] == false) {
-        let modifiedUnlocks = _context.save.sidebar.unlocks;
+        let modifiedUnlocks = _context.save.sidebar.unlocks.slice();
         modifiedUnlocks[3] = true;
         _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
       }
@@ -248,8 +248,6 @@ function PageGatheringZone() {
   }
 
   const pageTick = () => {
-    _context.refs.sidebar['clearBadgeDataFor'](4);
-    
     let currentTime = Date.now();
     let deltaTime = currentTime - localTimestamp.current;
 

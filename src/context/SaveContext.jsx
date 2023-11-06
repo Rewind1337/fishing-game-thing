@@ -1,5 +1,7 @@
 import { createContext } from 'react';
 
+import GLOBALS from '../globals/Globals';
+
 const updateDict = (oldDict, newDict, hardSave = false) => {
     if (typeof newDict !== 'object') {
         if (typeof oldDict === 'object' && !hardSave) {
@@ -8,7 +10,12 @@ const updateDict = (oldDict, newDict, hardSave = false) => {
         }
         return newDict;
     }
-  
+    /*
+    if (typeof oldDict !== 'object') {
+        return newDict;
+    }
+    */
+
     for (let key in newDict) {
         if (key in oldDict) {
             oldDict[key] = updateDict(oldDict[key], newDict[key], hardSave);
@@ -36,7 +43,7 @@ let data = {
                 rods: [0],
                 bait: [],
                 lures: [],
-                hooks: [],
+                hooks: [0],
             },
             gear: { // adventuring gear
 
@@ -47,7 +54,7 @@ let data = {
                 rod: 0,
                 bait: null,
                 lure: null,
-                hook: null,
+                hook: 0,
             },
             gear: { // adventuring gear
 
@@ -58,6 +65,7 @@ let data = {
             states: [true, true, true],
             unlocks: [true, false, false, false, true, false, false, true],
             sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
+            currentPage: 0,
         }
     },
     setSave : (s, log = false) => {
