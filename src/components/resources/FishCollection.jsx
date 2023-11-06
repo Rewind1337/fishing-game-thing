@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';  // eslint-disable-line no-unused-vars
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFish } from '@fortawesome/free-solid-svg-icons';
-import ResourceCollectionCard from '../../components/resources/ResourceCollectionCard';
+import ResourceCollectionCard from './ResourceCollectionCard';
 
 FishCollection.propTypes = {
   resources: PropTypes.object.isRequired

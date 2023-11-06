@@ -8,7 +8,6 @@ import PageCore from '../core/PageCore';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
-import ResourceCard from '../../components/resources/ResourceCard';
 import MilestoneCard from './MilestoneCard';
 import AspectCard from './AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
@@ -19,16 +18,17 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish, faWorm, faHurricane } from '@fortawesome/free-solid-svg-icons';
+import { faFish, faHurricane } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 import aspectHook from '../../utility/aspectHook';  // eslint-disable-line no-unused-vars
-import FishCollection from '../inventory/FishCollection';
+import FishCollection from '../../components/resources/FishCollection';
 
 // CSS Styles
 import './Queen.scss'
+import BaitCollection from '../../components/resources/BaitCollection';
 
 // Route: "/queen"
 function PageQueen() {
@@ -75,10 +75,6 @@ function PageQueen() {
     let amount = input.amount;
     let fishID = input.value;
     if (resources.fishes[fishID] >= amount) {
-      let newFishes = resources.fishes;
-      newFishes[fishID] -= 1 * amount;
-      setResources(r => ({...r, fishes: r.fishes = newFishes}));
-      
       let fishData = GLOBALS.DB.FISH[fishID];
 
       let rarityTable = [1,3,7,15,30];
@@ -91,9 +87,17 @@ function PageQueen() {
       for (let aspectName in fishData['aspects']) {
         newAspects[aspectName] += fishData['aspects'][aspectName] * amount;
       }
+      newAspects['fishPower'] += 0.01 * rarityTable[fishData.rarity] * amount;
       setAspects(newAspects);
 
-      setResources(r => ({...r, fish: r.fish - (1 * amount), worms: r.worms + (fishWorms * amount)}));
+      // remove fish
+      let newFishes = resources.fishes;
+      newFishes[fishID] = newFishes[fishID] - (1 * amount);
+      // add worms
+      let newBait = resources.bait;
+      newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + (fishWorms * amount);
+      setResources(r => ({...r, fishes: r.fishes = newFishes}));
+
       _context.refs.toastmanager['fireToast']("success", "Yum!");
     }
   };
@@ -103,13 +107,20 @@ function PageQueen() {
     _context.setSave({aspects: {...aspects}});
   }, [resources, aspects]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const hasAny = (fishes) => {
+    for (let key in fishes) {
+      if (fishes[key] > 0) {return true;}
+    }
+    return false;
+  }
+
   const milestoneProgress = (
     <div className='milestone-progress'>
       <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
         <h2>Milestone Progress</h2>
         <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
         <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-          <ActionButton disabled={(resources.fish >= 1 ? false : true)} color="queen" variant="contained" text={(resources.fish >= 1 ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+          <ActionButton disabled={(hasAny(resources.fishes) ? false : true)} color="queen" variant="contained" text={(hasAny(resources.fishes) ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
         </div>
       </Paper>
     </div>
@@ -118,9 +129,12 @@ function PageQueen() {
   const aspectList = (
     <FlexList headerText="Aspects" mode='list'>
       <AspectCard c="𓃇" name="Worm" color='hsl(290deg, 100%, 90%)' amount={format(aspects.wormPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Worm Gain'} />
+      <AspectCard c="𓆝" name="Fish" color='hsl(240deg, 100%, 90%)' amount={format(aspects.fishPower, '.', 2)} iconscale={"1.75"} effect={'Boosts ???'} />
+      <AspectCard c="𓂍" name="Tears" color='hsl(190deg, 100%, 40%)' amount={format(aspects.tearPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Defense'} />
+      <AspectCard c="𓆰" name="Fierce" color='hsl(0deg, 100%, 40%)' amount={format(aspects.fiercePower, '.', 1)} iconscale={"1.75"} effect={'Boosts Attack'} />
       <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} effect={'aaa'} />
       <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={0} effect={'aaa'} />
+      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={format(aspects.earthPower, '.', 1)} effect={'Boosts Digging Power'} />
       <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} effect={'aaa'} />
       <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} effect={'aaa'} />
       <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
@@ -135,7 +149,7 @@ function PageQueen() {
 
   const resourceList = (
     <FlexList collapsible headerText={"All Resources"} mode="list">
-      <ResourceCard icon={<FontAwesomeIcon icon={faWorm} />} iconcolor="hsl(300deg, 100%, 90%)" name="Worms" value={resources.worms} cap={0} perSec={0}></ResourceCard>
+      <BaitCollection resources={resources}/>
       <FishCollection resources={resources}/>
     </FlexList>
   );

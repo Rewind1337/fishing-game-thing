@@ -27,7 +27,6 @@ function BasicModal(props) {
           <div className='dialog-text'>{text}</div>
           <div className='dialog-buttons'>
             <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Okay"}/>
-            <ActionButton color='pets' variant='outlined' func={() => {handleListItemClick("close")}} text={"No U"}/>
           </div>
         </Paper>
     </Dialog>
