@@ -29,6 +29,20 @@ import FishCollection from '../../components/resources/FishCollection';
 import './Queen.scss'
 import BaitCollection from '../../components/resources/BaitCollection';
 
+const generatePickerOptions = () => {
+  let options = [];
+  for (let f in GLOBALS.DB.FISH) {
+    let fish = GLOBALS.DB.FISH[f];
+    options.push({
+      icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
+      itemID: fish.id,
+      itemName: fish.name,
+      aspects: fish.aspects || undefined,
+    })
+  }
+  return options;
+}
+
 // Route: "/queen"
 function PageQueen() {
 
@@ -39,10 +53,7 @@ function PageQueen() {
   const [aspects, setAspects] = useState(aspectHook(_context));
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
-  const pickerOptions = [
-    {icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>, itemID: 0, itemName: "Muddie Munchie"},
-    {icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>, itemID: 1, itemName: "Whiskered Wailer"},
-  ];
+  const pickerOptions = generatePickerOptions();
 
   const handlePickerOpen = () => {
     setPickerModalOpen(true);
@@ -126,7 +137,7 @@ function PageQueen() {
   );
 
   const aspectList = (
-    <FlexList headerText="Aspects" mode='list'>
+    <FlexList headerText="Aspects" mode='list' collapsible>
       <AspectCard c="𓃇" name="Worm" color='hsl(290deg, 100%, 90%)' amount={format(aspects.wormPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Worm Gain'} />
       <AspectCard c="𓆝" name="Fish" color='hsl(240deg, 100%, 90%)' amount={format(aspects.fishPower, '.', 2)} iconscale={"1.75"} effect={'Boosts ???'} />
       <AspectCard c="𓂍" name="Tears" color='hsl(190deg, 100%, 40%)' amount={format(aspects.tearPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Defense'} />
@@ -182,8 +193,10 @@ function PageQueen() {
           {resourceList}
         </Grid>
         <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} flexGrow={1} overflow={"auto"}>
-          {resourceList}
-          {aspectList}
+          <FlexList noHeader mode='list'>
+            {resourceList}
+            {aspectList}
+          </FlexList>
         </Grid>
         <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} flexGrow={1} overflow={"auto"}>
           {aspectList}

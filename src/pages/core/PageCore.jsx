@@ -106,7 +106,7 @@ function PageCore({pageID, title, contentClasses, children}) {
   const langButtonInactive = {filter: 'blur(1px'}
   
   const languagePicker = (
-    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
       <Stack direction={'row'} sx={{ gap: '12px' }}>
         <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_DE); } }>
           <FlagDE />
@@ -123,7 +123,7 @@ function PageCore({pageID, title, contentClasses, children}) {
 
   const debugButtons = (
     <Paper elevation={1} sx={{ display: 'flex !important', flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
-      <Grid container spacing={0.5} mobile={"auto"} sx={{flexGrow: '1'}} >
+      <Grid container spacing={0.5} mobile={"auto"} sx={{flexGrow: '1', alignItems: "center"}} >
         <Grid mobile={4}>
           <ActionButton color="tutorial" variant="contained" text='Sidebar' sx={{ height: "80%", width: "100%" }} func={() => {
           let modifiedUnlocks = [true, true, true, true, true, true, true, true];

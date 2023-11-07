@@ -13,6 +13,8 @@ function FishCollection({resources}) {
 
   let collection = getFishCollection(resources);
 
+  if (collection.length == 0) {return}
+
   return (
     <ResourceCollectionCard collection={collection} name={'All Fish'} icon={<FontAwesomeIcon icon={"fa-solid fa-fish"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
   )

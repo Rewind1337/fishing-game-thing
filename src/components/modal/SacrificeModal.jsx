@@ -27,11 +27,15 @@ function SacrificeModal(props) {
       <div className='dialog-text'>Sacrifice your caught Fish to gain powerful Aspects which will boost many things</div>
         <FlexList noHeader mode='flex'>
           {options.map((opt) => (
-            <Paper key={opt.itemID} style={{display: 'flex', flexDirection: 'row', alignContent: 'center', marginBottom: '2px', padding: '4px', width: 'calc(calc(100% - 8px) / 2)'}}>
-              <div style={{flexGrow: 1, alignSelf: 'center'}}>{opt.icon} {opt.itemName}</div>
-              <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 1)}} text={"1"}/>
-              <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 10)}} text={"10"}/>
-              <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 100)}} text={"100"}/>
+            <Paper className="sacrifice-item" key={opt.itemID}>
+              <div className="sacrifice-item-icon">{opt.icon}</div>
+              <div className="sacrifice-item-name">{opt.itemName}</div>
+              <div className="sacrifice-item-aspects">{JSON.stringify(opt.aspects)}</div>
+              <div className="sacrifice-item-buttons">
+                <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 1)}} text={"1"}/>
+                <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 10)}} text={"10"}/>
+                <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 100)}} text={"100"}/>
+              </div>
             </Paper>
           ))}
         </FlexList>

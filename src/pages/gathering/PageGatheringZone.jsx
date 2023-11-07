@@ -42,31 +42,31 @@ function PageGatheringZone() {
   const [aspects, ] = useState(aspectHook(_context));
   const [pets, ] = useState(_context.save.pets || []);
 
+  let getWormSpeed = function() {return (1 + (aspects.wormPower < 2 ? aspects.wormPower : 2)) * (1 + (aspects.earthPower < 1 ? aspects.earthPower : 1))};
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
   const [canCollectWorms, setCanCollectWorms] = useState(false);
-
-  let getWormSpeed = function() {return (1 + (aspects.wormPower < 2 ? aspects.wormPower : 2)) * (1 + (aspects.earthPower < 1 ? aspects.wormPower : 1));};
-  
   const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED * getWormSpeed()) // 1 per tick
   let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
-  const autoDiggingWormsUnlocked = false;
+  const autoDiggingWormsUnlocked = pets.includes(GLOBALS.ENUMS.PETS.EARTHWORM_JIM);
 
+  let getArtifactSpeed = function() {return (1 * (1 + (aspects.earthPower/10 < 9 ? aspects.earthPower/10 : 9)))};
   const [isArtifactsUnlocked, setArtifactsUnlocked] = useState(_context.save.gathering.isArtifactsUnlocked || false)
   const [isDiggingArtifacts, setDiggingArtifacts] = useState(_context.save.gathering.isDiggingArtifacts || false)
   const [artifactProgress, setArtifactProgress] = useState(_context.save.gathering.artifactProgress || 0)
   const [canCollectArtifacts, setCanCollectArtifacts] = useState(false)
-  let artifactProgressPerTick = GLOBALS.GATHERING.ARTIFACTDIG.SPEED // 1 per tick
+  const [artifactProgressPerTick, setArtifactProgressPerTick] = useState(GLOBALS.GATHERING.ARTIFACTDIG.SPEED * getArtifactSpeed())
   let artifactProgressMax = GLOBALS.GATHERING.ARTIFACTDIG.TIME; // 1m30s
-  const autoDiggingArtifactsUnlocked = false;
+  const autoDiggingArtifactsUnlocked = pets.includes(GLOBALS.ENUMS.PETS.FLOPPY);
 
+  let getMiningSpeed = function() {return (1)};
   const [isMiningUnlocked,] = useState(_context.save.gathering.isMiningUnlocked || false)
   const [isMining, setMining] = useState(_context.save.gathering.isMining || false)
   const [miningProgress, setMiningProgress] = useState(_context.save.gathering.miningProgress || 0)
   const [canCollectMining, setCanCollectMining] = useState(false)
-  let miningProgressPerTick = GLOBALS.GATHERING.MINING.SPEED // 1 per tick
+  const [miningProgressPerTick, setMiningProgressPerTick] = useState(GLOBALS.GATHERING.ARTIFACTDIG.SPEED * getMiningSpeed())
   let miningProgressMax = GLOBALS.GATHERING.MINING.TIME; // 12min
-  const autoMiningUnlocked = false;
+  const autoMiningUnlocked = pets.includes(GLOBALS.ENUMS.PETS.LIL_GEODE);
 
   const handleModalOpen = (encounter) => {
     if (generateModalContent(GLOBALS.ENUMS.PAGES.GATHERING, encounter, _context) == true) {
@@ -93,11 +93,13 @@ function PageGatheringZone() {
 
   const startDiggingWorms = () => {
     setDiggingWorms(true)
-    let wormSpeed = getWormSpeed();
-    setWormProgressPerTick(1 * wormSpeed);
+    setWormProgressPerTick(1 * getWormSpeed());
 
-    _context.refs.sidebar['addBadgeTimer'](4, wormProgressMax / wormSpeed, 500);
+    _context.refs.sidebar['addBadgeTimer'](4, wormProgressMax / getWormSpeed(), 500);
   }
+
+  const getMinWorms = () => {return 1 + ~~(Math.sqrt(aspects.wormPower));}
+  const getMaxWorms = () => {return 1 + ~~(Math.sqrt(aspects.wormPower) + 2 * (1 + Math.sqrt(aspects.wormPower / 10)));}
 
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
@@ -123,9 +125,13 @@ function PageGatheringZone() {
 
   const startDiggingArtifacts = () => {
     setDiggingArtifacts(true)
+    setArtifactProgressPerTick(1 * getArtifactSpeed());
 
-    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.ARTIFACTDIG.TIME, 500);
+    _context.refs.sidebar['addBadgeTimer'](4, artifactProgressMax / getArtifactSpeed(), 500);
   }
+
+  const getMinArtifacts = () => {return 1;}
+  const getMaxArtifacts = () => {return 1 + 2;}
 
   const collectArtifacts = () => {
     if (artifactProgress >= artifactProgressMax - 1) {
@@ -143,9 +149,13 @@ function PageGatheringZone() {
 
   const startMining = () => {
     setMining(true)
+    setMiningProgressPerTick(1 * getMiningSpeed());
 
-    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.MINING.TIME, 500);
+    _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.MINING.TIME / getMiningSpeed(), 500);
   }
+
+  const getMinMining = () => {return 1;}
+  const getMaxMining = () => {return 1;}
 
   const collectMining = () => {
     if (miningProgress >= miningProgressMax - 1) {
@@ -251,13 +261,13 @@ function PageGatheringZone() {
 
       <Grid container mobile={"auto"} tablet={6} desktop={8} maxHeight={{ mobile: 400, tablet: 600 }} overflow={"auto"} sx={{ flexGrow: '1' }} spacing={0.5}>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms} />
+          <GatheringModule autoSegments={1} autoSpeed={1} time={(GLOBALS.GATHERING.WORMDIG.TIME * 500) / wormProgressPerTick / 1000} minGain={getMinWorms()} maxGain={getMaxWorms()} isUnlocked={true} header="Worms" iconColor='#ffccff' progressColor='pets' icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} isActive={isDiggingWorms} progress={wormProgress} progressMax={wormProgressMax} canCollect={canCollectWorms} autoUnlocked={autoDiggingWormsUnlocked} start={startDiggingWorms} collect={collectWorms} />
         </Grid>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isArtifactsUnlocked} header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={"fa-solid fa-floppy-disk"} />} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts} />
+          <GatheringModule autoSegments={1} autoSpeed={1} time={(GLOBALS.GATHERING.ARTIFACTDIG.TIME * 500) / getArtifactSpeed() / 1000} minGain={getMinArtifacts()} maxGain={getMaxArtifacts()} isUnlocked={isArtifactsUnlocked} header="Artifacts" iconColor='hsl(60deg, 100%, 90%)' progressColor='archaeology' icon={<FontAwesomeIcon icon={"fa-solid fa-floppy-disk"} />} isActive={isDiggingArtifacts} progress={artifactProgress} progressMax={artifactProgressMax} canCollect={canCollectArtifacts} autoUnlocked={autoDiggingArtifactsUnlocked} start={startDiggingArtifacts} collect={collectArtifacts} />
         </Grid>
         <Grid mobile={6} tablet={12} desktop={6} widescreen={4} sx={{ flexGrow: '1' }}>
-          <GatheringModule autoSegments={1} autoSpeed={1} isUnlocked={isMiningUnlocked} header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={"fa-solid fa-bore-hole"} />} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining} />
+          <GatheringModule autoSegments={1} autoSpeed={1} time={(GLOBALS.GATHERING.MINING.TIME * 500) / getMiningSpeed() / 1000} minGain={getMinMining()} maxGain={getMaxMining()} isUnlocked={isMiningUnlocked} header="Mining" iconColor='#8770ce' progressColor='mining' icon={<FontAwesomeIcon icon={"fa-solid fa-bore-hole"} />} isActive={isMining} progress={miningProgress} progressMax={miningProgressMax} canCollect={canCollectMining} autoUnlocked={autoMiningUnlocked} start={startMining} collect={collectMining} />
         </Grid>
       </Grid>
 

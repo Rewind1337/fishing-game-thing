@@ -69,7 +69,7 @@ const BREAKPOINTS = {
     //min-body-width is 500px
     mobile: 0,
     tablet: 640,
-    desktop: 1024,
+    desktop: 1000,
     widescreen: 1600,
   },
 }

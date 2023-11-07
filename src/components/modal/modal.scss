@@ -40,3 +40,36 @@
     margin-top: 12px;
     gap: 48px;
 }
+
+.sacrifice-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 2px;
+    border: 1px solid rgba(white, 0.25);
+
+    &-icon {
+        color: #33adff;
+    }
+
+    &-name {
+        flex-grow: 1;
+        padding-left: 4px;
+        white-space: nowrap;
+    }
+
+    &-aspects {
+        font-size: 10px;
+        padding-left: 4px;
+    }
+
+    &-buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        > * {
+           font-size: 16px !important; 
+        }
+    }
+}

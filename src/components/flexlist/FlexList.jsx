@@ -10,7 +10,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import AppsIcon from '@mui/icons-material/Apps';
 import { useState } from 'react';
-import { Paper } from '@mui/material';
 
 FlexList.propTypes = {
   id: PropTypes.string,
@@ -62,7 +61,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
   );
 
   const headerDefault = (
-    <div className={"flexlist-header"} style={{marginTop: gap + "px", backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
+    <div className={"flexlist-header"} style={{marginTop: gap + "px", backgroundColor: 'rgba(0, 0, 0, 0.4)'}}>
       <h4>{headerText}</h4>
       {switchable && headerModeButtons}
     </div>
@@ -76,24 +75,18 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
     if (collapsed) {
       
       return (
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-          <div id={id} className={"flexlist-wrapper " + modeState + (collapsed ? ' collapsed' : ' expanded')}>
-            {headerCollapsed}
-          </div>
-        </Paper>
+        <div id={id} className={"flexlist-wrapper " + modeState + (collapsed ? ' collapsed' : ' expanded')}>
+          {headerCollapsed}
+        </div>
       );
     } else {
       return (
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-          <div id={id} className={"flexlist-wrapper " + modeState + (collapsed ? ' collapsed' : ' expanded')}>
-            <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
-              {headerNotCollapsed}
-            </Paper>
-            <div className={"flexlist flexlist-" + modeState} style={{minHeight: minHeight, maxHeight: maxHeight}}>
-              {children}
-            </div>
+        <div id={id} className={"flexlist-wrapper " + modeState + (collapsed ? ' collapsed' : ' expanded')}>
+          {headerNotCollapsed}
+          <div className={"flexlist flexlist-" + modeState} style={{minHeight: minHeight, maxHeight: maxHeight}}>
+            {children}
           </div>
-        </Paper>
+        </div>
       );
     }
   }

@@ -162,7 +162,7 @@ function SeedCard({ c, select, onClick }) {
 
     return (
       <>
-        <Grid mobile={12} width={"100%"} paddingLeft={0} marginTop={1}>
+        <Grid mobile={12} width={"100%"} paddingLeft={0}>
           <Paper elevation={1} sx={{ width: "100%", border: '1px solid rgba(255, 255, 255, 0.5)', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}>
             <FlexList mode='compact' collapsible headerText='Seeds'>
               <SeedCard c="0" select={seedSelectColor(0)} onClick={() => {updateSeedRef(0)}} />

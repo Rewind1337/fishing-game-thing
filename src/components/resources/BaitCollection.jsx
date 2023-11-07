@@ -13,6 +13,8 @@ function BaitCollection({resources}) {
 
   let collection = getBaitCollection(resources);
 
+  if (collection.length == 0) {return}
+
   return (
     <ResourceCollectionCard collection={collection} name={'Bait-ish'} icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
   )

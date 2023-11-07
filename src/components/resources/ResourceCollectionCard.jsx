@@ -22,9 +22,8 @@ function ResourceCollectionCard({collection = [], icon, iconcolor, name}) {
   for (let i = 0; i < collection.length; i++) {combinedTotal += collection[i].value;}
 
   const collectionHeader = (
-    <div className='resource-collection-card-header' style={{textAlign: 'left', textIndent: '8px', display: 'flex', alignItems: 'center', cursor: 'pointer'}} onClick={() => {setCollapsed(!collapsed)}}>
-      {(collapsed ? <KeyboardArrowRightIcon/> : <KeyboardArrowDownIcon/>)}
-      <ResourceCard collection langpath='resources/collections' height={40} icon={icon} iconcolor={iconcolor} name={name} value={combinedTotal} cap={0} perSec={0}/>
+    <div className='resource-collection-card-wrapper' style={{textAlign: 'left', textIndent: '8px', display: 'flex', alignItems: 'center', cursor: 'pointer'}} onClick={() => {setCollapsed(!collapsed)}}>
+      <ResourceCard collection langpath='resources/collections' icon={(collapsed ? <><KeyboardArrowRightIcon/>{icon}</> : <><KeyboardArrowDownIcon/>{icon}</>)} iconcolor={iconcolor} name={name} value={combinedTotal} cap={0} perSec={0}/>
     </div>
   )
   

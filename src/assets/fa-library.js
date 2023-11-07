@@ -9,9 +9,13 @@ import { faFish, faGhost, faLocust, faShrimp, faWater, faWorm, faFloppyDisk, faB
 // weather icons
 import { faCloud, faCloudBolt, faCloudRain, faCloudSun, faCloudSunRain, faSnowflake, faSun } from "@fortawesome/free-solid-svg-icons"
 
+// automation icons
+import { faGear, faGears, faTrash, faRecycle, faCircleNotch, faCircle as faCircleFull, faCircleHalfStroke as faCircleHalf, faQuestion } from "@fortawesome/free-solid-svg-icons"
+import { faCircle as faCircleEmpty } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
     faBars, faHeart, faMagnifyingGlass, faTriangleExclamation, faCheck,
     faFish, faGhost, faLocust, faShrimp, faWater, faWorm, faFloppyDisk, faBoreHole, faHurricane, faSeedling,
     faCloud, faCloudBolt, faCloudRain, faCloudSun, faCloudSunRain, faSnowflake, faSun,
+    faGear, faGears, faTrash, faRecycle, faCircleNotch, faCircleFull, faCircleHalf, faCircleEmpty, faQuestion
 )
