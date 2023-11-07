@@ -45,7 +45,7 @@ function PageGatheringZone() {
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
   const [canCollectWorms, setCanCollectWorms] = useState(false);
 
-  let getWormSpeed = function() {return (1 + (aspects.wormPower < 2 ? aspects.wormPower : 2)) * (1 + (aspects.earthPower < 1 ? aspects.wormPower : 1));};
+  let getWormSpeed = function() {return (1 + (aspects.wormPower < 2 ? aspects.wormPower : 2)) * (1 + (aspects.earthPower < 1 ? aspects.earthPower : 1));};
   
   const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED * getWormSpeed()) // 1 per tick
   let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
