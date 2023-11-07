@@ -33,14 +33,14 @@ function PageInventory() {
 
   const [mainTabIndex, setMainTabIndex] = useState(0)
 
-  const mainTabHeaders = ['Equipment', 'Unused', 'Unused'];
+  const mainTabHeaders = ['Equipment', 'B', 'C'];
   const handleMainTabChange = (main) => {
     setMainTabIndex(main);
   }
 
   const [otherTabIndex, setOtherTabIndex] = useState(0)
 
-  const otherTabHeaders = ['Resources', 'Fish', 'Other'];
+  const otherTabHeaders = ['Resources', 'Fish', 'F'];
   const handleOtherTabChange = (other) => {
     setOtherTabIndex(other);
   }
@@ -59,7 +59,7 @@ function PageInventory() {
       {inventory.equipment.rods.map((_r) => {
         let r = GLOBALS.DB.ROD[_r]
         return (
-          <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={r.id} className='inventory-card rod'>
+          <Paper elevation={1} key={r.id} className='inventory-card rod'>
             <div className='inventory-card-buttons'>
               <ActionButton text={(_r == character.equipment.rod ? 'Equipped' : 'Equip')} />
             </div>
@@ -75,7 +75,7 @@ function PageInventory() {
       {inventory.equipment.hooks.map((_h) => {
         let h = GLOBALS.DB.HOOK[_h];
         return (
-          <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={h.id} className='inventory-card hook'>
+          <Paper elevation={1} key={h.id} className='inventory-card hook'>
             <div className='inventory-card-buttons'>
               <ActionButton text={(_h == character.equipment.hook ? 'Equipped' : 'Equip')} />
             </div>
@@ -91,7 +91,7 @@ function PageInventory() {
       {inventory.equipment.bait.map((_b) => {
         let b = GLOBALS.DB.HOOK[_b];
         return (
-          <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} key={b.id} className='inventory-card bait'>
+          <Paper elevation={1} key={b.id} className='inventory-card bait'>
             <div className='inventory-card-buttons'>
               <ActionButton text={(_b == character.equipment.bait ? 'Equipped' : 'Equip')} />
             </div>
@@ -107,7 +107,7 @@ function PageInventory() {
       {inventory.equipment.lures.map((_l) => {
         let l = GLOBALS.DB.LURE[_l];
         return (
-          <Paper key={l.id} elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} className='inventory-card lure'>
+          <Paper key={l.id} elevation={1} className='inventory-card lure'>
             <div className='inventory-card-buttons'>
               <ActionButton text={(_l == character.equipment.lure ? 'Equipped' : 'Equip')} />
             </div>
@@ -118,42 +118,12 @@ function PageInventory() {
     </FlexList>
   );
 
-  const makeFish = (val, index) => {
-    let DB_FISH = GLOBALS.DB.FISH[index];
-
-    return (
-    <Paper key={index} elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} className='fish-card'>
-      <div className='fish-card-image'></div>
-      <div className='fish-card-data'>
-        <div className='fish-card-data-name'>{DB_FISH.name}&nbsp;{val}</div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '32px' }}>
-          <div className='fish-card-data-rarity'>rarity: {DB_FISH.rarity}</div>
-          <div className='fish-card-data-baitneeded'>bait: {DB_FISH.baitNeeded}</div>
-        </div>
-        <div className='fish-card-data-flavor'>{DB_FISH.flavor}</div>
-      </div>
-      <div className='fish-card-buttons'>
-        <ActionButton text={"Test"} />
-        <ActionButton text={"Test"} />
-      </div>
-    </Paper>
-    )
-  }
-
-  const listFish = (
-    <FlexList collapsible switchable mode='list' headerText="Fish">
-      {resources.fishes.map((val, index) => {
-        if (val > 0) {return makeFish(val, index)}
-      })}
-    </FlexList>
-  );
-
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.INVENTORY} title="Inventory" gridId="grid-inventory" contentClasses={'inventory'}>
 
       <Grid container mobile={12} flexGrow={1}spacing={0.5}>
         <Grid mobile={6} tablet={4} widescreen={3} maxHeight={800} overflow={"auto"}>
-          <Paper elevation={1} className='flexlist-tabs' sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
+          <Paper elevation={1} className='flexlist-tabs'>
             <ActionButton color='inventory' text={mainTabHeaders[0]} func={() => {handleMainTabChange(0)}}/>
             <ActionButton color='inventory' text={mainTabHeaders[1]} func={() => {handleMainTabChange(1)}}/>
             <ActionButton color='inventory' text={mainTabHeaders[2]} func={() => {handleMainTabChange(2)}}/>
@@ -174,7 +144,7 @@ function PageInventory() {
           
         </Grid>
         <Grid mobile={6} tablet={4} widescreen={3} maxHeight={800} overflow={"auto"}>
-          <Paper elevation={1} className='flexlist-tabs' sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}>
+          <Paper elevation={1} className='flexlist-tabs'>
             <ActionButton color='inventory' text={otherTabHeaders[0]} func={() => {handleOtherTabChange(0)}}/>
             <ActionButton color='inventory' text={otherTabHeaders[1]} func={() => {handleOtherTabChange(1)}}/>
             <ActionButton color='inventory' text={otherTabHeaders[2]} func={() => {handleOtherTabChange(2)}}/>

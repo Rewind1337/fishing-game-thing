@@ -1,35 +1,34 @@
-.picker-dialog {
+.picker-dialog, .basic-dialog, .journal-dialog {
     z-index: 11000 !important;
-    > .MuiDialog-container {
+}
+
+.MuiDialog-container {
+    z-index: 11000 !important;
+    > .MuiPaper-root {
         z-index: 11000 !important;
-        > .MuiPaper-root {
-            z-index: 11000 !important;
-            padding: 16px;
-            min-width: 600px;
-            max-width: 1200px;
-        }
+        padding: 16px;
+        min-width: 600px;
+        max-width: 100%;
     }
 }
 
-.basic-dialog {
-    z-index: 11000 !important;
-    > .MuiDialog-container {
-        z-index: 11000 !important;
-        > .MuiPaper-root {
-            z-index: 11000 !important;
-            padding: 32px;
-            min-width: 600px;
-            max-width: 1200px;
-        }
-    }
-}
-
-.basic-dialog *, .picker-dialog * {
+.basic-dialog *, .picker-dialog *, .journal-dialog * {
     white-space: break-spaces;
+}
+
+#journal-content {
+    button {
+        width: 100%;
+    }
 }
 
 .dialog-text {
     text-align: center;
+}
+
+.dialog-content {
+    padding: 16px;
+    width: 100%;
 }
 
 .dialog-buttons {

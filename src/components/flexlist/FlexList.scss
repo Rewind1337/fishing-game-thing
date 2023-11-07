@@ -98,5 +98,12 @@
         justify-content: flex-start;
         width: 100%;
         margin-bottom: 2px;
+
+        background-color: rgba(0, 0, 0, 0.2) !important;
+
+        > * {
+            flex-grow: 1;
+            font-size: 18px !important;
+        }
     }
 }

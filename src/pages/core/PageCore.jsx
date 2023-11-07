@@ -21,7 +21,9 @@ import WeatherClock from '../../components/weatherclock/WeatherClock';
 import Grid from '@mui/material/Unstable_Grid2';
 import BasicModal from '../../components/modal/BasicModal';
 
-import '../../assets/fa-library.js'
+import '../../globals/fa-library.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Journal from '../../components/modal/Journal.jsx';
 
 PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
@@ -83,13 +85,21 @@ function PageCore({pageID, title, contentClasses, children}) {
     if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
     if (value.value == 'close') { setModalOpen(false) }
   };
+  
+  const [journalOpen, setJournalOpen] = useState(false);
+
+  const handleJournalClose = (value, reason) => {// eslint-disable-line no-unused-vars
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
+    if (value.value == 'close') { setJournalOpen(false) }
+  };
 
   useEffect(() => {
     setRefs({modal: {
       'setModalOpen' : setModalOpen,
       'setModalIcon' : setModalIcon, 
       'setModalHeader' : setModalHeader,
-      'setModalText' : setModalText}});
+      'setModalText' : setModalText,
+      'setJournalOpen' : setJournalOpen}});
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
   useEffect(() => {
@@ -101,22 +111,11 @@ function PageCore({pageID, title, contentClasses, children}) {
   
 
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
-
-  const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
-  const langButtonInactive = {filter: 'blur(1px'}
   
-  const languagePicker = (
+  const miscButtons = (
     <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
       <Stack direction={'row'} sx={{ gap: '12px' }}>
-        <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_DE); } }>
-          <FlagDE />
-        </IconButton>
-        <IconButton style={(selectedLanguage == 'NL' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_NL); } }>
-          <FlagNL />
-        </IconButton>
-        <IconButton style={(selectedLanguage == 'US' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_US); } }>
-          <FlagUS />
-        </IconButton>
+        <ActionButton color="tutorial" variant="contained" text='Journal' sx={{ width: "100%" }} endIcon={<FontAwesomeIcon style={{marginRight: "8px", marginLeft: "-4px"}} icon="fa-solid fa-book" />} func={() => {setJournalOpen(true)}} />
       </Stack>
     </Paper>
   );
@@ -151,10 +150,31 @@ function PageCore({pageID, title, contentClasses, children}) {
     </Paper>
   )
 
+  const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
+  const langButtonInactive = {filter: 'blur(1px'}
+  
+  const languagePicker = (
+    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
+      <Stack direction={'row'} sx={{ gap: '12px' }}>
+        <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_DE); } }>
+          <FlagDE />
+        </IconButton>
+        <IconButton style={(selectedLanguage == 'NL' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_NL); } }>
+          <FlagNL />
+        </IconButton>
+        <IconButton style={(selectedLanguage == 'US' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_US); } }>
+          <FlagUS />
+        </IconButton>
+      </Stack>
+    </Paper>
+  );
+
     return (
         <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
 
         <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
+
+        <Journal open={journalOpen} onClose={handleJournalClose}/>
 
           <div id="content" className={contentClasses}>
             <Grid id="content-top" container spacing={0}>
@@ -181,7 +201,7 @@ function PageCore({pageID, title, contentClasses, children}) {
             </div>
             <Grid id="content-bottom" className="hide-mobile show-tablet-up" container spacing={0}>
               <Grid mobile="auto">
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}></Paper>
+                {miscButtons}
               </Grid>
               <Grid mobile={4}>
                 {debugButtons}

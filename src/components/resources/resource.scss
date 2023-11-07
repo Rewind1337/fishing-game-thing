@@ -36,6 +36,8 @@
 
     &-icon {
         text-indent: 0;
+        display: flex;
+        flex-wrap: nowrap;
         
         svg {
             height: 40px !important;

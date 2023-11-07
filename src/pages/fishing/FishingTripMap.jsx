@@ -19,7 +19,7 @@ function FishingTripMap({ location, tripStatus }) {
 
   if (tripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
     return (
-      <Paper className='fishing-map' onClick={mouseClick} elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.2)', height: 'min-content'}} >
+      <Paper className='fishing-map' onClick={mouseClick}>
         <div className='fishing-map-location'>{location.name}</div>
         <div className='fishing-map-grid'>
           {location.sublocations.map((objID) => {
