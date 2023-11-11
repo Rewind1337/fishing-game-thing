@@ -124,6 +124,14 @@ function PageQueen() {
     return false;
   }
 
+  const aspectsToList = (aspectDict) => {
+    let output = [];
+    for (let key in aspectDict) {
+      output.push({name:key, aspect:aspectDict[key]});
+    }
+    return output;
+  };
+
   const milestoneProgress = (
     <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
       <h2>Milestone Progress</h2>
@@ -136,22 +144,7 @@ function PageQueen() {
 
   const aspectList = (
     <FlexList headerText="Aspects" mode='list' collapsible>
-      <AspectCard c="𓃇" name="Worm" color='hsl(290deg, 100%, 90%)' amount={format(aspects.wormPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Worm Gain'} />
-      <AspectCard c="𓆝" name="Fish" color='hsl(240deg, 100%, 90%)' amount={format(aspects.fishPower, '.', 2)} iconscale={"1.75"} effect={'Boosts ???'} />
-      <AspectCard c="𓂍" name="Tears" color='hsl(190deg, 100%, 40%)' amount={format(aspects.tearPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Defense'} />
-      <AspectCard c="𓆰" name="Fierce" color='hsl(0deg, 100%, 40%)' amount={format(aspects.fiercePower, '.', 1)} iconscale={"1.75"} effect={'Boosts Attack'} />
-      <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} effect={'aaa'} />
-      <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={format(aspects.earthPower, '.', 1)} effect={'Boosts Digging Power'} />
-      <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} effect={'aaa'} />
-      <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
-      <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜲" name="Regulus" color='hsl(30deg, 100%, 65%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
-      <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"} effect={'aaa'} />
-      <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} effect={'aaa'} />
+      {aspectsToList(GLOBALS.DB.ASPECTS).map(asp => <AspectCard key={asp.name} c={asp.aspect.c} name={asp.aspect.name} color={asp.aspect.color} amount={format(aspects[asp.name] || 0, '.', asp.aspect.precision || 1)} iconscale={asp.aspect.iconscale} effect={asp.aspect.effect} />)}
     </FlexList>
   );
 

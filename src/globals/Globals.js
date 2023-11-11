@@ -1,4 +1,5 @@
 import ENUMS from "./Enums.js";
+import DB_ASPECTS from "./DB_ASPECTS.js";
 import DB_FISH from "./DB_FISH.js";
 import DB_PETS from "./DB_PETS.js";
 import DB_FISHING from "./DB_FISHING.js";
@@ -8,6 +9,7 @@ import { DB_RODS, DB_BAIT, DB_HOOKS, DB_LURES } from "./DB_ITEMS.js"; // Fishing
 
 const GLOBALS = {
     DB: {
+        ASPECTS: DB_ASPECTS,
         FISH: DB_FISH,
         PETS: DB_PETS,
         FISHING: DB_FISHING,

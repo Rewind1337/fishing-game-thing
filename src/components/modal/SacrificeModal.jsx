@@ -7,6 +7,9 @@ import { Paper } from '@mui/material';
 import FlexList from '../flexlist/FlexList';
 import ActionButton from '../ActionButton';
 
+import AspectCollection from '..//aspects/AspectCollection';
+import AspectIcon from '..//aspects/AspectIcon';
+
 import './modal.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -20,6 +23,14 @@ function SacrificeModal({ options, header, onClose, open }) {
     onClose({value: value, amount: amount});
   };
 
+  const aspectsToList = (aspectDict, scale = 1) => {
+    let output = [];
+    for (let key in aspectDict) {
+      output.push({name:key, amount:aspectDict[key], scale:scale});
+    }
+    return output;
+  };
+
   return (
     <Dialog className='picker-dialog' onClose={handleClose} open={open}>
     <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}>
@@ -28,12 +39,14 @@ function SacrificeModal({ options, header, onClose, open }) {
       <DialogTitle style={{textAlign: 'center', padding: '6px'}}>{header}</DialogTitle>
       <Paper className='dialog-content'>
         <div className='dialog-text'>Sacrifice your caught Fish to gain powerful Aspects which will boost many things</div>
-          <FlexList noHeader mode='flex'>
+          <FlexList noHeader mode='list'>
             {options.map((opt) => (
               <Paper className="sacrifice-item" key={opt.itemID}>
                 <div className="sacrifice-item-icon">{opt.icon}</div>
                 <div className="sacrifice-item-name">{opt.itemName}</div>
-                <div className="sacrifice-item-aspects">{JSON.stringify(opt.aspects)}</div>
+                <div className="sacrifice-item-aspects">
+                  <AspectCollection collection = {aspectsToList(opt.aspects)}></AspectCollection>
+                </div>
                 <div className="sacrifice-item-buttons">
                   <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 1)}} text={"1"}/>
                   <ActionButton color='queen' variant='text' func={() => {handleListItemClick(opt.itemID, 10)}} text={"10"}/>

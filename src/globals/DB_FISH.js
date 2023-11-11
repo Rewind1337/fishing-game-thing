@@ -27,6 +27,7 @@ const DB_FISH = [
         baitNeeded: ENUMS.BAIT.WORMS,
         timeOfDay: ENUMS.TIME.DAY_FULL,
         flavor: "The Silver Streak is a fast and agile fish that can be found in many waters. Its silver scales reflect sunlight, making it a beautiful sight to behold.",
+        aspects: {'silverPower': 0.2, 'regalPower':0.1},
     },
     {
         id: 3,
