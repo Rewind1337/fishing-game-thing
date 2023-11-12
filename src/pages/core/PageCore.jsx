@@ -138,8 +138,8 @@ function PageCore({pageID, title, contentClasses, children}) {
         <Grid mobile={4}>
           <ActionButton color="inventory" variant="contained" text='Cheat' sx={{ height: "80%", width: "100%" }} func={() => {
             let oldSave = JSON.parse(localStorage.getItem("game-save"));
-            oldSave.resources.bait[1] = 1000;
-            oldSave.resources.fishes[0] += 1000;
+            oldSave.resources.bait = [0, 1000];
+            oldSave.resources.fishes = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000];
             oldSave.resources.artifacts = 1000;
             let newSave = JSON.stringify(oldSave);
             localStorage.setItem("game-save", newSave);

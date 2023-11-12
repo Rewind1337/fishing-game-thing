@@ -28,7 +28,7 @@ ActionButton.propTypes = {
     func: PropTypes.func,
 }
 
-function ActionButton({ className, sx = {}, fab = false, dontTranslate = false, link, langpath = "buttons", disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = color, func = () => {}}) {
+function ActionButton({ className = "", sx = {}, fab = false, dontTranslate = false, link, langpath = "buttons", disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = color, func = () => {}}) {
     text = useTranslation(langpath, text, dontTranslate);
 
     const handleClick = () => {func()}

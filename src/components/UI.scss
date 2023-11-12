@@ -188,7 +188,8 @@ a {text-decoration: none; color: $text-light;}
 .MuiPaper-root, .MuiStack-root {margin: 0 auto;}
 
 .unicode {
-    width: 36px;
+    aspect-ratio: 1 !important;
+    height: 36px;
     display: grid;
     align-items: center;
 }

@@ -26,7 +26,10 @@ let data = {
     save: {
         version: _currentVersion,
         pageTimestamps: {},
-        resources: {},
+        resources: {
+            fishes: [],
+            bait: [],
+        },
         aspects: {},
         fishing: {},
         gathering: {},

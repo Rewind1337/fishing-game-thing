@@ -42,7 +42,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
 
   const headerCollapsed = (
     <div className={"flexlist-header"} style={{ marginTop: gap + "px", cursor: 'pointer' }}>
-      <div className='flexlist-header-text' onClick={() => { setCollapsed(!collapsed);}} style={{flexGrow: 1, display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+      <div className='flexlist-header-text' onClick={() => { setCollapsed(!collapsed);}}>
         <KeyboardArrowRightIcon />
         <h4>{headerText}</h4>
       </div>
@@ -52,7 +52,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
   
   const headerNotCollapsed = (
     <div className={"flexlist-header"} style={{ marginTop: gap + "px", cursor: 'pointer' }}>
-      <div className='flexlist-header-text' onClick={() => { setCollapsed(!collapsed);}} style={{flexGrow: 1, display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+      <div className='flexlist-header-text' onClick={() => { setCollapsed(!collapsed);}}>
         <KeyboardArrowDownIcon />
         <h4>{headerText}</h4>
       </div>

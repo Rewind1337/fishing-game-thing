@@ -7,8 +7,7 @@ import { Paper } from '@mui/material';
 import FlexList from '../flexlist/FlexList';
 import ActionButton from '../ActionButton';
 
-import AspectCollection from '..//aspects/AspectCollection';
-import AspectIcon from '..//aspects/AspectIcon';
+import AspectCollection from '../aspects/AspectCollection';
 
 import './modal.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

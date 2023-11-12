@@ -14,7 +14,6 @@ import PageAdventureZone from './pages/adventure/PageAdventureZone.jsx';
 
 import PageQueen from './pages/queen/PageQueen.jsx';
 
-import PageDebugStyles from './pages/PageDebugStyles.jsx';
 import PageHelp from './pages/help/PageHelp.jsx';
 
 import './imports.scss'
@@ -36,7 +35,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/queen' element={<Layout><PageQueen/></Layout>} />
 
         <Route path='/help' element={<Layout><PageHelp/></Layout>} />
-        <Route path='/debugstyles' element={<Layout><PageDebugStyles/></Layout>} />
         <Route path='*' element={<Navigate to="/home" />} />
       </Routes>
     </Router>

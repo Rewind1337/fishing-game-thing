@@ -39,20 +39,41 @@
 }
 
 .aspect-card {
+    border: 1px solid rgba(white, 0.25) !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    display: flex;
+    padding-left: 1px;
+    justify-content: flex-start;
+    border-radius: 4px;
+    align-items: center;
+
+    > * {
+        text-align: center;
+        font-size: 14px;
+        min-width: 66px;
+        max-width: 150px;
+    }
+
     &-icon {
-        background-color: rgba(0, 0, 0, 0.3);
+        min-width: unset;
+        max-width: unset;
+    }
+
+    &-name {
+        border-left: 1px solid rgba(white, 0.25);
     }
 
     &-amount {
-        font-size: 14px;
-        padding: 4px;
+        border-left: 1px solid rgba(white, 0.25);
     }
 
     &-effect {
-        height: 100%;
+        max-width: unset;
+
+        flex-grow: 1;
+        border-left: 1px solid rgba(white, 0.25);
     
         font-size: 16px;
-        padding: 4px;
-        white-space: nowrap;
+        white-space: break;
     }
 }

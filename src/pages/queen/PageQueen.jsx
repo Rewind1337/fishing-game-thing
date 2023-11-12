@@ -129,6 +129,7 @@ function PageQueen() {
     for (let key in aspectDict) {
       output.push({name:key, aspect:aspectDict[key]});
     }
+    console.log(output);
     return output;
   };
 
