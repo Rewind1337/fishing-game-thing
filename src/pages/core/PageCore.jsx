@@ -19,6 +19,11 @@ import FlagUS from '../../assets/flag-us';
 import WeatherClock from '../../components/weatherclock/WeatherClock';
 
 import Grid from '@mui/material/Unstable_Grid2';
+import BasicModal from '../../components/modal/BasicModal';
+
+import '../../globals/fa-library.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Journal from '../../components/modal/Journal.jsx';
 
 PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
@@ -72,6 +77,34 @@ function PageCore({pageID, title, contentClasses, children}) {
       _context.refs.sidebar['checkForBadgeData']();
     }, 50);
   }, [])
+
+  const setRefs = _context.setRefs;
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalIcon, setModalIcon] = useState(<></>);
+  const [modalHeader, setModalHeader] = useState("");
+  const [modalText, setModalText] = useState("");
+  
+  const handleModalClose = (value, reason) => {// eslint-disable-line no-unused-vars
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
+    if (value.value == 'close') { setModalOpen(false) }
+  };
+  
+  const [journalOpen, setJournalOpen] = useState(false);
+
+  const handleJournalClose = (value, reason) => {// eslint-disable-line no-unused-vars
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
+    if (value.value == 'close') { setJournalOpen(false) }
+  };
+
+  useEffect(() => {
+    setRefs({modal: {
+      'setModalOpen' : setModalOpen,
+      'setModalIcon' : setModalIcon, 
+      'setModalHeader' : setModalHeader,
+      'setModalText' : setModalText,
+      'setJournalOpen' : setJournalOpen}});
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
   
   useEffect(() => {
     const timer = setInterval(coreTick, 500);
@@ -82,29 +115,18 @@ function PageCore({pageID, title, contentClasses, children}) {
   
 
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
-
-  const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
-  const langButtonInactive = {filter: 'blur(1px'}
   
-  const languagePicker = (
-    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+  const miscButtons = (
+    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
       <Stack direction={'row'} sx={{ gap: '12px' }}>
-        <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_DE); } }>
-          <FlagDE />
-        </IconButton>
-        <IconButton style={(selectedLanguage == 'NL' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_NL); } }>
-          <FlagNL />
-        </IconButton>
-        <IconButton style={(selectedLanguage == 'US' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_US); } }>
-          <FlagUS />
-        </IconButton>
+        <ActionButton color="tutorial" variant="contained" text='Journal' sx={{ width: "100%" }} endIcon={<FontAwesomeIcon style={{marginRight: "8px", marginLeft: "-4px"}} icon="fa-solid fa-book" />} func={() => {setJournalOpen(true)}} />
       </Stack>
     </Paper>
   );
 
   const debugButtons = (
     <Paper elevation={1} sx={{ display: 'flex !important', flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
-      <Grid container spacing={0.5} mobile={"auto"} sx={{flexGrow: '1'}} >
+      <Grid container spacing={0.5} mobile={"auto"} sx={{flexGrow: '1', alignItems: "center"}} >
         <Grid mobile={4}>
           <ActionButton color="tutorial" variant="contained" text='Sidebar' sx={{ height: "80%", width: "100%" }} func={() => {
           let modifiedUnlocks = [true, true, true, true, true, true, true, true];
@@ -120,8 +142,8 @@ function PageCore({pageID, title, contentClasses, children}) {
         <Grid mobile={4}>
           <ActionButton color="inventory" variant="contained" text='Cheat' sx={{ height: "80%", width: "100%" }} func={() => {
             let oldSave = JSON.parse(localStorage.getItem("game-save"));
-            oldSave.resources.bait[1] = 1000;
-            oldSave.resources.fishes[0] += 1000;
+            oldSave.resources.bait = [0, 1000];
+            oldSave.resources.fishes = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000];
             oldSave.resources.artifacts = 1000;
             let newSave = JSON.stringify(oldSave);
             localStorage.setItem("game-save", newSave);
@@ -132,8 +154,32 @@ function PageCore({pageID, title, contentClasses, children}) {
     </Paper>
   )
 
+  const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
+  const langButtonInactive = {filter: 'blur(1px'}
+  
+  const languagePicker = (
+    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
+      <Stack direction={'row'} sx={{ gap: '12px' }}>
+        <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_DE); } }>
+          <FlagDE />
+        </IconButton>
+        <IconButton style={(selectedLanguage == 'NL' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_NL); } }>
+          <FlagNL />
+        </IconButton>
+        <IconButton style={(selectedLanguage == 'US' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_US); } }>
+          <FlagUS />
+        </IconButton>
+      </Stack>
+    </Paper>
+  );
+
     return (
         <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
+
+        <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
+
+        <Journal open={journalOpen} onClose={handleJournalClose}/>
+
           <div id="content" className={contentClasses}>
             <Grid id="content-top" container spacing={0}>
               <Grid mobile={"auto"}>
@@ -159,7 +205,7 @@ function PageCore({pageID, title, contentClasses, children}) {
             </div>
             <Grid id="content-bottom" className="hide-mobile show-tablet-up" container spacing={0}>
               <Grid mobile="auto">
-                <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}></Paper>
+                {miscButtons}
               </Grid>
               <Grid mobile={4}>
                 {debugButtons}

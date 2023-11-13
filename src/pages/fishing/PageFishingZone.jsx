@@ -62,11 +62,11 @@ function PageFishingZone() {
     let hook = GLOBALS.DB.HOOK[equipment.hook];
     let multiCatch = hook.multiCatch;
 
-    if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] <= 0) {
+    if ((resources.bait[GLOBALS.ENUMS.BAIT.WORMS] || 0) <= 0) {
       _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
       return;
     }
-    if (resources.bait[GLOBALS.ENUMS.BAIT.WORMS] <= multiCatch) {
+    if ((resources.bait[GLOBALS.ENUMS.BAIT.WORMS] || 0) <= multiCatch) {
       _context.refs.toastmanager['fireToast']("warning", "You dont have enough Worms for this hook!");
       return;
     }
@@ -244,44 +244,38 @@ function PageFishingZone() {
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
     <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
-      <LinearProgress variant="determinate" color={GLOBALS.DB.HOOK[equipment.hook].fishingBarColor(fishProgress, tickRange)} sx={{height: "100%", margin: "0 auto"}} value={(fishProgress / fishProgressMax) * 100} />
+      <LinearProgress id='fishing-progress' variant="determinate" color={GLOBALS.DB.HOOK[equipment.hook].fishingBarColor(fishProgress, tickRange)} value={(fishProgress / fishProgressMax) * 100} />
     </Grid>
 
-    <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5} paddingTop={1}>
+    <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5}>
       <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
           <BaitCollection resources={resources}/>
           <FishCollection resources={resources}/>
         </FlexList>
       </Grid>
-      <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0}>
+      <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0.5}>
         <Grid mobile={12} desktop={6} >
-          <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-            {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
-              {fishingButton}
-            </>}
-          </Paper>
+          {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+            {fishingButton}
+          </>}
         </Grid>
         <Grid mobile={12} desktop={6}>
-          <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
-            {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
-              <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
-            </>}
+          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
+            <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
+          </>}
 
-            {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
-              <ActionButton color="fishing" variant="contained" text='Start Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE)}}/>
-            </>}
+          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+            <ActionButton color="fishing" variant="contained" text='Start Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE)}}/>
+          </>}
 
-            {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
-              <ActionButton color="queen" variant="contained" text='Finish Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
-            </>}
-          </Paper>
+          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
+            <ActionButton color="queen" variant="contained" text='Finish Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
+          </>}
         </Grid>
       </Grid>
       <Grid className="hide-tablet-down show-desktop-up" mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)', width: "100%"}}>
-          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
-        </Paper>
+        <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
       </Grid>
     </Grid>
     
@@ -290,7 +284,7 @@ function PageFishingZone() {
         <FlexList collapsible mode='list' headerText={"Rods"}>
           {GLOBALS.DB.ROD.map((r) => {
             return (
-              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={r.id} className='inventory-card rod'>
+              <Paper elevation={1} key={r.id} className='inventory-card rod'>
                 <div className='inventory-card-buttons'>
                   <ActionButton text={"Equip"}/>
                 </div>
@@ -301,7 +295,7 @@ function PageFishingZone() {
           <FlexList collapsible mode='list' headerText={"Hooks"}>
           {GLOBALS.DB.HOOK.map((h) => {
             return (
-              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={h.id} className='inventory-card hook'>
+              <Paper elevation={1} key={h.id} className='inventory-card hook'>
                 <div className='inventory-card-buttons'>
                   <ActionButton text={"Equip"}/>
                 </div>
@@ -312,7 +306,7 @@ function PageFishingZone() {
           <FlexList collapsible mode='list' headerText={"Bait"}>
           {GLOBALS.DB.BAIT.map((b) => {
             return (
-              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={b.id} className='inventory-card bait'>
+              <Paper elevation={1} key={b.id} className='inventory-card bait'>
                 <div className='inventory-card-buttons'>
                   <ActionButton text={"Equip"}/>
                 </div>
@@ -323,7 +317,7 @@ function PageFishingZone() {
           <FlexList collapsible mode='list' headerText={"Lures"}>
           {GLOBALS.DB.LURE.map((l) => {
             return (
-              <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.4)'}} key={l.id} className='inventory-card lure'>
+              <Paper elevation={1} key={l.id} className='inventory-card lure'>
                 <div className='inventory-card-buttons'>
                   <ActionButton text={"Use"}/>
                 </div>
@@ -334,9 +328,7 @@ function PageFishingZone() {
       </Grid>
 
       <Grid className="show-tablet-down hide-desktop-up" mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
-        <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)', width: "100%"}}>
-          <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
-        </Paper>
+        <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
       </Grid>
 
     </Grid>

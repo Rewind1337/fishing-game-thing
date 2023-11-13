@@ -7,9 +7,12 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
 import './ActionButton.scss'
+import '../mq.scss'
 
 ActionButton.propTypes = {
+    className: PropTypes.string,
     sx: PropTypes.object,
+    fab: PropTypes.bool,
     dontTranslate: PropTypes.bool,
     link: PropTypes.string,
     langpath: PropTypes.string,
@@ -25,12 +28,12 @@ ActionButton.propTypes = {
     func: PropTypes.func,
 }
 
-function ActionButton({ sx = {}, dontTranslate = false, link, langpath = "buttons", disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = color, func = () => {}}) {
+function ActionButton({ className = "", sx = {}, fab = false, dontTranslate = false, link, langpath = "buttons", disabled = false, id, startIcon, endIcon, onlyIcon = false, color = 'primary', variant = 'contained', icon,  text = color, func = () => {}}) {
     text = useTranslation(langpath, text, dontTranslate);
 
     const handleClick = () => {func()}
 
-    const classes = ('actionbutton ' + (onlyIcon ? 'icon-only ' : ''))
+    const classes = 'actionbutton ' + (onlyIcon ? 'icon-only ' : '') + (fab ? 'fab ' : '') + className
 
     if (variant == "contained") {
         sx.border = "1px solid white";

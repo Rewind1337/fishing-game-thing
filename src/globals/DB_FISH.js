@@ -1,0 +1,108 @@
+import ENUMS from "./Enums";
+
+const DB_FISH = [
+    {
+        id: 0,
+        name: "Muddy Munchie",
+        rarity: ENUMS.RARITY.COMMON,
+        baitNeeded: ENUMS.BAIT.WORMS,
+        timeOfDay: ENUMS.TIME.ALWAYS,
+        flavor: "The Muddy Munchie is a common fish found in murky pools of water. It feeds on small creatures like worms and insects, which it can easily find in the muddy bottom.",
+        aspects: {'wormPower': 0.1},
+        moreWorms: 2,
+    },
+    {
+        id: 1, 
+        name: "Whiskered Wailer", 
+        rarity: ENUMS.RARITY.COMMON, 
+        baitNeeded: ENUMS.BAIT.WORMS, 
+        timeOfDay: ENUMS.TIME.NIGHT_FULL, 
+        flavor: "The Whiskered Wailer is a nocturnal fish with long whiskers that help it navigate in the dark. It looks sad.",
+        aspects: {'tearPower': 0.1},
+    },
+    {
+        id: 2,
+        name: "Silver Streak",
+        rarity: ENUMS.RARITY.COMMON,
+        baitNeeded: ENUMS.BAIT.WORMS,
+        timeOfDay: ENUMS.TIME.DAY_FULL,
+        flavor: "The Silver Streak is a fast and agile fish that can be found in many waters. Its silver scales reflect sunlight, making it a beautiful sight to behold.",
+        aspects: {'silverPower': 0.2, 'regalPower':0.1},
+    },
+    {
+        id: 3,
+        name: "Crimson Carp",
+        rarity: ENUMS.RARITY.COMMON,
+        baitNeeded: ENUMS.BAIT.WORMS,
+        timeOfDay: ENUMS.TIME.NIGHT_FULL,
+        flavor: "The Crimson Carp is a nocturnal fish that can be found in rivers and streams. Its vibrant red coloration makes it stand out from other fish.",
+    },
+    {
+        id: 4,
+        name: "Golden Grouper",
+        rarity: ENUMS.RARITY.UNCOMMON,
+        baitNeeded: ENUMS.BAIT.WORMS,
+        timeOfDay: ENUMS.TIME.DAY_FULL,
+        flavor: "The Golden Grouper is a prized catch among fishermen. Its golden scales and delicious taste make it a favorite for seafood enthusiasts.",
+    },
+    {
+        id: 5,
+        name: "Jade Jellyfish",
+        rarity: ENUMS.RARITY.UNCOMMON,
+        baitNeeded: ENUMS.BAIT.WORMS,
+        timeOfDay: ENUMS.TIME.NIGHT_FULL,
+        flavor: "The Jade Jellyfish is a mythical creature that glows in the dark. It is said to bring good luck to those who catch it.",
+    },
+    {
+        id: 6,
+        name: "Creeping Eel",
+        rarity: ENUMS.RARITY.UNCOMMON,
+        baitNeeded: ENUMS.BAIT.FISH,
+        timeOfDay: ENUMS.TIME.DAY_FULL,
+        flavor: "This fish is a unique species that lives in shallow water and burrows under the sand. It looks like an eel, but is actually a fish.",
+        aspects: {'earthPower': 0.1},
+    },
+    {
+        id: 7,
+        name: "Night Noodler",
+        rarity: ENUMS.RARITY.UNCOMMON,
+        baitNeeded: ENUMS.BAIT.FISH,
+        timeOfDay: ENUMS.TIME.NIGHT_FULL,
+        flavor: "The Night Noodler is a rare fish that can only be found in the darkest hours of the night. It is a predator of other fish and uses its sense of smell to hunt its prey.",
+        aspects: {'fiercePower': 0.1},
+    },
+    {
+        id: 8, 
+        name: "Glimmering Guppy", 
+        rarity: ENUMS.RARITY.RARE, 
+        baitNeeded: ENUMS.BAIT.WORMS, 
+        timeOfDay: ENUMS.TIME.DAY_FULL, 
+        flavor: "The Glimmering Guppy is a rare fish known for its vibrant colors and shimmering scales. They're sometimes called a Roygbiv because of it."
+    },
+    {
+        id: 9, 
+        name: "Spectral Skate", 
+        rarity: ENUMS.RARITY.RARE, 
+        baitNeeded: ENUMS.BAIT.FISH, 
+        timeOfDay: ENUMS.TIME.NIGHT_FULL, 
+        flavor: "The Spectral Skate is a rare elusive 'fish' that only appears during the new moon nights. It is attracted to glow worms and is said to possess mystical powers."
+    },
+    {
+        id: 10,
+        name: "Diamond Darter",
+        rarity: ENUMS.RARITY.LEGEND,
+        baitNeeded: ENUMS.BAIT.FISH,
+        timeOfDay: ENUMS.TIME.AROUND_NOON,
+        flavor: "The Diamond Darter is one of the more valuable fish. Its sparkling diamond scales make it a true treasure for any angler.",
+    },
+    {
+        id: 11,
+        name: "Amber Angler",
+        rarity: ENUMS.RARITY.MYTH,
+        baitNeeded: ENUMS.BAIT.FISH,
+        timeOfDay: ENUMS.TIME.AROUND_MIDNIGHT,
+        flavor: "The Amber Angler is a mythical fish that emits a warm amber glow. If you believe the Myth, this Fish will vanish if enough light hits him.",
+    },
+]
+
+export default DB_FISH;

@@ -8,8 +8,7 @@ import ActionButton from '../ActionButton';
 
 import './modal.scss'
 
-function BasicModal(props) {
-  const { header, text, icon, onClose, open } = props;
+function BasicModal({ header, text, icon, onClose, open }) {
 
   const handleClose = (event, reason) => {
     onClose(event, reason);
@@ -21,14 +20,18 @@ function BasicModal(props) {
 
   return (
     <Dialog className='basic-dialog' onClose={handleClose} open={open}>
-      <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}><div style={{scale: '3'}}>{icon}</div></DialogTitle>
-      <DialogTitle style={{textAlign: 'center', padding: '6px'}}>{header}</DialogTitle>
-        <Paper style={{padding: '16px'}}>
-          <div className='dialog-text'>{text}</div>
-          <div className='dialog-buttons'>
-            <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Okay"}/>
-          </div>
-        </Paper>
+      <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}>
+        <div style={{scale: '3'}}>{icon}</div>
+      </DialogTitle>
+      <DialogTitle style={{textAlign: 'center', padding: '6px'}}>
+        {header}
+      </DialogTitle>
+      <Paper className='dialog-content'>
+        <div className='dialog-text'>{text}</div>
+      </Paper>
+      <div className='dialog-buttons'>
+        <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Okay"}/>
+      </div>
     </Dialog>
   );
 }

@@ -18,7 +18,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish, faHurricane } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -30,6 +29,20 @@ import FishCollection from '../../components/resources/FishCollection';
 import './Queen.scss'
 import BaitCollection from '../../components/resources/BaitCollection';
 
+const generatePickerOptions = () => {
+  let options = [];
+  for (let f in GLOBALS.DB.FISH) {
+    let fish = GLOBALS.DB.FISH[f];
+    options.push({
+      icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
+      itemID: fish.id,
+      itemName: fish.name,
+      aspects: fish.aspects || undefined,
+    })
+  }
+  return options;
+}
+
 // Route: "/queen"
 function PageQueen() {
 
@@ -40,10 +53,7 @@ function PageQueen() {
   const [aspects, setAspects] = useState(aspectHook(_context));
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
-  const pickerOptions = [
-    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: 0, itemName: "Muddie Munchie"},
-    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: 1, itemName: "Whiskered Wailer"},
-  ];
+  const pickerOptions = generatePickerOptions();
 
   const handlePickerOpen = () => {
     setPickerModalOpen(true);
@@ -114,36 +124,28 @@ function PageQueen() {
     return false;
   }
 
+  const aspectsToList = (aspectDict) => {
+    let output = [];
+    for (let key in aspectDict) {
+      output.push({name:key, aspect:aspectDict[key]});
+    }
+    console.log(output);
+    return output;
+  };
+
   const milestoneProgress = (
-    <div className='milestone-progress'>
-      <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
-        <h2>Milestone Progress</h2>
-        <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
-        <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-          <ActionButton disabled={(hasAny(resources.fishes) ? false : true)} color="queen" variant="contained" text={(hasAny(resources.fishes) ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
-        </div>
-      </Paper>
-    </div>
+    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
+      <h2>Milestone Progress</h2>
+      <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={"fa-solid fa-hurricane"} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+      <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+        <ActionButton disabled={(hasAny(resources.fishes) ? false : true)} color="queen" variant="contained" text={(hasAny(resources.fishes) ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+      </div>
+    </Paper>
   );
 
   const aspectList = (
-    <FlexList headerText="Aspects" mode='list'>
-      <AspectCard c="𓃇" name="Worm" color='hsl(290deg, 100%, 90%)' amount={format(aspects.wormPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Worm Gain'} />
-      <AspectCard c="𓆝" name="Fish" color='hsl(240deg, 100%, 90%)' amount={format(aspects.fishPower, '.', 2)} iconscale={"1.75"} effect={'Boosts ???'} />
-      <AspectCard c="𓂍" name="Tears" color='hsl(190deg, 100%, 40%)' amount={format(aspects.tearPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Defense'} />
-      <AspectCard c="𓆰" name="Fierce" color='hsl(0deg, 100%, 40%)' amount={format(aspects.fiercePower, '.', 1)} iconscale={"1.75"} effect={'Boosts Attack'} />
-      <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} effect={'aaa'} />
-      <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={format(aspects.earthPower, '.', 1)} effect={'Boosts Digging Power'} />
-      <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} effect={'aaa'} />
-      <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
-      <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜲" name="Regulus" color='hsl(30deg, 100%, 65%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
-      <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"} effect={'aaa'} />
-      <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} effect={'aaa'} />
+    <FlexList headerText="Aspects" mode='list' collapsible>
+      {aspectsToList(GLOBALS.DB.ASPECTS).map(asp => <AspectCard key={asp.name} c={asp.aspect.c} name={asp.aspect.name} color={asp.aspect.color} amount={format(aspects[asp.name] || 0, '.', asp.aspect.precision || 1)} iconscale={asp.aspect.iconscale} effect={asp.aspect.effect} />)}
     </FlexList>
   );
 
@@ -183,8 +185,10 @@ function PageQueen() {
           {resourceList}
         </Grid>
         <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} flexGrow={1} overflow={"auto"}>
-          {resourceList}
-          {aspectList}
+          <FlexList noHeader mode='list'>
+            {resourceList}
+            {aspectList}
+          </FlexList>
         </Grid>
         <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} flexGrow={1} overflow={"auto"}>
           {aspectList}

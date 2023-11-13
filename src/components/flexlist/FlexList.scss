@@ -24,16 +24,32 @@
     
         border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 4px !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+        }
 
         &-text {
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
 
             &:hover {
                 color: rgb(255, 255, 255);
                 filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.66));
             }
-        }
 
-        &-buttons {}
+            > svg {
+                height: 40px !important;
+                width: 40px !important;
+                flex-basis: 40px;
+                scale: 0.8;
+                position: relative;
+                left: -1px;
+            }
+        }
     }
 
     &-wrapper {
@@ -85,5 +101,12 @@
         justify-content: flex-start;
         width: 100%;
         margin-bottom: 2px;
+
+        background-color: rgba(0, 0, 0, 0.2) !important;
+
+        > * {
+            flex-grow: 1;
+            font-size: 18px !important;
+        }
     }
 }

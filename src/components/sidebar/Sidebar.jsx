@@ -24,7 +24,6 @@ import Theme from '../../styles/Theme';
 import { styled } from '@mui/material/styles';
 import { Badge, useMediaQuery } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
@@ -39,7 +38,7 @@ function Sidebar() {
 
   const mobileSidebarButton = (
     <div className='mobile-sidebar-button' onClick={() => {setMobileSidebarVisible(!mobileSidebarVisible)}}>
-      <FontAwesomeIcon icon={faBars} />
+      <FontAwesomeIcon icon={"fa-solid fa-bars"} />
     </div>
   )
   
@@ -55,6 +54,12 @@ function Sidebar() {
   const [sidebarUnlocks, setSidebarUnlocks] = useState(_context.save.sidebar.unlocks);
 
   const currentPage = useRef(_context.save.sidebar.currentPage);
+
+  const modifySidebarUnlocks = (index, bool) => {
+    let modifiedUnlocks = sidebarUnlocks;
+    modifiedUnlocks[index] = bool;
+    setSidebarUnlocks(modifiedUnlocks);
+  }
 
   const [sidebarBadgeData, setSidebarBadgeData] = useState(_context.save.sidebar.sidebarBadgeData);
 
@@ -191,7 +196,8 @@ function Sidebar() {
   useEffect(() => {
     setRefs({sidebar: {
       'setMobileSidebarVisible' : setMobileSidebarVisible,
-      'setSidebarUnlocks' : setSidebarUnlocks, 
+      'modifySidebarUnlocks' : modifySidebarUnlocks,
+      'setSidebarUnlocks': setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
       'checkForBadgeData' : checkForBadgeData,
       'addBadgeTimer' : addBadgeTimer}}, true);
