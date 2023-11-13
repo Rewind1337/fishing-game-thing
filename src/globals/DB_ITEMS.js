@@ -26,6 +26,7 @@ export const DB_BAIT = [
     {
         id: ENUMS.BAIT.NOTHING,
         name: "Nothing",
+        iconName: "fa-xmark",
         fishingLuck: 1,
         multiFish: 0,
         breakChance: 0,
@@ -33,6 +34,7 @@ export const DB_BAIT = [
     {
         id: ENUMS.BAIT.WORMS,
         name: "Worms",
+        iconName: "fa-worm",
         fishingLuck: 1.1,
         multiFish: 0,
         breakChance: 80,
@@ -40,6 +42,7 @@ export const DB_BAIT = [
     {
         id: ENUMS.BAIT.FISH,
         name: "Fish",
+        iconName: "fa-fish",
         fishingLuck: 1.15,
         multiFish: 0.05,
         breakChance: 95,

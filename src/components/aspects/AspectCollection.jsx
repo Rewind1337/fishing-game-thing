@@ -12,7 +12,7 @@ function AspectCollectionCard({collection = []}) {
   const unicodeFrations = [1, '½', '⅓', '¼', '⅕', '⅙', '⅐', '⅛', '⅑', '⅒'];
 
   const conditionalAmount = (amount) => {
-    return (amount < 1 ? unicodeFrations[~~(1/amount) - 1] : amount || 0)
+    return (amount < 1 ? unicodeFrations[~~(1/amount) - 1] : amount || 0);
   }
 
   const getChar = (aspectKey) => {
@@ -34,8 +34,6 @@ function AspectCollectionCard({collection = []}) {
   const buildAspectCard = (aspectData) => {
     return (<AspectCard key={aspectData.name} color={getColor(aspectData.name)} iconscale={getScale(aspectData.name)} amount={conditionalAmount(aspectData.amount)} name={aspectData.name.replace('Power','').toUpperCase()} c={getChar(aspectData.name)} effect={getEffect(aspectData.name)}/>);
   }
-
-  console.log(collection);
 
     return (
         <FlexList noHeader mode="list">

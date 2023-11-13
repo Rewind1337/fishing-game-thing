@@ -8,7 +8,8 @@ const DB_FISHING = {
         {id: 3, name: 'Worm Queen Shrine', hidden: true, fish: []},
     ],
     LOCATIONS: [
-        {id: 0, name: 'Local Waterhole', sublocations: [0, 1, 2, 3], fish: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
+        {id: 0, name: 'Backup Location', sublocations: [], fish: []},
+        {id: 1, name: 'Local Waterhole', sublocations: [0, 1, 2, 3], fish: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]},
     ],
     ENCOUNTERS: [
         {

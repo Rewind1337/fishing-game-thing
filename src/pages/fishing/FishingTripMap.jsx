@@ -3,7 +3,9 @@ import GLOBALS from '../../globals/Globals';
 import { Paper } from '@mui/material';
 
 // test visualisation
-function FishingTripMap({ location, tripStatus }) {
+function FishingTripMap({ locationID, tripStatus }) {
+
+  const location = GLOBALS.DB.FISHING.LOCATIONS[locationID];
 
   const mouseClick = (e) => {
     console.log(e);
@@ -33,7 +35,7 @@ function FishingTripMap({ location, tripStatus }) {
 }
 
 FishingTripMap.propTypes = {
-  location: PropTypes.object,
+  locationID: PropTypes.number.isRequired,
   tripStatus: PropTypes.number.isRequired,
 };
 

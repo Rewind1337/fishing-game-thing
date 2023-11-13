@@ -56,7 +56,7 @@ function SeedCard({ c, select, onClick }) {
       {cropState.active && <>
         <div className='farm-cell-name'>{cropState.name}</div>
         <div className='farm-cell-progress'>
-          <CircularProgressWithLabel fontSize='12px' iconOffsetTop="-15%" iconSize="12px" textOffsetTop="40%" icon={<FontAwesomeIcon icon={"fa-solid fa-seedling"} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
+          <CircularProgressWithLabel fontSize='12px' iconOffsetTop="-15%" iconsize="12px" textOffsetTop="40%" icon={<FontAwesomeIcon icon={"fa-solid fa-seedling"} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
         </div>
         <div className='farm-cell-buttons' style={{display: "flex"}}>
           <ActionButton color='queen' text={"Uproot"} variant='text' func={() => {uprootClick(row, col)}}></ActionButton>
@@ -76,7 +76,7 @@ function SeedCard({ c, select, onClick }) {
     row: PropTypes.number.isRequired,
     col: PropTypes.number.isRequired,
     savedState: PropTypes.object,
-    selectedSeed: PropTypes.number.isRequired,
+    selectedSeed: PropTypes.object.isRequired,
     setGridRowCol: PropTypes.func.isRequired,
   }
 
@@ -121,7 +121,7 @@ function SeedCard({ c, select, onClick }) {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     grid: PropTypes.array.isRequired,
-    selectedSeed: PropTypes.number.isRequired,
+    selectedSeed: PropTypes.object.isRequired,
     setGridFull: PropTypes.func.isRequired,
     setGridRowCol: PropTypes.func.isRequired,
   }

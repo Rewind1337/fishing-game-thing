@@ -29,20 +29,6 @@ import FishCollection from '../../components/resources/FishCollection';
 import './Queen.scss'
 import BaitCollection from '../../components/resources/BaitCollection';
 
-const generatePickerOptions = () => {
-  let options = [];
-  for (let f in GLOBALS.DB.FISH) {
-    let fish = GLOBALS.DB.FISH[f];
-    options.push({
-      icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
-      itemID: fish.id,
-      itemName: fish.name,
-      aspects: fish.aspects || undefined,
-    })
-  }
-  return options;
-}
-
 // Route: "/queen"
 function PageQueen() {
 
@@ -53,7 +39,6 @@ function PageQueen() {
   const [aspects, setAspects] = useState(aspectHook(_context));
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
-  const pickerOptions = generatePickerOptions();
 
   const handlePickerOpen = () => {
     setPickerModalOpen(true);
@@ -67,6 +52,24 @@ function PageQueen() {
 
     sacrificeToQueen(value);
   };
+
+  const generatePickerOptions = () => {
+    let options = [];
+    for (let f in GLOBALS.DB.FISH) {
+      let fish = GLOBALS.DB.FISH[f];
+
+      if (resources.fishes[fish.id] > 0) {
+        options.push({
+          icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
+          itemID: fish.id,
+          itemName: fish.name,
+          aspects: fish.aspects || undefined,
+        })
+      }
+    }
+    return options;
+  }
+  const pickerOptions = generatePickerOptions();
 
   const sacrificeToQueen = (input) => {
     switch (input.value) {
@@ -129,7 +132,6 @@ function PageQueen() {
     for (let key in aspectDict) {
       output.push({name:key, aspect:aspectDict[key]});
     }
-    console.log(output);
     return output;
   };
 

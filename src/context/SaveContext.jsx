@@ -39,13 +39,14 @@ let data = {
         },
         aspects: {},
         fishing: {},
+        fishingTrip: {},
         gathering: {},
         farm: {},
         inventory: {
             equipment: { // fishing equipment
                 rods: [0],
-                bait: [],
-                lures: [],
+                bait: [0, 1],
+                lures: [0],
                 hooks: [0],
             },
             gear: { // adventuring gear
@@ -53,10 +54,12 @@ let data = {
             },
         },
         character: {
+            baitPackSize: 50,
+            catchPackSize: 50,
             equipment: { // fishing equipment
                 rod: 0,
-                bait: null,
-                lure: null,
+                bait: 0,
+                lure: 0,
                 hook: 0,
             },
             gear: { // adventuring gear

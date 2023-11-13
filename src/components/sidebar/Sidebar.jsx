@@ -56,7 +56,7 @@ function Sidebar() {
   const currentPage = useRef(_context.save.sidebar.currentPage);
 
   const modifySidebarUnlocks = (index, bool) => {
-    let modifiedUnlocks = sidebarUnlocks;
+    let modifiedUnlocks = [...sidebarUnlocks];
     modifiedUnlocks[index] = bool;
     setSidebarUnlocks(modifiedUnlocks);
   }

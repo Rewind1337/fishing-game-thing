@@ -12,7 +12,7 @@ export default function CircularProgressWithLabel(props) {
         <Box sx={{top: props.iconOffsetTop, left: 0,bottom: 0,right: 0,
         position: 'absolute',display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
 
-        <div style={{color: props.iconcolor, fontSize: props.iconSize}}>{props.icon}</div>
+        <div style={{color: props.iconcolor, fontSize: props.iconsize}}>{props.icon}</div>
         
         </Box>
 
@@ -29,7 +29,7 @@ export default function CircularProgressWithLabel(props) {
 CircularProgressWithLabel.propTypes = {
   icon: PropTypes.element,
   iconcolor: PropTypes.string,
-  iconSize: PropTypes.string,
+  iconsize: PropTypes.string,
   fontSize: PropTypes.string,
   iconOffsetTop: PropTypes.string,
   textOffsetTop: PropTypes.string,

@@ -19,6 +19,9 @@ export default function AspectCard({c, name, iconscale = "1", color = 'white', a
     name: PropTypes.string.isRequired,
     iconscale: PropTypes.string,
     color: PropTypes.string,
-    amount: PropTypes.number.isRequired,
+    amount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
     effect: PropTypes.string.isRequired,
   };

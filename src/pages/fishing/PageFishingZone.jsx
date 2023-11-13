@@ -10,11 +10,15 @@ import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';
 import FishCollection from '../../components/resources/FishCollection';
 import FishingTripMap from './FishingTripMap';
+import PreparationModal from '../../components/modal/PreparationModal';
 
 // MUI
 import LinearProgress from '@mui/material/LinearProgress';
 import { Paper } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+
+// Icons / SVG
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -41,10 +45,190 @@ function PageFishingZone() {
   let fishProgressMax = GLOBALS.FISHING.TIME
   let fishProgressPerTick = GLOBALS.FISHING.SPEED
 
-  const [equipment, setEquipment] = useState(_context.save.character.equipment);
+  const [characterEquipment, setCharEquipment] = useState(_context.save.character.equipment);
+  const [inventoryEquipment, setInvEquipment] = useState(_context.save.inventory.equipment);
 
-  const [fishingTripStatus, setFishingTripStatus] = useState(GLOBALS.ENUMS.TRIPSTATUS.IDLE)
-  const [fishingTripData, setFishingTripData] = useState({});
+  const [fishingTripStatus, setFishingTripStatus] = useState(_context.save.fishingTrip.status || GLOBALS.ENUMS.TRIPSTATUS.IDLE);
+  const [fishingTripLocation, setFishingTripLocation] = useState(_context.save.fishingTrip.location || 0);
+
+  const [fishPickerModalOpen, setFishPickerModalOpen] = useState(false);
+  const [baitPickerModalOpen, setBaitPickerModalOpen] = useState(false);
+  const [fishPickerOptions, setFishPickerOptions] = useState([]);
+  const [baitPickerOptions, setBaitPickerOptions] = useState([]);
+
+  const handlePickerOpen = (type) => {
+    if (type == 'fish') {
+      setFishPickerModalOpen(true);
+    }
+    if (type == 'bait') {
+      setBaitPickerModalOpen(true);
+    }
+  };
+
+  const handlePickerClose = (value, reason) => {
+
+    if ((reason && (reason == "backdropClick" || reason == 'escapeKeyDown')) || value.value == 'close') {
+      if (value.modalType == 'fish') {
+        setFishPickerModalOpen(false);
+        setFishPickerOptions(generatePickerOptions('fish'));
+        return;
+      }
+      if (value.modalType == 'bait') {
+        setBaitPickerModalOpen(false);
+        setBaitPickerOptions(generatePickerOptions('bait'));
+
+        setFishingTripStatus(GLOBALS.ENUMS.TRIPSTATUS.IDLE);
+        return;
+      }
+    }
+
+    if(value.value == 'confirm') {
+      if (value.modalType == 'fish') {
+        setFishPickerModalOpen(false);
+
+        let newResources = {...resources};
+
+        for (let id in fishPickerOptions) {
+          let opt = fishPickerOptions[id];
+          if (id == 0) {
+            newResources.bait[2] = newResources.bait[2] || 0;
+            newResources.bait[2] += opt.amountSelected;
+          } else {
+            newResources.fishes[opt.itemID] -= opt.amountSelected;
+          }
+        }
+
+        setResources(newResources);
+        return;
+      }
+
+      if (value.modalType == 'bait') {
+        setBaitPickerModalOpen(false);
+        setFishingTripStatus(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE);
+        return;
+      }
+    }
+
+    let newOptions = [];
+    
+    if (value.modalType == 'fish') {
+      newOptions = [...fishPickerOptions];
+    }
+    if (value.modalType == 'bait') {
+      newOptions = [...baitPickerOptions];
+    }
+
+    for (let id in newOptions) {
+      let opt = newOptions[id];
+
+      if (opt.itemID != value.value) {continue;}
+    
+      let trueDiff = opt.amountSelected;
+
+      let limit = Math.min(opt.amountHave, opt.amountLimit || opt.amountHave);
+
+      opt.amountSelected += value.amount;
+      opt.amountSelected = (opt.amountSelected > limit ? limit : opt.amountSelected);
+      opt.amountSelected = (opt.amountSelected < 0 ? 0 : opt.amountSelected);
+
+      trueDiff = opt.amountSelected - trueDiff;
+      newOptions[0].amountSelected += trueDiff;
+
+      if (value.modalType == 'bait') {
+        for (let id2 in newOptions) {
+          if (id2 == 0) {continue;}
+
+          let opt2 = newOptions[id2];
+          opt2.amountLimit = opt2.amountSelected + newOptions[0].amountHave - newOptions[0].amountSelected;
+        }
+      }
+      break;
+    }
+
+    if (value.modalType == 'fish') {
+      setFishPickerOptions(newOptions);
+    }
+    if (value.modalType == 'bait') {
+      setBaitPickerOptions(newOptions);
+    }
+  };
+
+  const generatePickerOptions = (type) => {
+    let options = [];
+
+    let key = 0;
+
+    if (type == 'fish') {
+      options.push({
+        key: key,
+        icon: <FontAwesomeIcon icon={"fa-solid fa-briefcase"}/>,
+        type: 'fish',
+        itemID: -1,
+        amountHave: 0,
+        amountSelected: 0,
+        itemName: "Fish Bait to Make",
+      });
+      key += 1;
+
+      let tally = 0;
+
+      for (let f in GLOBALS.DB.FISH) {
+        let fish = GLOBALS.DB.FISH[f];
+  
+        if (resources.fishes[fish.id] > 0) {
+          options.push({
+            key: key,
+            icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
+            type: 'fish',
+            itemID: fish.id,
+            amountHave: resources.fishes[fish.id],
+            amountSelected: 0,
+            itemName: fish.name,
+          });
+          key += 1;
+
+          tally += resources.fishes[fish.id];
+        }
+      }
+
+      options[0].amountHave = tally;
+    }
+
+    if (type == 'bait') {
+      options.push({
+        key: key,
+        icon: <FontAwesomeIcon icon={"fa-solid fa-briefcase"}/>,
+        type: 'bait',
+        itemID: -1,
+        amountHave: _context.save.character.baitPackSize,
+        amountSelected: 0,
+        itemName: "Bait Pack",
+      });
+      key += 1;
+
+      for (let b in GLOBALS.DB.BAIT) {
+        let bait = GLOBALS.DB.BAIT[b];
+  
+        if (b == 0) {continue;}
+  
+        if (resources.bait[bait.id] > 0) {
+          options.push({
+            key: key,
+            icon: <FontAwesomeIcon icon={"fa-solid " + bait.iconName}/>,
+            type: 'bait',
+            itemID: bait.id,
+            amountLimit: _context.save.character.baitPackSize,
+            amountHave: resources.bait[bait.id],
+            amountSelected: 0,
+            itemName: bait.name,
+          });
+          key += 1;
+        }
+      }
+    }
+
+    return options;
+  }
 
   const contextSave = () => {
     _allTimeStamps.current.fishing = Date.now();
@@ -53,13 +237,14 @@ function PageFishingZone() {
       {
         pageTimestamps: _allTimeStamps.current,
         resources: {...resources}, 
-        fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange}
+        fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange},
+        fishingTrip: {status: fishingTripStatus}
       }
     )
   }
 
   const startFishing = (onTrip) => {
-    let hook = GLOBALS.DB.HOOK[equipment.hook];
+    let hook = GLOBALS.DB.HOOK[characterEquipment.hook];
     let multiCatch = hook.multiCatch;
 
     if ((resources.bait[GLOBALS.ENUMS.BAIT.WORMS] || 0) <= 0) {
@@ -96,7 +281,7 @@ function PageFishingZone() {
   }
 
   const attemptCatch = (onTrip) => {
-    let hook = GLOBALS.DB.HOOK[equipment.hook];
+    let hook = GLOBALS.DB.HOOK[characterEquipment.hook];
 
     if (hook.canCatch(fishProgress, tickRange)) {
       // Only fishes at night right now.
@@ -166,11 +351,12 @@ function PageFishingZone() {
     stopFishing();
     setFishingTripStatus(n);
 
-    if (n == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {setFishingTripData({})}
+    if (n == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {setFishingTripLocation(0)}
 
-    if (n == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP) {setFishingTripData({
-      location: GLOBALS.DB.FISHING.LOCATIONS[0]
-    })}
+    if (n == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP) {
+      setFishingTripLocation(1);
+      handlePickerOpen('bait');
+    }
   }
   
   const pageTick = () => {
@@ -216,11 +402,19 @@ function PageFishingZone() {
     };
 
   }, [resources, isFishing, fishProgress, tickRange]);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setFishPickerOptions(generatePickerOptions('fish'));
+    setBaitPickerOptions(generatePickerOptions('bait'));
+  }, [resources]); // eslint-disable-line react-hooks/exhaustive-deps
  
   useEffect(() => () => {}, []); // unmount
 
   // Catch up the Ticks
   useEffect(() => {
+    setFishPickerOptions(generatePickerOptions('fish'));
+    setBaitPickerOptions(generatePickerOptions('bait'));
+
     let _lastTimestamp = _allTimeStamps.current.fishing;
     let deltaTimeInMs = Date.now() - _lastTimestamp;
     let flooredToSec = ~~(deltaTimeInMs / 500);
@@ -243,8 +437,11 @@ function PageFishingZone() {
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
+    <PreparationModal options={fishPickerOptions} header="Bait Preparation" open={fishPickerModalOpen} onClose={handlePickerClose}/>
+    <PreparationModal options={baitPickerOptions} header="Bait Selection" open={baitPickerModalOpen} onClose={handlePickerClose}/>
+
     <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
-      <LinearProgress id='fishing-progress' variant="determinate" color={GLOBALS.DB.HOOK[equipment.hook].fishingBarColor(fishProgress, tickRange)} value={(fishProgress / fishProgressMax) * 100} />
+      <LinearProgress id='fishing-progress' variant="determinate" color={GLOBALS.DB.HOOK[characterEquipment.hook].fishingBarColor(fishProgress, tickRange)} value={(fishProgress / fishProgressMax) * 100} />
     </Grid>
 
     <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5}>
@@ -255,18 +452,19 @@ function PageFishingZone() {
         </FlexList>
       </Grid>
       <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0.5}>
-        <Grid mobile={12} desktop={6} >
+        <Grid mobile={12} desktop={4} >
           {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
             {fishingButton}
           </>}
         </Grid>
-        <Grid mobile={12} desktop={6}>
+        <Grid mobile={12} desktop={4} >
+          {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+            <ActionButton color="archaeology" variant="contained" text='Prepare Bait' func={() => {handlePickerOpen('fish')}}/>
+          </>}
+        </Grid>
+        <Grid mobile={12} desktop={4}>
           {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
             <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
-          </>}
-
-          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
-            <ActionButton color="fishing" variant="contained" text='Start Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE)}}/>
           </>}
 
           {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
@@ -275,14 +473,15 @@ function PageFishingZone() {
         </Grid>
       </Grid>
       <Grid className="hide-tablet-down show-desktop-up" mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
-        <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
+        <FishingTripMap locationID={fishingTripLocation} tripStatus={fishingTripStatus}/>
       </Grid>
     </Grid>
     
     <Grid container mobile={12} maxHeight={400} overflow={"auto"} sx={{flexGrow: '1'}} spacing={0.5}>
       <Grid mobile={6} desktop={4} widescreen={3} spacing={0}>
         <FlexList collapsible mode='list' headerText={"Rods"}>
-          {GLOBALS.DB.ROD.map((r) => {
+          {inventoryEquipment.rods.map((rodID) => {
+            let r = GLOBALS.DB.ROD[rodID];
             return (
               <Paper elevation={1} key={r.id} className='inventory-card rod'>
                 <div className='inventory-card-buttons'>
@@ -293,7 +492,8 @@ function PageFishingZone() {
             )})}
           </FlexList>
           <FlexList collapsible mode='list' headerText={"Hooks"}>
-          {GLOBALS.DB.HOOK.map((h) => {
+          {inventoryEquipment.hooks.map((hookID) => {
+            let h = GLOBALS.DB.HOOK[hookID];
             return (
               <Paper elevation={1} key={h.id} className='inventory-card hook'>
                 <div className='inventory-card-buttons'>
@@ -304,7 +504,8 @@ function PageFishingZone() {
             )})}
           </FlexList>
           <FlexList collapsible mode='list' headerText={"Bait"}>
-          {GLOBALS.DB.BAIT.map((b) => {
+          {inventoryEquipment.bait.map((baitID) => {
+            let b = GLOBALS.DB.BAIT[baitID];
             return (
               <Paper elevation={1} key={b.id} className='inventory-card bait'>
                 <div className='inventory-card-buttons'>
@@ -315,7 +516,8 @@ function PageFishingZone() {
           )})}
           </FlexList>
           <FlexList collapsible mode='list' headerText={"Lures"}>
-          {GLOBALS.DB.LURE.map((l) => {
+          {inventoryEquipment.lures.map((lureID) => {
+            let l = GLOBALS.DB.LURE[lureID];
             return (
               <Paper elevation={1} key={l.id} className='inventory-card lure'>
                 <div className='inventory-card-buttons'>
@@ -328,7 +530,7 @@ function PageFishingZone() {
       </Grid>
 
       <Grid className="show-tablet-down hide-desktop-up" mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
-        <FishingTripMap location={fishingTripData.location} tripStatus={fishingTripStatus}/>
+        <FishingTripMap locationID={fishingTripLocation} tripStatus={fishingTripStatus}/>
       </Grid>
 
     </Grid>

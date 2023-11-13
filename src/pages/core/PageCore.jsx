@@ -24,6 +24,7 @@ import BasicModal from '../../components/modal/BasicModal';
 import '../../globals/fa-library.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Journal from '../../components/modal/Journal.jsx';
+import GLOBALS from '../../globals/Globals';
 
 PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
@@ -58,7 +59,11 @@ function PageCore({pageID, title, contentClasses, children}) {
   useEffect(() => {
     console.log("mount", title)
     if (_context.save.sidebar.unlocks[pageID] == false) {
-      window.location = "/home"
+      if (_context.save.fishingTrip.status == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+        window.location = "/fishing";
+      } else {
+        window.location = "/home";
+      }
     } else {
       setLoaded(true);
       document.title = title;
