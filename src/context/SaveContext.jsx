@@ -30,6 +30,7 @@ let data = {
             fishes: [],
             bait: [],
         },
+        milestone: {},
         aspects: {},
         fishing: {},
         gathering: {},

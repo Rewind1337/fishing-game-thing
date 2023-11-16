@@ -17,6 +17,7 @@ FlexList.propTypes = {
   dontTranslate: PropTypes.bool,
   switchable: PropTypes.bool,
   collapsible: PropTypes.bool,
+  collapsed: PropTypes.bool,
   noHeader: PropTypes.bool,
   headerText: PropTypes.string,
   mode: PropTypes.string.isRequired,
@@ -26,10 +27,10 @@ FlexList.propTypes = {
   children: PropTypes.array,
 };
   
-function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable = false, collapsible = false, noHeader = false, headerText = "did you forget noHeader?", mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
+function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable = false, collapsible = false, collapsed = false, noHeader = false, headerText = "did you forget noHeader?", mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {
   headerText = useTranslation(langpath, headerText, dontTranslate);
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsedState, setCollapsedState] = useState(collapsed);
 
   const [modeState, setModeState] = useState(mode)
 
@@ -42,7 +43,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
 
   const headerCollapsed = (
     <div className={"flexlist-header"} style={{ marginTop: gap + "px", cursor: 'pointer' }}>
-      <div className='flexlist-header-text' onClick={() => { setCollapsed(!collapsed);}}>
+      <div className='flexlist-header-text' onClick={() => { setCollapsedState(!collapsedState);}}>
         <KeyboardArrowRightIcon />
         <h4>{headerText}</h4>
       </div>
@@ -52,7 +53,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
   
   const headerNotCollapsed = (
     <div className={"flexlist-header"} style={{ marginTop: gap + "px", cursor: 'pointer' }}>
-      <div className='flexlist-header-text' onClick={() => { setCollapsed(!collapsed);}}>
+      <div className='flexlist-header-text' onClick={() => { setCollapsedState(!collapsedState);}}>
         <KeyboardArrowDownIcon />
         <h4>{headerText}</h4>
       </div>
@@ -72,7 +73,7 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
   }
 
   if (collapsible) {
-    if (collapsed) {
+    if (collapsedState) {
       
       return (
         <div id={id} className={"flexlist-wrapper " + modeState + (collapsed ? ' collapsed' : ' expanded')}>

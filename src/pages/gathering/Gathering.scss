@@ -1,25 +1,24 @@
+@import '../../variables.scss';
+
 .seed-card {
+    @include ui-card;
     display: grid !important;
     align-items: center !important;
     
     &:hover {
         cursor: pointer;
-        background-color: rgba(255, 255, 255, 0.2);
 
         &:active {
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(black, 0.8) !important;
         }
     }
 }
 
 .farm-cell {
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 4px !important;
+    @include ui-card;
+    @include flex-cols;
 
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     justify-content: center;
 
     &-name {

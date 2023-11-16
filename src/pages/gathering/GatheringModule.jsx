@@ -50,8 +50,8 @@ function GatheringModule({ isUnlocked = false, icon, iconColor, progressColor, h
 
     </Box>
     
-    <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-gears"/>} type="Gain" value={minGain + "-" + maxGain + " " + header}/>
-    <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-circle-notch"/>} type="Speed" value={time + " Seconds"}/>
+    <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-gears"/>} type="Gain" value={minGain.toFixed(1) + "-" + maxGain.toFixed(1) + " " + header}/>
+    <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-circle-notch"/>} type="Speed" value={time.toFixed(2) + " Seconds"}/>
     
     <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
       {(isActive
@@ -62,10 +62,10 @@ function GatheringModule({ isUnlocked = false, icon, iconColor, progressColor, h
 
     {autoUnlocked &&
       <div className='automation-container' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-        <FlexList headerText='Automation' collapsible mode="list">
+        <FlexList headerText='Automation' collapsible collapsed mode="list">
           <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-gears"/>} type="Gain" value={"1 " + header}/>
           <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-circle-notch"/>} type="Speed" value={"30 Seconds"}/>
-          <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-question"/>} type="Encounter" value={""}/>
+          <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-question"/>} type="Encounter" value={""} color={progressColor}/>
         </FlexList>
       </div>
     }

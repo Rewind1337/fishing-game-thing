@@ -1,13 +1,12 @@
-@import './../../variables.scss';
+@import '../../variables.scss';
 
 .MuiCircularProgress-circle {transition: stroke-dashoffset 0.5s linear !important;}
 
 .MuiCircularProgress-root {
+    @include ui-card;
     margin: 4px;
     margin-bottom: 0px;
     border-radius: 50%;
-    background-color: $border-dark;
-    border: 1px solid $border-light;
 }
 
 .MuiLinearProgress-bar {

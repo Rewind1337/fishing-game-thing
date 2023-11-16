@@ -205,13 +205,14 @@ function PageFishingZone() {
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.FISHING} title="Fishing Zone" gridId="grid-fishing" contentClasses={'fishing'}>
 
-    <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
+    <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"} className="linear-progress-with-label">
       <LinearProgress id='fishing-progress' variant="determinate" color={fishProgress >= tickRange.min && fishProgress <= tickRange.max ? 'gathering' : 'fishing'} value={(fishProgress / fishProgressMax) * 100} />
+      <div className="linear-progress-label">Fishing Progress</div>
     </Grid>
 
     <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5}>
       <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
-        <FlexList collapsible headerText={"All Resources"} mode="list">
+        <FlexList collapsible switchable headerText={"All Resources"} mode="list">
           <BaitCollection resources={resources}/>
           <FishCollection resources={resources}/>
         </FlexList>

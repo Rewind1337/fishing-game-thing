@@ -1,4 +1,7 @@
+@import '../../variables.scss';
+
 .adventure-map {
+    @include ui-card-dark;
     display: grid;
     align-content: flex-start;
 
@@ -7,8 +10,6 @@
     height: 100%;
     width: 100%;
     padding: 2px;
-
-    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .adventure-layer {

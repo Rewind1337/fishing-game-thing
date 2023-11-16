@@ -2,12 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GLOBALS from "../../globals/Globals";
 
 const generateModalContent = (page, encounter, _context) => {
-
-    const addPet = (index) => {
-        let newPets = _context.save.pets;
-        newPets.push(index)
-        _context.save.pets = newPets;
-    }
     
     if (encounter == undefined) return false;
 
@@ -15,6 +9,14 @@ const generateModalContent = (page, encounter, _context) => {
 
     let thePage = pageNameMap[page];
     let theType = GLOBALS.ENUMS.ENCOUNTERNAMES[thePage][[encounter.type]];
+
+    const addPet = (index) => {
+        let DB_PET = GLOBALS.DB.PETS[index]
+        let thePet = {id: DB_PET.id, autoFor: DB_PET.autoFor,  name: DB_PET.name, hunger: 0, level: 1}
+        let pets = [..._context.save.pets];
+        pets.push(thePet)
+        _context.save.pets = pets;
+    }
 
     _context.refs.modal['setModalIcon'](<FontAwesomeIcon icon={GLOBALS.ENUMS.ENCOUNTERICONS[thePage][theType]}/>);
     _context.refs.modal['setModalHeader'](encounter.header);

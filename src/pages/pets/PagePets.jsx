@@ -8,6 +8,7 @@ import PageCore from '../core/PageCore';
 import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import PetCard from './PetCard';
+import PetCollection from './PetCollection';
 
 // MUI
 import Grid from '@mui/material/Unstable_Grid2';
@@ -23,6 +24,7 @@ import './Pets.scss'
 function PagePets() {
 
   const _context = useContext(SaveContext);  // eslint-disable-line no-unused-vars
+  const pets = _context.save.pets;
   
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.PETS} title="Pets" contentClasses={'pets'}>
@@ -31,10 +33,7 @@ function PagePets() {
           
         </Grid>
         <Grid mobile={4} maxHeight={600}>
-          <FlexList headerText="Owned Pets" mode="list">
-            <PetCard srcImg='./src/assets/bg-pets.png' name='Sister'/>
-            <PetCard srcImg='./src/assets/bg-pets.png' name='Brother'/>
-          </FlexList>
+          <PetCollection pets={pets}/>
         </Grid>
       </Grid>
     </PageCore>

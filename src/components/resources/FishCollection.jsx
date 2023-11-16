@@ -16,7 +16,7 @@ function FishCollection({resources}) {
   if (collection.length == 0) {return}
 
   return (
-    <ResourceCollectionCard collection={collection} name={'All Fish'} icon={<FontAwesomeIcon icon={"fa-solid fa-fish"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+    <ResourceCollectionCard collection={collection} name={'All Fish'} icon={<FontAwesomeIcon icon={"fa-solid fa-fish-fins"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
   )
 }
 
@@ -28,7 +28,7 @@ let getFishCollection = function (resources) {
 
     if (resources.fishes[ID] >= 0) {
       collection.push({
-        icon: <FontAwesomeIcon icon={"fa-solid fa-fish"} />,
+        icon: <FontAwesomeIcon icon={"fa-solid fa-fish-fins"} />,
         iconcolor: 'hsl(' + ((360/resources.fishes.length) * ID) + 'deg, 100%, 90%)',
         name: fish.name,
         value: resources.fishes[ID] || 0,

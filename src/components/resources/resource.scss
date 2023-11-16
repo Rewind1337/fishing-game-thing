@@ -1,5 +1,7 @@
-.resource-collection-card-wrapper, .resource-card {
-    background-color: rgba(0, 0, 0, 0.1) !important;
+@import '../../variables.scss';
+
+.resource-collection-card-wrapper {
+    @include ui-card;
     height: auto;
 }
 
@@ -8,26 +10,15 @@
 }
 
 .resource-card {
+    @include ui-card;
     display: flex;
     flex-direction: row;
     padding: 2px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-
-    > * {
-        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.66));
-    }
 
     &.collection {
+        @include ui-card;
         margin: 0;
         width: 100%;
-        color: rgb(215, 215, 215);
-        background-color: rgba(0, 0, 0, 0.2) !important;
-
-        &:hover {
-            color: rgb(255, 255, 255);
-            background-color: rgba(0, 0, 0, 0.1) !important;
-        }
-        
     }
 
     * {
@@ -53,7 +44,7 @@
     &-name {  
         white-space: nowrap;
         flex-grow: 1;
-        flex-basis: 128px;
+        flex-basis: 150px;
         font-size: 16px;
         border-left: 1px solid rgba(255, 255, 255, 0.3);
     }
@@ -61,7 +52,7 @@
     &-value {  
         white-space: nowrap;
         text-align: center;
-        flex-basis: 128px;
+        flex-basis: 96px;
         font-size: 16px;
         border-left: 1px solid rgba(255, 255, 255, 0.3);
     }

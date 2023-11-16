@@ -13,10 +13,11 @@ $height-bottom: 45px;
 
     animation-duration: 60s;
     animation-name: rainbowScrollbar;
+    animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
 
-html {
+html, #root, #wrapper {
     background-color: rgb(43, 43, 43);
 }
 
@@ -74,14 +75,12 @@ a {text-decoration: none; color: $text-light;}
 }
 
 #root {
-    background-color: rgb(43, 43, 43);
     display: flex;
     flex-direction: row;
     align-items: flex-start;
 }
 
 #wrapper {
-    background-color: rgb(43, 43, 43);
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -185,8 +184,6 @@ a {text-decoration: none; color: $text-light;}
     }
 }
 
-.MuiPaper-root, .MuiStack-root {margin: 0 auto;}
-
 .unicode {
     aspect-ratio: 1 !important;
     height: 36px;
@@ -198,27 +195,12 @@ a {text-decoration: none; color: $text-light;}
     position: relative;
 }
 
-
-.standalone-header {
-    z-index: 100;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-basis: calc(100% - 2px);
-    width: calc(100% - 2px);
-    text-align: left;
-    text-indent: 8px;
-    margin: 1px 1px;
-    margin-bottom: 2px;
+.truncate-text {
+    padding: 0 4px;
     white-space: nowrap;
-
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 4px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-
 
 .fade-in {
     opacity: 1 !important;
@@ -226,4 +208,14 @@ a {text-decoration: none; color: $text-light;}
 
 .fade-out {
     opacity: 0 !important;
+}
+
+
+.linear-progress-with-label {
+    .linear-progress {}
+    .linear-progress-label {
+        opacity: 0.66;
+        position: relative;
+        top: -100%;
+    }
 }

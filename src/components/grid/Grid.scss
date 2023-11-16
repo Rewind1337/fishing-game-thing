@@ -27,17 +27,4 @@
 #content.queen {background-image: url('../../assets/bg-queen.png');}
 #content.help {background: linear-gradient(153deg, rgba(171,235,255,1) 0%, rgba(148,175,255,1) 100%);}
 
-.grid-cell {
-    z-index: 100;
-}
-
-.grid-cell-content {
-    backdrop-filter: brightness(66%) grayscale(66%);
-    background-color: rgba(0, 0, 0, 0.6);
-    
-    z-index: 100;
-
-    overflow: auto;
-}
-
 .no-flex {display: block !important;}

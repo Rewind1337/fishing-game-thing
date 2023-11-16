@@ -1,28 +1,26 @@
+@import '../../variables.scss';
+
 .inventory-card {
+    @include ui-card;
     white-space: break-spaces;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     font-size: 12px;
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.5);
 
-    &.rod {
-        background-color: rgb(255, 0, 0, 0.1);
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.45) !important;
     }
+
+    &.rod {}
     
-    &.hook {
-        background-color: rgb(255, 0, 255, 0.1);
-    }
+    &.hook {}
     
-    &.bait {
-        background-color: rgb(255, 255, 0, 0.1);
-    }
+    &.bait {}
     
-    &.lure {
-        background-color: rgb(0, 0, 255, 0.1);
-    }
+    &.lure {}
 
     &-buttons {
         display: grid;
@@ -39,15 +37,13 @@
 }
 
 .fish-card {
+    @include ui-card;
     width: 100%;
     white-space: break-spaces;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 4px;
-
-    background-color: rgb(0, 255, 255, 0.1) !important;
 
     &-image {
         width: 100px;

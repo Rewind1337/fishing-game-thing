@@ -7,9 +7,9 @@ export default function AspectCard({c, name, iconscale = "1", color = 'white', a
     return (
       <Paper title={name} className='aspect-card' elevation={1}>
         <Unicode c={c} color={color} iconscale={iconscale}/>
-        <div className='aspect-card-name'>{name}</div>
+        <div className='aspect-card-name truncate-text'>{name}</div>
         <div className='aspect-card-amount' style={{width: '100px'}}>{amount}</div>
-        <div className='aspect-card-effect'>{effect}</div>
+        <div className='aspect-card-effect truncate-text'>{effect}</div>
       </Paper>
     )
   }

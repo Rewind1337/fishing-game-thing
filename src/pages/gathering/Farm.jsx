@@ -126,7 +126,8 @@ function SeedCard({ c, select, onClick }) {
     setGridRowCol: PropTypes.func.isRequired,
   }
 
-  function Farm({farmWidth, farmHeight}) {
+  function Farm({unlocked = false, farmWidth, farmHeight}) {
+
     const _context = useContext(SaveContext)
     const _farm = _context.save.farm
 
@@ -157,8 +158,10 @@ function SeedCard({ c, select, onClick }) {
     }
 
     const seedSelectColor = (seed) => {
-      return selectedSeedRef.current == seed ? "hsl(330, 100%, 50%)" : "pink";
+      return selectedSeedRef.current == seed ? "lime" : "white";
     }
+    
+    if (!unlocked) return;
 
     return (
       <>
@@ -183,6 +186,7 @@ function SeedCard({ c, select, onClick }) {
   }
 
   Farm.propTypes = {
+    unlocked: PropTypes.bool.isRequired,
     farmWidth: PropTypes.number.isRequired,
     farmHeight: PropTypes.number.isRequired,
   }

@@ -35,7 +35,6 @@ const makeFishFancy = (val, index) => {
 
 function Journal({ onClose, open }) {
   const _context = useContext(SaveContext);
-  console.log(_context.save);
 
   const topics = ["Resources", "Fish", "Aspects", "Pets", "Equipment", "Fishing Locations", "Dungeons"]
 
