@@ -58,7 +58,7 @@ let data = {
             catchPackSize: 50,
             equipment: { // fishing equipment
                 rod: 0,
-                bait: 0,
+                bait: 1,
                 lure: 0,
                 hook: 0,
             },

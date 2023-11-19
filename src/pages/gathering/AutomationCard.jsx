@@ -6,7 +6,10 @@ import './AutomationCard.scss'
 AutomationCard.propTypes = {
     icon: PropTypes.object,
     type: PropTypes.string,
-    value: PropTypes.number,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]).isRequired,
 };
 
 function AutomationCard({icon, type, value}) {

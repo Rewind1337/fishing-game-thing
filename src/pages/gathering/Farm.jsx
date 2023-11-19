@@ -23,7 +23,7 @@ function SeedCard({ c, select, onClick }) {
 
   SeedCard.propTypes = {
     c: PropTypes.string,
-    select: PropTypes.func,
+    select: PropTypes.string,
     onClick: PropTypes.func,
   }
 
@@ -56,7 +56,7 @@ function SeedCard({ c, select, onClick }) {
       {cropState.active && <>
         <div className='farm-cell-name'>{cropState.name}</div>
         <div className='farm-cell-progress'>
-          <CircularProgressWithLabel fontSize='12px' iconOffsetTop="-15%" iconsize="12px" textOffsetTop="40%" icon={<FontAwesomeIcon icon={"fa-solid fa-seedling"} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
+          <CircularProgressWithLabel fontSize='12px' iconoffsettop="-15%" iconsize="12px" textoffsettop="40%" icon={<FontAwesomeIcon icon={"fa-solid fa-seedling"} />} sx={{padding: "2px", color: "hsl(120deg, 90%, 50%"}} color={"gathering"} size={50} thickness={5} variant="determinate" value={33}/>
         </div>
         <div className='farm-cell-buttons' style={{display: "flex"}}>
           <ActionButton color='queen' text={"Uproot"} variant='text' func={() => {uprootClick(row, col)}}></ActionButton>

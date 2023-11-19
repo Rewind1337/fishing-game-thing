@@ -24,6 +24,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import getFish from './getFish';
+import tripMoveFunction from './tripMoveFunction';
 
 // CSS Styles
 import './Fishing.scss';
@@ -50,11 +51,18 @@ function PageFishingZone() {
 
   const [fishingTripStatus, setFishingTripStatus] = useState(_context.save.fishingTrip.status || GLOBALS.ENUMS.TRIPSTATUS.IDLE);
   const [fishingTripLocation, setFishingTripLocation] = useState(_context.save.fishingTrip.location || 0);
+  const [fishingTripSubLocation, setFishingTripSubLocation] = useState(_context.save.fishingTrip.subLocation || 0);
 
   const [fishPickerModalOpen, setFishPickerModalOpen] = useState(false);
   const [baitPickerModalOpen, setBaitPickerModalOpen] = useState(false);
-  const [fishPickerOptions, setFishPickerOptions] = useState([]);
-  const [baitPickerOptions, setBaitPickerOptions] = useState([]);
+  const [fishPickerOptions, setFishPickerOptions] = useState([{type: 'fish', key: 0}]);
+  const [baitPickerOptions, setBaitPickerOptions] = useState([{type: 'bait', key: 0}]);
+
+  const changeEquipment = (type, id) => {
+    let newEquipment = {...characterEquipment};
+    newEquipment[type] = id;
+    setCharEquipment(newEquipment);
+  };
 
   const handlePickerOpen = (type) => {
     if (type == 'fish') {
@@ -95,6 +103,14 @@ function PageFishingZone() {
             newResources.bait[2] += opt.amountSelected;
           } else {
             newResources.fishes[opt.itemID] -= opt.amountSelected;
+          }
+
+          if (opt.amountSelected > 0) {
+            if (!inventoryEquipment.bait.includes(2)) {
+              let newEquip = {...inventoryEquipment};
+              newEquip.bait.push(2);
+              setInvEquipment(newEquip);
+            }
           }
         }
 
@@ -238,7 +254,7 @@ function PageFishingZone() {
         pageTimestamps: _allTimeStamps.current,
         resources: {...resources}, 
         fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange},
-        fishingTrip: {status: fishingTripStatus}
+        fishingTrip: {status: fishingTripStatus, location:fishingTripLocation, subLocation:fishingTripSubLocation},
       }
     )
   }
@@ -284,18 +300,20 @@ function PageFishingZone() {
     let hook = GLOBALS.DB.HOOK[characterEquipment.hook];
 
     if (hook.canCatch(fishProgress, tickRange)) {
-      // Only fishes at night right now.
       let toastText = "";
 
       // home
-      let location = [-1, 0];
+      let location = [fishingTripLocation, fishingTripSubLocation];
       
-      let dayTime = 0.85;
+      let dayTime = _context.refs.weatherclock.time;
+      console.log(dayTime);
 
-      let modifiers = {'bait':1};
-      modifiers = {'bait':1, 'homeUnlocks':['wailer']};
+      let modifiers = {'bait':characterEquipment.bait};
+      modifiers = {'bait':characterEquipment.bait, 'homeUnlocks':['wailer']};
 
       let caughtFish = getFish(location, dayTime, modifiers);
+
+      console.log(caughtFish);
 
       if (caughtFish.id >= 0) {
         let vowelN = (['aeiouy'].includes(caughtFish.name[0].toLowerCase()) ? "n" : "");
@@ -357,6 +375,21 @@ function PageFishingZone() {
       setFishingTripLocation(1);
       handlePickerOpen('bait');
     }
+  }
+
+  const handleTripMoveClick = (location, subLocation) => {
+    if (subLocation <= -2) {
+      return;
+    }
+    if (subLocation == -1) {
+      setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE);
+      setFishingTripLocation(0);
+      setFishingTripSubLocation(0);
+      return;
+    }
+    let event = tripMoveFunction(location, subLocation);
+    console.log(event);
+    setFishingTripSubLocation(subLocation);
   }
   
   const pageTick = () => {
@@ -453,7 +486,7 @@ function PageFishingZone() {
       </Grid>
       <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0.5}>
         <Grid mobile={12} desktop={4} >
-          {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && <>
+          {fishingTripStatus != GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP && GLOBALS.DB.FISHING.SUBLOCATIONS[fishingTripLocation][fishingTripSubLocation].fish.length > 0 && <>
             {fishingButton}
           </>}
         </Grid>
@@ -466,14 +499,10 @@ function PageFishingZone() {
           {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
             <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
           </>}
-
-          {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE && <>
-            <ActionButton color="queen" variant="contained" text='Finish Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE)}}/>
-          </>}
         </Grid>
       </Grid>
       <Grid className="hide-tablet-down show-desktop-up" mobile={6} desktop={4} widescreen={3} maxHeight={250} overflow={"auto"}>
-        <FishingTripMap locationID={fishingTripLocation} tripStatus={fishingTripStatus}/>
+        <FishingTripMap locationID={fishingTripLocation} subLocationID={fishingTripSubLocation} tripStatus={fishingTripStatus} moveFunction={handleTripMoveClick}/>
       </Grid>
     </Grid>
     
@@ -485,7 +514,7 @@ function PageFishingZone() {
             return (
               <Paper elevation={1} key={r.id} className='inventory-card rod'>
                 <div className='inventory-card-buttons'>
-                  <ActionButton text={"Equip"}/>
+                  <ActionButton text={"Equip"} disabled={r.id == characterEquipment.rod} func={() => {changeEquipment('rod', r.id)}}/>
                 </div>
                 <div className='inventory-card-name'>{r.name}</div>
               </Paper>
@@ -497,7 +526,7 @@ function PageFishingZone() {
             return (
               <Paper elevation={1} key={h.id} className='inventory-card hook'>
                 <div className='inventory-card-buttons'>
-                  <ActionButton text={"Equip"}/>
+                  <ActionButton text={"Equip"} disabled={h.id == characterEquipment.hook} func={() => {changeEquipment('hook', h.id)}}/>
                 </div>
                 <div className='inventory-card-name'>{h.name}</div>
               </Paper>
@@ -509,7 +538,7 @@ function PageFishingZone() {
             return (
               <Paper elevation={1} key={b.id} className='inventory-card bait'>
                 <div className='inventory-card-buttons'>
-                  <ActionButton text={"Equip"}/>
+                  <ActionButton text={"Equip"} disabled={b.id == characterEquipment.bait} func={() => {changeEquipment('bait', b.id)}}/>
                 </div>
                 <div className='inventory-card-name'>{b.name}</div>
               </Paper>
@@ -521,7 +550,7 @@ function PageFishingZone() {
             return (
               <Paper elevation={1} key={l.id} className='inventory-card lure'>
                 <div className='inventory-card-buttons'>
-                  <ActionButton text={"Use"}/>
+                  <ActionButton text={"Use"} disabled={l.id == characterEquipment.lure} func={() => {changeEquipment('lure', l.id)}}/>
                 </div>
                 <div className='inventory-card-name'>{l.name}</div>
               </Paper>
@@ -530,7 +559,7 @@ function PageFishingZone() {
       </Grid>
 
       <Grid className="show-tablet-down hide-desktop-up" mobile={6} desktop={8} widescreen={9} maxHeight={400} overflow={"auto"}>
-        <FishingTripMap locationID={fishingTripLocation} tripStatus={fishingTripStatus}/>
+        <FishingTripMap locationID={fishingTripLocation} subLocationID={fishingTripSubLocation} tripStatus={fishingTripStatus} moveFunction={handleTripMoveClick}/>
       </Grid>
 
     </Grid>
