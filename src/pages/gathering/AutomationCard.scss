@@ -1,7 +1,7 @@
 @import '../../variables.scss';
 
 .automation-card {
-    @include ui-card-transparent;
+    @include ui-card-transparent($active-state:"false");
     @include flex-rows;
     justify-content: flex-start;
     align-items: center;

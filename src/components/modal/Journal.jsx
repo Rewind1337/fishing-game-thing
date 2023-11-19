@@ -115,9 +115,6 @@ function Journal({ onClose, open }) {
 }
 
 Journal.propTypes = {
-  text: PropTypes.string.isRequired,
-  header: PropTypes.string,
-  icon: PropTypes.element,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };

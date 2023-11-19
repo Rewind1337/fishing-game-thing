@@ -149,6 +149,7 @@ function PageQueen() {
       <h2>Milestone Progress</h2>
       <h5>Current Tier: {currentMilestoneTier}</h5>
       <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={"fa-solid fa-hurricane"} />} iconOffsetTop={"-10%"} textOffsetTop={"45%"} iconSize={"60px"} iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={(milestoneProgress / milestoneProgressMax) * 100} />
+      <h5>Current Progress: {milestoneProgress} / {milestoneProgressMax}</h5>
       <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
         <ActionButton disabled={(hasAny(resources.fishes) ? false : true)} color="queen" variant="contained" text={(hasAny(resources.fishes) ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
       </div>

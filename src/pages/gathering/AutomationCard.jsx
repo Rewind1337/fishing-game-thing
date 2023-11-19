@@ -7,7 +7,7 @@ import ActionButton from '../../components/ActionButton';
 AutomationCard.propTypes = {
     icon: PropTypes.object,
     type: PropTypes.string,
-    value: PropTypes.number,
+    value: PropTypes.string,
     color: PropTypes.string,
 };
 

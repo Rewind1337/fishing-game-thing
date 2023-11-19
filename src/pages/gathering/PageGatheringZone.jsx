@@ -264,7 +264,7 @@ function PageGatheringZone() {
         </FlexList>
 
         <Grid className="hide-mobile show-tablet-up" container mobile={12} tablet={6} desktop={6} maxHeight={{ mobile: 200, tablet: 400 }} overflow={"auto"}>
-          <Farm unlocked={true} farmWidth={3} farmHeight={2}/>
+          <Farm unlocked={false} farmWidth={3} farmHeight={2}/>
         </Grid>
 
       </Grid>

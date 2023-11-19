@@ -3,7 +3,8 @@
 .MuiCircularProgress-circle {transition: stroke-dashoffset 0.5s linear !important;}
 
 .MuiCircularProgress-root {
-    @include ui-card;
+    background: rgba(black, 0.5) !important;
+    border: 1px solid rgba(white, 0.5);
     margin: 4px;
     margin-bottom: 0px;
     border-radius: 50%;

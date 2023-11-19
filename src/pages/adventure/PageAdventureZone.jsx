@@ -130,7 +130,7 @@ function PageAdventureZone() {
             {set.map((node, subKey) => {
               // console.log(node, subKey);
               return (
-                <div key={'node-' + node.id + "-" + subKey} className={'adventure-node ' + node.type} onMouseUp={mouseClick}>
+                <div key={'node-' + node.id + "-" + subKey} className={'adventure-node ' + node.type} onMouseDown={mouseClick}>
                   {node.id}
                 </div>
               )

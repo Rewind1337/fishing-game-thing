@@ -16,7 +16,7 @@ MilestoneCard.propTypes = {
 function MilestoneCard({id, completed = false, sacrificeRequired, bonus = "bonus goes here"}) {
 
   return (
-    <Paper className="milestone-card">
+    <Paper className={"milestone-card" + (completed ? " completed" : "")}>
       <div className="milestone-card-number">
         <FontAwesomeIcon icon={"fa-solid fa-hurricane"}/>
         {id + 1}

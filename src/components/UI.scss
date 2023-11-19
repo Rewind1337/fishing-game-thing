@@ -214,8 +214,9 @@ a {text-decoration: none; color: $text-light;}
 .linear-progress-with-label {
     .linear-progress {}
     .linear-progress-label {
-        opacity: 0.66;
+        opacity: 0.8;
         position: relative;
         top: -100%;
+        line-height: 1.8;
     }
 }

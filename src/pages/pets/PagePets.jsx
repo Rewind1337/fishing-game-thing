@@ -5,9 +5,7 @@ import GLOBALS from '../../globals/Globals';  // eslint-disable-line no-unused-v
 import PageCore from '../core/PageCore';
 
 // Components
-import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
-import PetCard from './PetCard';
 import PetCollection from './PetCollection';
 
 // MUI
