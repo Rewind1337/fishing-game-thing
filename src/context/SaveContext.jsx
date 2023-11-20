@@ -39,7 +39,11 @@ let data = {
         },
         aspects: {},
         fishing: {},
-        fishingTrip: {},
+        fishingTrip: {
+            status: 0,
+            location: 0,
+            subLocation: 0,
+        },
         gathering: {},
         farm: {},
         inventory: {
@@ -55,6 +59,7 @@ let data = {
         },
         character: {
             baitPackSize: 50,
+            baitPack: [0],
             catchPackSize: 50,
             equipment: { // fishing equipment
                 rod: 0,
@@ -70,6 +75,8 @@ let data = {
         sidebar: {
             states: [true, true, true],
             unlocks: [true, false, false, false, true, false, false, true],
+            tripLocks: [false, false, false, false, false, false, false, false],
+            highlights: [false, false, false, false, false, false, false, false],
             sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
             currentPage: 0,
         }

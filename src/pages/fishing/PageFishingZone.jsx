@@ -52,6 +52,8 @@ function PageFishingZone() {
   const [fishingTripStatus, setFishingTripStatus] = useState(_context.save.fishingTrip.status || GLOBALS.ENUMS.TRIPSTATUS.IDLE);
   const [fishingTripLocation, setFishingTripLocation] = useState(_context.save.fishingTrip.location || 0);
   const [fishingTripSubLocation, setFishingTripSubLocation] = useState(_context.save.fishingTrip.subLocation || 0);
+  const [baitPack, setBaitPack] = useState(_context.save.character.baitPack || [0]);
+  const [fishPack, setFishPack] = useState(_context.save.character.fishPack || []);
 
   const [fishPickerModalOpen, setFishPickerModalOpen] = useState(false);
   const [baitPickerModalOpen, setBaitPickerModalOpen] = useState(false);
@@ -120,7 +122,24 @@ function PageFishingZone() {
 
       if (value.modalType == 'bait') {
         setBaitPickerModalOpen(false);
-        setFishingTripStatus(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE);
+
+        let newBait = {...baitPack};
+        let newResources = {...resources};
+
+        for (let id in baitPickerOptions) {
+          if (id == 0) {
+            continue;
+          }
+
+          let opt = baitPickerOptions[id];
+          newBait[opt.itemID] = opt.amountSelected;
+          newResources.bait[opt.itemID] -= opt.amountSelected;
+        }
+
+        setBaitPack(newBait);
+        setResources(newResources);
+        setTripStatusTo(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE);
+        _context.refs.sidebar.fishingTripChecker(GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE, fishingTripLocation, fishingTripSubLocation);
         return;
       }
     }
@@ -365,11 +384,14 @@ function PageFishingZone() {
     setTickRange({min: [-1], max: [-1], catch: 0})
   }
 
-  const setTripTo = (n) => {
+  const setTripStatusTo = (n) => {
     stopFishing();
     setFishingTripStatus(n);
 
-    if (n == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {setFishingTripLocation(0)}
+    if (n == GLOBALS.ENUMS.TRIPSTATUS.IDLE) {
+      setFishingTripLocation(0);
+      setFishingTripSubLocation(0);
+    }
 
     if (n == GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP) {
       setFishingTripLocation(1);
@@ -381,12 +403,23 @@ function PageFishingZone() {
     if (subLocation <= -2) {
       return;
     }
+
     if (subLocation == -1) {
-      setTripTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE);
-      setFishingTripLocation(0);
-      setFishingTripSubLocation(0);
+      setTripStatusTo(GLOBALS.ENUMS.TRIPSTATUS.IDLE);
+
+      // Return bait from baitPack
+      let newResources = {...resources};
+      for (let baitID in baitPack) {
+        newResources.bait[baitID] += baitPack[baitID];
+        baitPack[baitID] = 0;
+      }
+      setResources(newResources);
+      
+      _context.refs.sidebar.fishingTripChecker(GLOBALS.ENUMS.TRIPSTATUS.IDLE, 0, 0);
       return;
     }
+
+    _context.refs.sidebar.fishingTripChecker(fishingTripStatus, location, subLocation);
     let event = tripMoveFunction(location, subLocation);
     console.log(event);
     setFishingTripSubLocation(subLocation);
@@ -439,7 +472,7 @@ function PageFishingZone() {
   useEffect(() => {
     setFishPickerOptions(generatePickerOptions('fish'));
     setBaitPickerOptions(generatePickerOptions('bait'));
-  }, [resources]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [resources, baitPack]); // eslint-disable-line react-hooks/exhaustive-deps
  
   useEffect(() => () => {}, []); // unmount
 
@@ -480,8 +513,8 @@ function PageFishingZone() {
     <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5}>
       <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
         <FlexList collapsible headerText={"All Resources"} mode="list">
-          <BaitCollection resources={resources}/>
-          <FishCollection resources={resources}/>
+          <BaitCollection status={fishingTripStatus} resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack} : resources}/>
+          <FishCollection status={fishingTripStatus} resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {fishes:fishPack} : resources}/>
         </FlexList>
       </Grid>
       <Grid container mobile={6} desktop={4} widescreen={6} spacing={0.5} height={"min-content"} paddingTop={0.5}>
@@ -497,7 +530,7 @@ function PageFishingZone() {
         </Grid>
         <Grid mobile={12} desktop={4}>
           {fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.IDLE && <>
-            <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
+            <ActionButton color="gathering" variant="contained" text='Prepare Fishing Trip' func={() => {setTripStatusTo(GLOBALS.ENUMS.TRIPSTATUS.PREPARING_TRIP)}}/>
           </>}
         </Grid>
       </Grid>
