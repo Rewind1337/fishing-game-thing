@@ -2,6 +2,7 @@
 
 .inventory-card {
     @include ui-card;
+    @include blur-hover($strength: 6px);
     white-space: break-spaces;
     display: flex;
     flex-direction: row;
@@ -38,6 +39,7 @@
 
 .fish-card {
     @include ui-card;
+    @include blur-hover($strength: 6px);
     width: 100%;
     white-space: break-spaces;
     display: flex;

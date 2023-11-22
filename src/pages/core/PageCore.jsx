@@ -168,6 +168,14 @@ function PageCore({pageID, title, contentClasses, children}) {
       </Stack>
     </Paper>
   );
+  
+  const tooltip = (
+    <Paper id='tooltip'>
+      <div className='tooltip-header'>Tooltip</div>
+      <p className='tooltip-text font-tooltips'>This is a test tooltip lmao, please be nice to him</p>
+      <p className='tooltip-footer'></p>
+    </Paper>
+  );
 
     return (
         <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
@@ -175,6 +183,8 @@ function PageCore({pageID, title, contentClasses, children}) {
         <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
 
         <Journal open={journalOpen} onClose={handleJournalClose}/>
+
+        {tooltip}
 
           <div id="content" className={contentClasses}>
             <Grid id="content-top" container spacing={0}>

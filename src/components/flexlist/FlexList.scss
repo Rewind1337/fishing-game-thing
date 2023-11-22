@@ -3,7 +3,6 @@
 .flexlist {
     display: flex;
     width: 100%;
-    padding-top: 1px;
     border-radius: 4px;
 
     &-header {
@@ -11,11 +10,9 @@
         @include flex;
         justify-content: flex-start;
         align-items: center;
-        flex-basis: calc(100% - 2px);
-        width: calc(100% - 2px);
-        text-indent: 8px;
+        width: 100%;
         font-size: 16px;
-        margin: 1px 1px;
+        margin-bottom: 2px;
         white-space: nowrap;
 
         &-text {
@@ -41,20 +38,16 @@
     }
 
     &-wrapper {
-        padding-top: 1px;
-        width: calc(100% - 1px);
-        transition: height 0.5s ease;
-        border-radius: 4px !important;
+        width: 100%;
     }
 
     &-list {
         @include flex($direction: column);
         flex-wrap: nowrap;
-        gap: 2px;
+        gap: 2px !important;
     
         > * {
-            flex-basis: calc(100% - 2px);
-            width: calc(100% - 2px);
+            width: 100%;
             border-radius: 4px;
             height: auto;
         }
@@ -63,10 +56,10 @@
     &-flex {
         @include flex;
         flex-wrap: wrap;
-        gap: 2px;
+        gap: 2px !important;
     
-        > * {
-            width: calc(50% - 2px);
+        > *:not(.resource-collection-card-wrapper) {
+            width: calc(50% - 2px) !important;
             flex-grow: 1;
         }
     }
@@ -75,10 +68,9 @@
         @include flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 1px;
-        padding: 2px;
+        gap: 1px !important;
     
-        > * {
+        > *:not(.resource-collection-card-wrapper) {
             width: min-content;
         }
     }

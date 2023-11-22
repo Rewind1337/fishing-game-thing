@@ -215,3 +215,55 @@ a {text-decoration: none; color: white;}
         line-height: 1.8;
     }
 }
+
+*[data-title]::before,
+*[data-title]::after {
+    --scale: 0;
+
+    position: absolute;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0) scale(var(--scale));
+    transform-origin: top left;
+}
+
+*[data-title]::before {
+    @include ui-card-dark;
+    font-size: 12px;
+    white-space: nowrap;
+    content: attr(data-title);
+    transition: background-color 0.15s ease, border 0.15s ease, transform 1s ease, padding 1s ease !important;
+}
+
+*[data-title]:hover::before {
+    --scale: 1;
+}
+
+#tooltip {
+    @include ui-card;
+    z-index: 10000;
+    max-width: 250px;
+    backdrop-filter: blur(6px);
+    position: absolute;
+    top: 14px;
+    right: 215px;
+    transform: translate(-50%, 0);
+
+    opacity: 0.05;
+
+    > .tooltip-header {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    > .tooltip-text {
+        text-align: center;
+        font-size: 13px;
+    }
+
+    > .tooltip-footer {
+        text-align: left;
+        font-size: 12px;
+    }
+}

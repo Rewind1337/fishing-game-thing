@@ -56,7 +56,7 @@ function SacrificeModal({ options, header, onClose, open }) {
           </FlexList>
         </Paper>
         <div className='dialog-buttons'>
-          <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Done"}/>
+          <ActionButton color='tutorial' variant='contained' func={() => {handleListItemClick("close")}} text={"Done"}/>
         </div>
     </Dialog>
   );

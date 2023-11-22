@@ -8,6 +8,7 @@
 
 .milestone-card {
     @include ui-card-dark;
+    @include blur-hover($strength: 6px);
     display: flex;
     flex-direction: row;
     padding: 8px;
@@ -49,6 +50,7 @@
 
 .aspect-card {
     @include ui-card-dark;
+    @include blur-hover($strength: 6px);
     @include flex;
     justify-content: flex-start;
     padding-left: 1px;

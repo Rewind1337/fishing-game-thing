@@ -9,7 +9,7 @@ import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import MilestoneCard from './MilestoneCard';
-import AspectCard from './AspectCard';
+import AspectCard from '../../components/aspects/AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI

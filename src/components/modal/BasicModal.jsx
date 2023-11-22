@@ -30,7 +30,7 @@ function BasicModal({ header, text, icon, onClose, open }) {
         <div className='dialog-text'>{text}</div>
       </Paper>
       <div className='dialog-buttons'>
-        <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Okay"}/>
+        <ActionButton color='tutorial' variant='contained' func={() => {handleListItemClick("close")}} text={"Okay"}/>
       </div>
     </Dialog>
   );

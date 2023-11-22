@@ -3,18 +3,21 @@
 .resource-collection-card-wrapper {
     height: auto;
     width: 100%;
+    padding-top: 1px;
 }
 
 .resource-card {
     @include ui-card;
+    @include blur-hover($strength: 6px);
     display: flex;
     flex-direction: row;
     padding: 2px;
 
     &.collection {
         @include ui-card-dark($active-state: "true");
-        margin: 0;
-        width: 100%;
+        @include blur-hover($strength: 0);
+        margin-bottom: 1px;
+        flex-basis: 100% !important;
     }
 
     * {
@@ -37,27 +40,25 @@
         }
     }
 
-    &-name {  
+    &-name {
+        text-align: left;
         white-space: nowrap;
         flex-grow: 1;
         flex-basis: 150px;
         font-size: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     &-value {  
         white-space: nowrap;
         text-align: center;
         flex-basis: 96px;
-        font-size: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
+        font-size: 14px;
     }
 
     &-persec {
         white-space: nowrap;
         text-align: right;
         flex-basis: 64px;
-        font-size: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
+        font-size: 12px;
     }
 }
