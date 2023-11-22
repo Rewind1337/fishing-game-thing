@@ -1,7 +1,12 @@
 @import '../../variables.scss';
 
-.seed-card {
+.gathering-module {
     @include ui-card;
+    height: min-content;
+}
+
+.seed-card {
+    @include ui-card($active-state: "true");
     display: grid !important;
     align-items: center !important;
     
@@ -15,8 +20,8 @@
 }
 
 .farm-cell {
-    @include ui-card;
-    @include flex-cols;
+    @include ui-card($active-state: "true");
+    @include flex($direction: column);
 
     width: 100%;
     justify-content: center;

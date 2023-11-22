@@ -11,7 +11,7 @@
 }
 
 .action-buttons {
-    @include flex-rows;
+    @include flex;
     flex-wrap: wrap;
     height: auto;
     width: 100%;
@@ -37,16 +37,15 @@
     }
     
     &-grid {
-        @include flex-rows;
+        @include flex;
         flex-wrap: wrap;
         gap: 8px;
         align-items: center;
 
         > .fishing-map-sublocation {
-            @include ui-card;
+            @include ui-card($active-state: "true");
             display: grid;
             align-content: center;
-            cursor: pointer;
             height: 70px;
             width: calc(50% - 4px);
             font-size: 13px;

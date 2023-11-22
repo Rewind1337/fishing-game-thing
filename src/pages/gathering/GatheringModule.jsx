@@ -34,7 +34,7 @@ function GatheringModule({ isUnlocked = false, icon, iconColor, progressColor, h
     return (<Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', height: 'min-content' }}>more ??</Paper>)
   }
 
-  return (<Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', height: 'min-content' }}>
+  return (<Paper className='gathering-module'>
     <h5 style={{ borderRadius: "4px", backgroundColor: 'rgba(0, 0, 0, 0.1)' }}>{header}</h5>
     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -52,6 +52,7 @@ function GatheringModule({ isUnlocked = false, icon, iconColor, progressColor, h
     
     <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-gears"/>} type="Gain" value={minGain.toFixed(1) + "-" + maxGain.toFixed(1) + " " + header}/>
     <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-circle-notch"/>} type="Speed" value={time.toFixed(2) + " Seconds"}/>
+    <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-question"/>} type="Guaranteed Encounter" value={""} color={progressColor}/>
     
     <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
       {(isActive
@@ -65,7 +66,6 @@ function GatheringModule({ isUnlocked = false, icon, iconColor, progressColor, h
         <FlexList headerText='Automation' collapsible collapsed mode="list">
           <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-gears"/>} type="Gain" value={"1 " + header}/>
           <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-circle-notch"/>} type="Speed" value={"30 Seconds"}/>
-          <AutomationCard icon={<FontAwesomeIcon icon="fa-solid fa-question"/>} type="Encounter" value={""} color={progressColor}/>
         </FlexList>
       </div>
     }

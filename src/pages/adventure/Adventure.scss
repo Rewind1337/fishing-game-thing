@@ -23,6 +23,7 @@
 }
 
 .adventure-node {
+    @include ui-card;
     display: grid;
     align-content: center;
 

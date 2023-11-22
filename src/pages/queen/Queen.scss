@@ -49,7 +49,7 @@
 
 .aspect-card {
     @include ui-card-dark;
-    @include flex-rows;
+    @include flex;
     justify-content: flex-start;
     padding-left: 1px;
     border-radius: 4px;

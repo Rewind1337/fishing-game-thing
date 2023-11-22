@@ -1,90 +1,13 @@
-$fontsize-XS: 8px;
-$fontsize-S: 11px;
-$fontsize-M: 15px;
-$fontsize-L: 20px;
-$fontsize-XL: 26px;
-$fontsize-XXL: 34px;
+$fontsize-XS: 0.5vw;
+$fontsize-S: 0.65vw;
+$fontsize-M: 0.8vw;
+$fontsize-L: 1vw;
+$fontsize-XL: 1.25vw;
+$fontsize-XXL: 1.6vw;
 
 $fontface-regular: 'Roboto', sans-serif;
 $fontface-special: 'Young Serif', serif;
 $fontface-mono: 'Geo', sans-serif;
-
-$text-light: #eee;
-$text-dark: #111;
-
-$border-light: #ffffff66;
-$border-dark: #00000066;
-
-@mixin flex-rows {
-    display: flex;
-    flex-direction: row;
-}
-
-@mixin flex-cols {
-    display: flex;
-    flex-direction: column;
-}
-
-@mixin ui-card-transparent($active-state: "false") {
-    color: rgb(215, 215, 215);
-    border-radius: 4px;
-    background-color: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.66);
-    
-    transition: background-color 0.15s ease, border 0.15s ease !important;
-    
-    > * {filter: drop-shadow(0 0 3px rgba(black, 0.66));}
-    
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        color: rgb(245, 245, 245);
-    }
-
-    @if $active-state == "true" {
-        &:hover {
-            &:active {
-                background-color: rgba(255, 255, 255, 0.15) !important;
-                color: rgb(255, 255, 255); 
-            }
-        }
-    }
-}
-
-@mixin ui-card($active-state: "false") {
-    @include ui-card-transparent;
-
-    background-color: rgba(0, 0, 0, 0.55) !important;
-    
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.5) !important;
-    }
-
-    @if $active-state == "true" {
-        &:hover {
-            &:active {
-                background-color: rgba(0, 0, 0, 0.4) !important;
-            }
-        }
-    }
-}
-
-@mixin ui-card-dark($active-state: "false") {
-    @include ui-card-transparent;
-
-    background-color: rgba(0, 0, 0, 0.8) !important;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.75) !important;
-    }
-
-    @if $active-state == "true" {
-        &:hover {
-            &:active {
-                background-color: rgba(0, 0, 0, 0.65) !important;
-            }
-        }
-    }
-}
 
 $color-adventure-main: #c07f24;
 $color-adventure-hover: #d09f5b;
@@ -125,3 +48,71 @@ $color-pets-sidebar: #efb8ff;
 $color-tutorial-main: #3baea0;
 $color-tutorial-hover: #6cc2b8;
 $color-tutorial-sidebar: #9dd6d0;
+
+@mixin flex($direction: row) {
+    display: flex;
+    flex-direction: $direction;
+}
+
+@mixin ui-card-transparent($active-state: "false") {
+    color: rgb(215, 215, 215);
+    border-radius: 4px;
+    background-color: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.66);
+    
+    transition: background-color 0.15s ease, border 0.15s ease !important;
+    
+    > * {filter: drop-shadow(0 0 3px rgba(black, 0.66));}
+    
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: rgb(245, 245, 245);
+    }
+
+    @if $active-state == "true" {
+        cursor: pointer !important;
+
+        &:hover {
+            &:active {
+                background-color: rgba(255, 255, 255, 0.15) !important;
+                color: rgb(255, 255, 255); 
+            }
+        }
+    }
+}
+
+@mixin ui-card($active-state: "false", $base-color: black) {
+    @include ui-card-transparent($active-state);
+
+    background-color: rgba($base-color, 0.5) !important;
+    
+    &:hover {
+        background-color: rgba($base-color, 0.4) !important;
+    }
+
+    @if $active-state == "true" {
+        &:hover {
+            &:active {
+                background-color: rgba($base-color, 0.25) !important;
+            }
+        }
+    }
+}
+
+@mixin ui-card-dark($active-state: "false", $base-color: black) {
+    @include ui-card-transparent($active-state);
+
+    background-color: rgba($base-color, 0.8) !important;
+    
+    &:hover {
+        background-color: rgba($base-color, 0.7) !important;
+    }
+
+    @if $active-state == "true" {
+        &:hover {
+            &:active {
+                background-color: rgba($base-color, 0.55) !important;
+            }
+        }
+    }
+}

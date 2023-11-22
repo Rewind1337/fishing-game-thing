@@ -7,13 +7,14 @@
     border-radius: 4px;
 
     &-header {
-        @include ui-card-dark;
-        @include flex-rows;
+        @include ui-card-dark($active-state: "true");
+        @include flex;
         justify-content: flex-start;
         align-items: center;
         flex-basis: calc(100% - 2px);
         width: calc(100% - 2px);
         text-indent: 8px;
+        font-size: 16px;
         margin: 1px 1px;
         white-space: nowrap;
 
@@ -47,7 +48,7 @@
     }
 
     &-list {
-        @include flex-cols;
+        @include flex($direction: column);
         flex-wrap: nowrap;
         gap: 2px;
     
@@ -60,7 +61,7 @@
     }
 
     &-flex {
-        @include flex-rows;
+        @include flex;
         flex-wrap: wrap;
         gap: 2px;
     
@@ -71,7 +72,7 @@
     }
 
     &-compact {
-        @include flex-rows;
+        @include flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 1px;
@@ -83,8 +84,8 @@
     }
 
     &-tabs {
-        @include ui-card-dark;
-        @include flex-rows;
+        @include ui-card-dark($active-state: "true");
+        @include flex;
         justify-content: flex-start;
         width: 100%;
         margin-bottom: 2px;

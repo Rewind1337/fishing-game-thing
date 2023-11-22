@@ -1,11 +1,7 @@
 @import '../../variables.scss';
 
 .resource-collection-card-wrapper {
-    @include ui-card;
     height: auto;
-}
-
-.resource-collection-card-wrapper {
     width: 100%;
 }
 
@@ -16,7 +12,7 @@
     padding: 2px;
 
     &.collection {
-        @include ui-card;
+        @include ui-card-dark($active-state: "true");
         margin: 0;
         width: 100%;
     }

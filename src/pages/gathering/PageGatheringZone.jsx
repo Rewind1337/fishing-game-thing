@@ -28,7 +28,7 @@ import BaitCollection from '../../components/resources/BaitCollection';
 import Farm from './Farm';
 
 import checkForEncounters from '../../utility/encounters/checkForEncounters';
-import generateModalContent from '../../utility/encounters/generateModalContent';
+import generateModalContent from '../../utility/encounters/handleEncounterLogic';
 
 // Route: "/gathering"
 function PageGatheringZone() {

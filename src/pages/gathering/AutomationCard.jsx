@@ -22,7 +22,7 @@ function AutomationCard({icon, type, value, color}) {
         <div className="automation-card-value">
             {value}
         </div>
-        {type == "Encounter" && 
+        {type == "Guaranteed Encounter" && 
         <div className="automation-card-button">
             <ActionButton disabled text="0 / 30" variant='contained' color={color}/>
         </div>
