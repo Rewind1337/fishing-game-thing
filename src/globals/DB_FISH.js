@@ -55,11 +55,11 @@ const DB_FISH = [
     },
     {
         id: 6,
-        name: "Creeping Eel",
+        name: "Creeping Crawlfin",
         rarity: ENUMS.RARITY.UNCOMMON,
         baitNeeded: ENUMS.BAIT.FISH,
         timeOfDay: ENUMS.TIME.DAY_FULL,
-        flavor: "This fish is a unique species that lives in shallow water and burrows under the sand. It looks like an eel, but is actually a fish.",
+        flavor: "This fish is a unique species that lives in shallow water and burrows under the sand. Its fins are adapted for pushing through wet soil, making it slow and cumbersome in water.",
         aspects: {'earthPower': 0.1},
     },
     {

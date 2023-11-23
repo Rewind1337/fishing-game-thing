@@ -54,6 +54,7 @@ function PageFishingZone() {
   const [fishingTripSubLocation, setFishingTripSubLocation] = useState(_context.save.fishingTrip.subLocation || 0);
   const [baitPack, setBaitPack] = useState(_context.save.character.baitPack || [0]);
   const [fishPack, setFishPack] = useState(_context.save.character.fishPack || []);
+  const [fishPackSize] = useState(_context.save.character.fishPackSize);
 
   const [fishPickerModalOpen, setFishPickerModalOpen] = useState(false);
   const [baitPickerModalOpen, setBaitPickerModalOpen] = useState(false);
@@ -123,7 +124,7 @@ function PageFishingZone() {
       if (value.modalType == 'bait') {
         setBaitPickerModalOpen(false);
 
-        let newBait = {...baitPack};
+        let newBait = [...baitPack];
         let newResources = {...resources};
 
         for (let id in baitPickerOptions) {
@@ -274,26 +275,48 @@ function PageFishingZone() {
         resources: {...resources}, 
         fishing: {isFishing: isFishing, fishProgress: fishProgress, tickRange: tickRange},
         fishingTrip: {status: fishingTripStatus, location:fishingTripLocation, subLocation:fishingTripSubLocation},
+        character: {baitPack: baitPack, fishPack: fishPack},
       }
     )
   }
 
+  const countFishPackFish = () => {
+    var total = 0;
+    for (let ID in fishPack) {
+      total += fishPack[ID];
+    }
+    return total;
+  };
+
   const startFishing = (onTrip) => {
     let hook = GLOBALS.DB.HOOK[characterEquipment.hook];
-    let multiCatch = hook.multiCatch;
+    let multiCatch = hook.multiCatch || 0;
 
-    if ((resources.bait[GLOBALS.ENUMS.BAIT.WORMS] || 0) <= 0) {
-      _context.refs.toastmanager['fireToast']("error", "You dont have any Worms!");
+    let localBait = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? baitPack : resources.bait;
+
+    if (characterEquipment.bait != 0) {
+      if ((localBait[characterEquipment.bait] || 0) <= 0) {
+        _context.refs.toastmanager['fireToast']("error", "You dont have any " + GLOBALS.DB.BAIT[characterEquipment.bait].name + "!");
+        return;
+      }
+      if ((localBait[characterEquipment.bait] || 0) <= multiCatch) {
+        _context.refs.toastmanager['fireToast']("warning", "You dont have enough " + GLOBALS.DB.BAIT[characterEquipment.bait].name + " for this Hook!");
+        return;
+      }
+    }
+    if (fishPackSize - countFishPackFish() <= multiCatch) {
+      _context.refs.toastmanager['fireToast']("warning", "You are running out of space in your pack, you can't catch " + (multiCatch + 1) + " more Fish!");
       return;
     }
-    if ((resources.bait[GLOBALS.ENUMS.BAIT.WORMS] || 0) <= multiCatch) {
-      _context.refs.toastmanager['fireToast']("warning", "You dont have enough Worms for this hook!");
-      return;
-    }
 
-    let newBait = resources.bait;
-    newBait[GLOBALS.ENUMS.BAIT.WORMS] -= multiCatch + 1;
-    setResources(r => ({...r, bait: newBait}));
+    let newBait = [...localBait];
+    newBait[characterEquipment.bait] -= multiCatch + 1;
+
+    if (onTrip) {
+      setBaitPack(newBait);
+    } else {
+      setResources(r => ({...r, bait: newBait}));
+    }
     setFishing(true);
 
     let tickWidth = 20;
@@ -328,7 +351,7 @@ function PageFishingZone() {
       console.log(dayTime);
 
       let modifiers = {'bait':characterEquipment.bait};
-      modifiers = {'bait':characterEquipment.bait, 'homeUnlocks':['wailer']};
+      // modifiers = {'bait':characterEquipment.bait, 'homeUnlocks':['wailer']};
 
       let caughtFish = getFish(location, dayTime, modifiers);
 
@@ -338,9 +361,15 @@ function PageFishingZone() {
         let vowelN = (['aeiouy'].includes(caughtFish.name[0].toLowerCase()) ? "n" : "");
         toastText = "Caught a"+vowelN+": " + caughtFish.name;
 
-        let newFishes = resources.fishes;
-        newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
-        setResources(r => ({...r, fishes: r.fishes = newFishes}));
+        if (onTrip) {
+          let newFishes = fishPack.slice();
+          newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
+          setFishPack(newFishes);
+        } else {
+          let newFishes = resources.fishes;
+          newFishes[caughtFish.id] = newFishes[caughtFish.id] + 1 || 1;
+          setResources(r => ({...r, fishes: r.fishes = newFishes}));
+        }
 
         if (hook.multiCatch > 0 && hook.multiCatch > tickRange.catch) {
           toastText += ", but there's another chance!";
@@ -413,6 +442,14 @@ function PageFishingZone() {
         newResources.bait[baitID] += baitPack[baitID];
         baitPack[baitID] = 0;
       }
+      console.log(newResources);
+      // Add caught fish to resources
+      for (let fishID in fishPack) {
+        console.log(fishPack);
+        newResources.fishes[fishID] = newResources.fishes[fishID] || 0;
+        newResources.fishes[fishID] += fishPack[fishID];
+        fishPack[fishID] = 0;
+      }
       setResources(newResources);
       
       _context.refs.sidebar.fishingTripChecker(GLOBALS.ENUMS.TRIPSTATUS.IDLE, 0, 0);
@@ -472,7 +509,9 @@ function PageFishingZone() {
   useEffect(() => {
     setFishPickerOptions(generatePickerOptions('fish'));
     setBaitPickerOptions(generatePickerOptions('bait'));
-  }, [resources, baitPack]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    contextSave();
+  }, [resources, fishPack, baitPack]); // eslint-disable-line react-hooks/exhaustive-deps
  
   useEffect(() => () => {}, []); // unmount
 

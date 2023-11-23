@@ -271,6 +271,7 @@ function Sidebar() {
       if (GLOBALS.DB.FISHING.SUBLOCATIONS[location][sublocation].canSacrifice) {
         newSidebar.tripLocks[6] = false;
         newSidebar.highlights[6] = true;
+        unlockSidebar(6, true);
       }
 
       setSave({sidebar : newSidebar});

@@ -37,6 +37,10 @@ function PageQueen() {
 
   const [resources, setResources] = useState(resourceHook(_context));
   const [aspects, setAspects] = useState(aspectHook(_context));
+  
+  const [fishingTripStatus] = useState(_context.save.fishingTrip.status || GLOBALS.ENUMS.TRIPSTATUS.IDLE);
+  const [baitPack, setBaitPack] = useState(_context.save.character.baitPack || [0]);
+  const [fishPack, setFishPack] = useState(_context.save.character.fishPack || []);
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
 
@@ -58,7 +62,9 @@ function PageQueen() {
     for (let f in GLOBALS.DB.FISH) {
       let fish = GLOBALS.DB.FISH[f];
 
-      if (resources.fishes[fish.id] > 0) {
+      let localFish = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
+
+      if (localFish[fish.id] > 0) {
         options.push({
           icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
           itemID: fish.id,
@@ -72,22 +78,17 @@ function PageQueen() {
   const pickerOptions = generatePickerOptions();
 
   const sacrificeToQueen = (input) => {
-    switch (input.value) {
-      case pickerOptions[0].itemID:
-        gainBonus(input);
-      break;
-      case pickerOptions[1].itemID:
-        gainBonus(input);
-      break;
-      default:
-      break;
-    }
+    gainBonus(input);
   }
 
   const gainBonus = (input) => {
     let amount = input.amount;
     let fishID = input.value;
-    if (resources.fishes[fishID] >= amount) {
+
+    let localFish = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
+    let localBait = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? baitPack : resources.bait;
+
+    if (localFish[fishID] >= amount) {
       let fishData = GLOBALS.DB.FISH[fishID];
 
       let rarityTable = [1,3,7,15,30];
@@ -104,12 +105,19 @@ function PageQueen() {
       setAspects(newAspects);
 
       // remove fish
-      let newFishes = resources.fishes;
+      let newFishes = [...localFish];
       newFishes[fishID] = newFishes[fishID] - (1 * amount);
+
       // add worms
-      let newBait = resources.bait;
+      let newBait = [...localBait];
       newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + (fishWorms * amount);
-      setResources(r => ({...r, fishes: r.fishes = newFishes}));
+
+      if (fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+        setFishPack(newFishes);
+        setBaitPack(newBait);
+      } else {
+        setResources(r => ({...r, fishes: r.fishes = newFishes}));
+      }
 
       _context.refs.toastmanager['fireToast']("success", "Yum!");
     }
@@ -118,9 +126,12 @@ function PageQueen() {
   useEffect(() => {
     _context.setSave({resources: {...resources}});
     _context.setSave({aspects: {...aspects}});
-  }, [resources, aspects]) // eslint-disable-line react-hooks/exhaustive-deps
+    _context.setSave({character: {baitPack: baitPack, fishPack: fishPack}});
+  }, [resources, aspects, baitPack, fishPack]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const hasAny = (fishes) => {
+  const hasAnyFish = () => {
+    let fishes = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
+
     for (let key in fishes) {
       if (fishes[key] > 0) {return true;}
     }
@@ -140,7 +151,7 @@ function PageQueen() {
       <h2>Milestone Progress</h2>
       <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={"fa-solid fa-hurricane"} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
       <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-        <ActionButton disabled={(hasAny(resources.fishes) ? false : true)} color="queen" variant="contained" text={(hasAny(resources.fishes) ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+        <ActionButton disabled={(hasAnyFish() ? false : true)} color="queen" variant="contained" text={(hasAnyFish() ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
       </div>
     </Paper>
   );
@@ -153,8 +164,8 @@ function PageQueen() {
 
   const resourceList = (
     <FlexList collapsible headerText={"All Resources"} mode="list">
-      <BaitCollection resources={resources}/>
-      <FishCollection resources={resources}/>
+      <BaitCollection resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack, fishes:fishPack} : resources}/>
+      <FishCollection resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack, fishes:fishPack} : resources}/>
     </FlexList>
   );
 

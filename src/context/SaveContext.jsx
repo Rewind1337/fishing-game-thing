@@ -58,9 +58,9 @@ let data = {
             },
         },
         character: {
-            baitPackSize: 50,
+            baitPackSize: 40,
             baitPack: [0],
-            catchPackSize: 50,
+            fishPackSize: 20,
             equipment: { // fishing equipment
                 rod: 0,
                 bait: 1,
