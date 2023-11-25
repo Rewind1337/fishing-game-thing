@@ -160,14 +160,20 @@ function PageFishingZone() {
       if (opt.itemID != value.value) {continue;}
     
       let trueDiff = opt.amountSelected;
+      let amountToAdd = value.amount;
 
-      let limit = Math.min(opt.amountHave, opt.amountLimit || opt.amountHave);
+      let limit = opt.amountLimit == 0 ? 0 : Math.min(opt.amountHave, opt.amountLimit || opt.amountHave);
 
-      opt.amountSelected += value.amount;
+      opt.amountSelected += amountToAdd;
       opt.amountSelected = (opt.amountSelected > limit ? limit : opt.amountSelected);
       opt.amountSelected = (opt.amountSelected < 0 ? 0 : opt.amountSelected);
 
       trueDiff = opt.amountSelected - trueDiff;
+
+      if (value.modalType == 'bait') {
+        trueDiff *= GLOBALS.DB.BAIT[opt.itemID].size;
+      }
+
       newOptions[0].amountSelected += trueDiff;
 
       if (value.modalType == 'bait') {
@@ -175,7 +181,7 @@ function PageFishingZone() {
           if (id2 == 0) {continue;}
 
           let opt2 = newOptions[id2];
-          opt2.amountLimit = opt2.amountSelected + newOptions[0].amountHave - newOptions[0].amountSelected;
+          opt2.amountLimit = opt2.amountSelected + Math.floor((newOptions[0].amountHave - newOptions[0].amountSelected) / GLOBALS.DB.BAIT[opt2.itemID].size);
         }
       }
       break;
@@ -227,7 +233,26 @@ function PageFishingZone() {
         }
       }
 
-      options[0].amountHave = tally;
+      if (fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+        let baitTally = 0;
+
+        for (let b in GLOBALS.DB.BAIT) {
+          let bait = GLOBALS.DB.BAIT[b];
+          
+          if (baitPack[bait.id] > 0) {
+            baitTally += baitPack[bait.id] * bait.size;
+          }
+        }
+        options[0].amountHave = _context.save.character.baitPackSize * 10;
+        options[0].amountSelected = baitTally;
+
+        for (let id in options) {
+          if (id == 0) {continue;}
+          options[id].amountLimit = _context.save.character.baitPackSize - baitTally;
+        }
+      } else {
+        options[0].amountLimit = tally;
+      }
     }
 
     if (type == 'bait') {
@@ -236,7 +261,7 @@ function PageFishingZone() {
         icon: <FontAwesomeIcon icon={"fa-solid fa-briefcase"}/>,
         type: 'bait',
         itemID: -1,
-        amountHave: _context.save.character.baitPackSize,
+        amountHave: _context.save.character.baitPackSize * 10,
         amountSelected: 0,
         itemName: "Bait Pack",
       });
@@ -253,7 +278,7 @@ function PageFishingZone() {
             icon: <FontAwesomeIcon icon={"fa-solid " + bait.iconName}/>,
             type: 'bait',
             itemID: bait.id,
-            amountLimit: _context.save.character.baitPackSize,
+            amountLimit: Math.floor(_context.save.character.baitPackSize * 10 / GLOBALS.DB.BAIT[bait.id].size),
             amountHave: resources.bait[bait.id],
             amountSelected: 0,
             itemName: bait.name,

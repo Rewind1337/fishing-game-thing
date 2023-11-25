@@ -10,6 +10,8 @@ import ActionButton from '../ActionButton';
 import './modal.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+
 function PreparationModal({ options, header, onClose, open }) {
 
   const handleClose = (event, reason) => {
@@ -24,6 +26,18 @@ function PreparationModal({ options, header, onClose, open }) {
   const getTextColor = (selected, have) => {
     let p = selected / have;
     return (p < 0.75 ? 'white' : (p < 0.9 ? 'yellow' : 'red'));
+  };
+
+  const numberFormat = (selected, have, key) => {
+    let output = "";
+
+    const decimals = options[0].type == 'bait' && key == 0 ? 1 : 0;
+    const divider = options[0].type == 'bait' && key == 0 ? 10 : 1;
+
+    output += format(selected / divider, '.', decimals);
+    output += "/";
+    output += format(have / divider, '.', decimals)
+    return output;
   };
 
   return (
@@ -44,7 +58,7 @@ function PreparationModal({ options, header, onClose, open }) {
                   <ActionButton color='queen' variant='text' disabled={opt.key == 0} func={() => {handleListItemClick(opt.type, opt.itemID, -1)}} text={opt.key == 0 ? "X" : "-1"}/>
                 </div>
                 <Paper title={name} className='selector-card' elevation={1}>
-                  <div className="fishing-item-amount" style={{color:getTextColor(opt.amountSelected, opt.amountHave)}}>{opt.amountSelected + "/" + opt.amountHave}</div>
+                  <div className="fishing-item-amount" style={{color:getTextColor(opt.amountSelected, opt.amountHave)}}>{numberFormat(opt.amountSelected, opt.amountHave, opt.key)}</div>
                 </Paper>
                 <div className="fishing-item-buttons">
                   <ActionButton color='gathering' variant='text' disabled={opt.key == 0} func={() => {handleListItemClick(opt.type, opt.itemID, +1)}} text={opt.key == 0 ? "X" : "+1"}/>
