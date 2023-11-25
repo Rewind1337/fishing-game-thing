@@ -5,6 +5,8 @@
     justify-content: flex-start;
     align-items: center;
     font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.5);
 
     &.rod {
         background-color: rgb(255, 0, 0, 0.1);
@@ -43,12 +45,14 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    padding: 4px;
 
     background-color: rgb(0, 255, 255, 0.1) !important;
 
     &-image {
         width: 100px;
         aspect-ratio: 1/1;
+        border-radius: 50%;
         background-color: red;
     }
 

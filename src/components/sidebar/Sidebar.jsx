@@ -1,5 +1,6 @@
 import { useState, useRef, useContext, useEffect } from 'react'
 import SaveContext from '../../context/SaveContext';
+import GLOBALS from '../../globals/Globals';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
@@ -24,7 +25,6 @@ import Theme from '../../styles/Theme';
 import { styled } from '@mui/material/styles';
 import { Badge, useMediaQuery } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
@@ -39,7 +39,7 @@ function Sidebar() {
 
   const mobileSidebarButton = (
     <div className='mobile-sidebar-button' onClick={() => {setMobileSidebarVisible(!mobileSidebarVisible)}}>
-      <FontAwesomeIcon icon={faBars} />
+      <FontAwesomeIcon icon={"fa-solid fa-bars"} />
     </div>
   )
   
@@ -53,8 +53,16 @@ function Sidebar() {
 
   const [folderStates, setFolderStates] = useState(_context.save.sidebar.states);
   const [sidebarUnlocks, setSidebarUnlocks] = useState(_context.save.sidebar.unlocks);
+  const [fishingTripLocks, setTripLocks] = useState(_context.save.sidebar.tripLocks);
+  const [highlights, setHighlights] = useState(_context.save.sidebar.highlights);
 
   const currentPage = useRef(_context.save.sidebar.currentPage);
+
+  const modifySidebarUnlocks = (index, bool) => {
+    let modifiedUnlocks = [...sidebarUnlocks];
+    modifiedUnlocks[index] = bool;
+    setSidebarUnlocks(modifiedUnlocks);
+  }
 
   const [sidebarBadgeData, setSidebarBadgeData] = useState(_context.save.sidebar.sidebarBadgeData);
 
@@ -191,7 +199,8 @@ function Sidebar() {
   useEffect(() => {
     setRefs({sidebar: {
       'setMobileSidebarVisible' : setMobileSidebarVisible,
-      'setSidebarUnlocks' : setSidebarUnlocks, 
+      'modifySidebarUnlocks' : modifySidebarUnlocks,
+      'setSidebarUnlocks': setSidebarUnlocks, 
       'clearBadgeDataFor' : clearBadgeDataFor,
       'checkForBadgeData' : checkForBadgeData,
       'addBadgeTimer' : addBadgeTimer}}, true);
@@ -202,8 +211,8 @@ function Sidebar() {
   const setSave = _context.setSave;
 
   useEffect(() => {
-    setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, sidebarBadgeData: sidebarBadgeData, currentPage: currentPage.current}});
-  }, [sidebarUnlocks, setSidebarUnlocks, folderStates, setFolderStates, sidebarBadgeData, setSidebarBadgeData, setSave])
+    setSave({sidebar: {states: folderStates, unlocks: sidebarUnlocks, tripLocks: fishingTripLocks, highlights: highlights, sidebarBadgeData: sidebarBadgeData, currentPage: currentPage.current}});
+  }, [sidebarUnlocks, setSidebarUnlocks, fishingTripLocks, setTripLocks, highlights, setHighlights, folderStates, setFolderStates, sidebarBadgeData, setSidebarBadgeData, setSave])
 
   SidebarFolder.propTypes = {
     id: PropTypes.number.isRequired,
@@ -222,14 +231,65 @@ function Sidebar() {
     let unlocks = _context.save.sidebar.unlocks.slice();
     unlocks[id] = unlocked;
 
-    let newSidebar = _context.save.sidebar.slice();
+    let newSidebar = {..._context.save.sidebar};
     newSidebar['unlocks'] = unlocks;
     setSave({sidebar : newSidebar});
     setSidebarUnlocks(unlocks);
   }
 
+  function tripSideBarManager(status, location, sublocation) {
+    _context.save.fishingTrip.status = status;
+
+    if (status != GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+
+      let newSidebar = {..._context.save.sidebar};
+      newSidebar.tripLocks = new Array(8).fill(false);
+      newSidebar.highlights = new Array(8).fill(false);
+
+      setSave({sidebar : newSidebar});
+      setTripLocks(newSidebar.tripLocks);
+      setHighlights(newSidebar.highlights);
+
+    } else {
+
+      let newSidebar = {..._context.save.sidebar};
+      newSidebar.tripLocks = new Array(8).fill(true);
+
+      newSidebar.tripLocks[1] = false;
+      newSidebar.tripLocks[3] = false;
+      newSidebar.tripLocks[7] = false;
+
+      newSidebar.highlights[3] = true;
+
+      console.log(GLOBALS.DB.FISHING.SUBLOCATIONS[location][sublocation]);
+
+      if (GLOBALS.DB.FISHING.SUBLOCATIONS[location][sublocation].resources.length > 0) {
+        newSidebar.tripLocks[4] = false;
+        newSidebar.highlights[4] = true;
+      }
+
+      if (GLOBALS.DB.FISHING.SUBLOCATIONS[location][sublocation].canSacrifice) {
+        newSidebar.tripLocks[6] = false;
+        newSidebar.highlights[6] = true;
+        unlockSidebar(6, true);
+      }
+
+      setSave({sidebar : newSidebar});
+      setTripLocks(newSidebar.tripLocks);
+      setHighlights(newSidebar.highlights);
+
+    }
+  }
+  function unlockedCheck(sidebarID) {
+    if (_context.save.fishingTrip.status == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+      return sidebarUnlocks[sidebarID] && !fishingTripLocks[sidebarID];
+    } else {
+      return sidebarUnlocks[sidebarID];
+    }
+  }
+
   useEffect(() => {
-    setRefs({sidebar : {'unlocker' : unlockSidebar}});
+    setRefs({sidebar : {'unlocker' : unlockSidebar, 'fishingTripChecker' : tripSideBarManager}});
     return () => {}
   }, [])
   
@@ -266,6 +326,7 @@ function Sidebar() {
 
   SidebarItem.propTypes = {
     isUnlocked: PropTypes.bool.isRequired,
+    highlight: PropTypes.bool,
     badgeData: PropTypes.number,
     bigText: PropTypes.string.isRequired,
     smallText: PropTypes.string.isRequired,
@@ -274,12 +335,12 @@ function Sidebar() {
     link: PropTypes.string.isRequired,
   };
 
-  function SidebarItem({ isUnlocked, badgeData = 0, bigText, smallText, icon, hoverColor, link}) {
+  function SidebarItem({ isUnlocked, highlight, badgeData = 0, bigText, smallText, icon, hoverColor, link}) {
     const [mouseOverItem, setMouseOverItem] = useState(false);
 
     let classes = 'sidebar-item' + (mouseOver ? ' expanded' : '') + (isUnlocked ? '' : ' disabled')
     let text = (mqMobile ? bigText : (mouseOver ? bigText : smallText))
-    let iconColor = (isUnlocked ? (mouseOverItem ? {color: hoverColor} : {color: "white"}) : {color: 'gray'});
+    let iconColor = (isUnlocked ? (mouseOverItem || highlight ? {color: hoverColor} : {color: "gainsboro"}) : {color: 'gray'});
 
     const StyledBadge = styled(Badge)(() => ({
       '& .MuiBadge-badge': {
@@ -287,7 +348,7 @@ function Sidebar() {
         top: (mouseOver ? 12 : 5),
         backgroundColor: (mouseOver ? 'transparent' : hoverColor),
         border: `3px solid ${hoverColor}`,
-        color: (mouseOverItem ? hoverColor : 'white'),
+        color: (mouseOverItem || highlight ? hoverColor : 'white'),
       },
     }));
     
@@ -317,24 +378,24 @@ function Sidebar() {
         <div className="sidebar-items-container">
           <div className="sidebar-items-top">
             <SidebarFolder id={0} isToggled={folderStates[0]} canToggle height={25} text="Home">
-              <SidebarItem isUnlocked={sidebarUnlocks[0]} badgeData={sidebarBadgeData[0]} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor={Theme.palette.home.sidebarHover} link='/home'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[1]} badgeData={sidebarBadgeData[1]} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor={Theme.palette.inventory.sidebarHover} link='/inventory'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[2]} badgeData={sidebarBadgeData[2]} bigText='Pets' smallText='P' icon={<PetsIcon/>} hoverColor={Theme.palette.pets.sidebarHover} link='/pets'/>
+              <SidebarItem isUnlocked={unlockedCheck(0)} highlight={highlights[0]} badgeData={sidebarBadgeData[0]} bigText='Home Base' smallText='H' icon={<HomeIcon/>} hoverColor={Theme.palette.home.sidebarHover} link='/home'/>
+              <SidebarItem isUnlocked={unlockedCheck(1)} highlight={highlights[1]} badgeData={sidebarBadgeData[1]} bigText='Inventory' smallText='I' icon={<HomeRepairServiceIcon/>} hoverColor={Theme.palette.inventory.sidebarHover} link='/inventory'/>
+              <SidebarItem isUnlocked={unlockedCheck(2)} highlight={highlights[2]} badgeData={sidebarBadgeData[2]} bigText='Pets' smallText='P' icon={<PetsIcon/>} hoverColor={Theme.palette.pets.sidebarHover} link='/pets'/>
             </SidebarFolder>
           </div>
           <div className="sidebar-items-center">
             <SidebarFolder id={1} isToggled={folderStates[1]} canToggle height={50} text="Zones">
-              <SidebarItem isUnlocked={sidebarUnlocks[3]} badgeData={sidebarBadgeData[3]} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor={Theme.palette.fishing.sidebarHover} link='/fishing'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[4]} badgeData={sidebarBadgeData[4]} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor={Theme.palette.gathering.sidebarHover} link='/gathering'/>
-              <SidebarItem isUnlocked={sidebarUnlocks[5]} badgeData={sidebarBadgeData[5]} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor={Theme.palette.adventure.sidebarHover} link='/adventure'/>
+              <SidebarItem isUnlocked={unlockedCheck(3)} highlight={highlights[3]} badgeData={sidebarBadgeData[3]} bigText='Fishing Zone' smallText='F' icon={<PhishingIcon/>} hoverColor={Theme.palette.fishing.sidebarHover} link='/fishing'/>
+              <SidebarItem isUnlocked={unlockedCheck(4)} highlight={highlights[4]} badgeData={sidebarBadgeData[4]} bigText='Gathering Zone' smallText='G' icon={<GrassIcon/>} hoverColor={Theme.palette.gathering.sidebarHover} link='/gathering'/>
+              <SidebarItem isUnlocked={unlockedCheck(5)} highlight={highlights[5]} badgeData={sidebarBadgeData[5]} bigText='Adventure Zone' smallText='A' icon={<HikingIcon/>} hoverColor={Theme.palette.adventure.sidebarHover} link='/adventure'/>
             </SidebarFolder>
             <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
-              <SidebarItem isUnlocked={sidebarUnlocks[6]} badgeData={sidebarBadgeData[6]} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor={Theme.palette.queen.sidebarHover} link='/queen'/>
+              <SidebarItem isUnlocked={unlockedCheck(6)} highlight={highlights[6]} badgeData={sidebarBadgeData[6]} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor={Theme.palette.queen.sidebarHover} link='/queen'/>
             </SidebarFolder>
           </div>
           <div className="sidebar-items-bottom">
             <SidebarFolder id={3} flex height={50} text="Other">
-              <SidebarItem isUnlocked={sidebarUnlocks[7]} badgeData={sidebarBadgeData[7]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
+              <SidebarItem isUnlocked={unlockedCheck(7)} highlight={highlights[7]} badgeData={sidebarBadgeData[7]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
             </SidebarFolder>
             <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
           </div>

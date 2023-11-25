@@ -33,16 +33,24 @@ let data = {
     save: {
         version: _currentVersion,
         pageTimestamps: {},
-        resources: {},
+        resources: {
+            fishes: [],
+            bait: [],
+        },
         aspects: {},
         fishing: {},
+        fishingTrip: {
+            status: 0,
+            location: 0,
+            subLocation: 0,
+        },
         gathering: {},
         farm: {},
         inventory: {
             equipment: { // fishing equipment
                 rods: [0],
-                bait: [],
-                lures: [],
+                bait: [0, 1],
+                lures: [0],
                 hooks: [0],
             },
             gear: { // adventuring gear
@@ -50,10 +58,13 @@ let data = {
             },
         },
         character: {
+            baitPackSize: 40,
+            baitPack: [0],
+            fishPackSize: 20,
             equipment: { // fishing equipment
                 rod: 0,
-                bait: null,
-                lure: null,
+                bait: 1,
+                lure: 0,
                 hook: 0,
             },
             gear: { // adventuring gear
@@ -64,6 +75,8 @@ let data = {
         sidebar: {
             states: [true, true, true],
             unlocks: [true, false, false, false, true, false, false, true],
+            tripLocks: [false, false, false, false, false, false, false, false],
+            highlights: [false, false, false, false, false, false, false, false],
             sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
             currentPage: 0,
         }

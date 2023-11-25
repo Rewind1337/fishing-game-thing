@@ -18,7 +18,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish, faHurricane } from '@fortawesome/free-solid-svg-icons';
 
 // JS Utility
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
@@ -38,12 +37,12 @@ function PageQueen() {
 
   const [resources, setResources] = useState(resourceHook(_context));
   const [aspects, setAspects] = useState(aspectHook(_context));
+  
+  const [fishingTripStatus] = useState(_context.save.fishingTrip.status || GLOBALS.ENUMS.TRIPSTATUS.IDLE);
+  const [baitPack, setBaitPack] = useState(_context.save.character.baitPack || [0]);
+  const [fishPack, setFishPack] = useState(_context.save.character.fishPack || []);
 
   const [pickerModalOpen, setPickerModalOpen] = useState(false);
-  const pickerOptions = [
-    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: 0, itemName: "Muddie Munchie"},
-    {icon: <FontAwesomeIcon icon={faFish}/>, itemID: 1, itemName: "Whiskered Wailer"},
-  ];
 
   const handlePickerOpen = () => {
     setPickerModalOpen(true);
@@ -58,23 +57,38 @@ function PageQueen() {
     sacrificeToQueen(value);
   };
 
-  const sacrificeToQueen = (input) => {
-    switch (input.value) {
-      case pickerOptions[0].itemID:
-        gainBonus(input);
-      break;
-      case pickerOptions[1].itemID:
-        gainBonus(input);
-      break;
-      default:
-      break;
+  const generatePickerOptions = () => {
+    let options = [];
+    for (let f in GLOBALS.DB.FISH) {
+      let fish = GLOBALS.DB.FISH[f];
+
+      let localFish = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
+
+      if (localFish[fish.id] > 0) {
+        options.push({
+          icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
+          itemID: fish.id,
+          itemName: fish.name,
+          aspects: fish.aspects || undefined,
+        })
+      }
     }
+    return options;
+  }
+  const pickerOptions = generatePickerOptions();
+
+  const sacrificeToQueen = (input) => {
+    gainBonus(input);
   }
 
   const gainBonus = (input) => {
     let amount = input.amount;
     let fishID = input.value;
-    if (resources.fishes[fishID] >= amount) {
+
+    let localFish = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
+    let localBait = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? baitPack : resources.bait;
+
+    if (localFish[fishID] >= amount) {
       let fishData = GLOBALS.DB.FISH[fishID];
 
       let rarityTable = [1,3,7,15,30];
@@ -91,12 +105,19 @@ function PageQueen() {
       setAspects(newAspects);
 
       // remove fish
-      let newFishes = resources.fishes;
+      let newFishes = [...localFish];
       newFishes[fishID] = newFishes[fishID] - (1 * amount);
+
       // add worms
-      let newBait = resources.bait;
+      let newBait = [...localBait];
       newBait[GLOBALS.ENUMS.BAIT.WORMS] = newBait[GLOBALS.ENUMS.BAIT.WORMS] + (fishWorms * amount);
-      setResources(r => ({...r, fishes: r.fishes = newFishes}));
+
+      if (fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
+        setFishPack(newFishes);
+        setBaitPack(newBait);
+      } else {
+        setResources(r => ({...r, fishes: r.fishes = newFishes}));
+      }
 
       _context.refs.toastmanager['fireToast']("success", "Yum!");
     }
@@ -105,52 +126,46 @@ function PageQueen() {
   useEffect(() => {
     _context.setSave({resources: {...resources}});
     _context.setSave({aspects: {...aspects}});
-  }, [resources, aspects]) // eslint-disable-line react-hooks/exhaustive-deps
+    _context.setSave({character: {baitPack: baitPack, fishPack: fishPack}});
+  }, [resources, aspects, baitPack, fishPack]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const hasAny = (fishes) => {
+  const hasAnyFish = () => {
+    let fishes = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
+
     for (let key in fishes) {
       if (fishes[key] > 0) {return true;}
     }
     return false;
   }
 
+  const aspectsToList = (aspectDict) => {
+    let output = [];
+    for (let key in aspectDict) {
+      output.push({name:key, aspect:aspectDict[key]});
+    }
+    return output;
+  };
+
   const milestoneProgress = (
-    <div className='milestone-progress'>
-      <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
-        <h2>Milestone Progress</h2>
-        <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={faHurricane} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
-        <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-          <ActionButton disabled={(hasAny(resources.fishes) ? false : true)} color="queen" variant="contained" text={(hasAny(resources.fishes) ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
-        </div>
-      </Paper>
-    </div>
+    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
+      <h2>Milestone Progress</h2>
+      <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={"fa-solid fa-hurricane"} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+      <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+        <ActionButton disabled={(hasAnyFish() ? false : true)} color="queen" variant="contained" text={(hasAnyFish() ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
+      </div>
+    </Paper>
   );
 
   const aspectList = (
-    <FlexList headerText="Aspects" mode='list'>
-      <AspectCard c="𓃇" name="Worm" color='hsl(290deg, 100%, 90%)' amount={format(aspects.wormPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Worm Gain'} />
-      <AspectCard c="𓆝" name="Fish" color='hsl(240deg, 100%, 90%)' amount={format(aspects.fishPower, '.', 2)} iconscale={"1.75"} effect={'Boosts ???'} />
-      <AspectCard c="𓂍" name="Tears" color='hsl(190deg, 100%, 40%)' amount={format(aspects.tearPower, '.', 1)} iconscale={"1.5"} effect={'Boosts Defense'} />
-      <AspectCard c="𓆰" name="Fierce" color='hsl(0deg, 100%, 40%)' amount={format(aspects.fiercePower, '.', 1)} iconscale={"1.75"} effect={'Boosts Attack'} />
-      <AspectCard c="🜁" name="Air" color='hsl(60deg, 100%, 90%)' amount={999999} effect={'aaa'} />
-      <AspectCard c="🜂" name="Fire" color='hsl(0deg, 100%, 85%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜄" name="Earth" color='hsl(30deg, 60%, 66%)' amount={format(aspects.earthPower, '.', 1)} effect={'Boosts Digging Power'} />
-      <AspectCard c="🜃" name="Water" color='hsl(240deg, 100%, 90%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜚" name="Gold" color='hsl(45deg, 100%, 66%)' amount={0} iconscale={"1.1"} effect={'aaa'} />
-      <AspectCard c="🜛" name="Silver" color='hsl(0deg, 5%, 98%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
-      <AspectCard c="🝣" name="Purify" color='hsl(120deg, 100%, 90%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜲" name="Regulus" color='hsl(30deg, 100%, 65%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜳" name="Regulus-2" color='hsl(0deg, 100%, 100%)' amount={0} effect={'aaa'} />
-      <AspectCard c="🜏" name="Brimstone" color='hsl(0deg, 100%, 40%)' amount={0} iconscale={"1.25"} effect={'aaa'} />
-      <AspectCard c="🝈" name="Tincture" color='hsl(270deg, 100%, 60%)' amount={0} iconscale={"1.15"} effect={'aaa'} />
-      <AspectCard c="🝒" name="Starred Trident" color='hsl(190deg, 100%, 40%)' amount={0} effect={'aaa'} />
+    <FlexList headerText="Aspects" mode='list' collapsible>
+      {aspectsToList(GLOBALS.DB.ASPECTS).map(asp => <AspectCard key={asp.name} c={asp.aspect.c} name={asp.aspect.name} color={asp.aspect.color} amount={format(aspects[asp.name] || 0, '.', asp.aspect.precision || 1)} iconscale={asp.aspect.iconscale} effect={asp.aspect.effect} />)}
     </FlexList>
   );
 
   const resourceList = (
     <FlexList collapsible headerText={"All Resources"} mode="list">
-      <BaitCollection resources={resources}/>
-      <FishCollection resources={resources}/>
+      <BaitCollection resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack, fishes:fishPack} : resources}/>
+      <FishCollection resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack, fishes:fishPack} : resources}/>
     </FlexList>
   );
 
@@ -183,8 +198,10 @@ function PageQueen() {
           {resourceList}
         </Grid>
         <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} flexGrow={1} overflow={"auto"}>
-          {resourceList}
-          {aspectList}
+          <FlexList noHeader mode='list'>
+            {resourceList}
+            {aspectList}
+          </FlexList>
         </Grid>
         <Grid className="hide-tablet-down show-desktop-up" desktop={6} maxHeight={{desktop: 325}} flexGrow={1} overflow={"auto"}>
           {aspectList}

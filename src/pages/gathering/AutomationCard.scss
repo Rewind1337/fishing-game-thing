@@ -1,0 +1,20 @@
+.automation-card {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+    &-icon {
+        padding-left: 4px;
+        width: 32px;
+    }
+
+    &-name {
+        text-align: left;
+        text-indent: 20px;
+        flex-grow: 1;
+    }
+
+    &-value {
+        padding-right: 4px;
+    }
+}

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';  // eslint-disable-line no-unused-vars
 
 // Icons / SVG
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFish } from '@fortawesome/free-solid-svg-icons';
 import ResourceCollectionCard from './ResourceCollectionCard';
 
 FishCollection.propTypes = {
@@ -14,8 +13,10 @@ function FishCollection({resources}) {
 
   let collection = getFishCollection(resources);
 
+  if (collection.length == 0) {return}
+
   return (
-    <ResourceCollectionCard collection={collection} name={'All Fish'} icon={<FontAwesomeIcon icon={faFish} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+    <ResourceCollectionCard collection={collection} name={'All Fish'} icon={<FontAwesomeIcon icon={"fa-solid fa-fish"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
   )
 }
 
@@ -27,7 +28,7 @@ let getFishCollection = function (resources) {
 
     if (resources.fishes[ID] >= 0) {
       collection.push({
-        icon: <FontAwesomeIcon icon={faFish} />,
+        icon: <FontAwesomeIcon icon={"fa-solid fa-fish"} />,
         iconcolor: 'hsl(' + ((360/resources.fishes.length) * ID) + 'deg, 100%, 90%)',
         name: fish.name,
         value: resources.fishes[ID] || 0,

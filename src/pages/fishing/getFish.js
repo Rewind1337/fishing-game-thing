@@ -82,13 +82,13 @@ let getFish = function (location, time, modifiers) {
   let bait = modifiers['bait'] || 0;
 
   // Valid Location and Sublocation checks
-  if (location[0] < -1 || location[0] > GLOBALS.DB.FISHING.LOCATIONS.length) {
+  if (location[0] < 0 || location[0] > GLOBALS.DB.FISHING.LOCATIONS.length) {
     console.warn("Warning, player escaped the confines of the game! Invalid location ["+location[0]+","+location[1],"]!");
     return errorFish;
   }
 
-  let locationDat = {id: -1, name: 'Your Personal Spot', sublocations: [0], fish: [-1]};
-  if (location[0] >= 0) {
+  let locationDat = {id: 0, name: 'Your Personal Spot', sublocations: [0], fish: [-1]};
+  if (location[0] > 0) {
     locationDat = GLOBALS.DB.FISHING.LOCATIONS[location[0]];
   }
 
@@ -98,11 +98,13 @@ let getFish = function (location, time, modifiers) {
   }
 
   let sublocationDat = {};
-  if (location[0] == -1) {
+  if (location[0] == 0) {
     sublocationDat = getHomeFish(modifiers);
   } else {
-    sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[locationDat.sublocations[location[1]]];
+    sublocationDat = GLOBALS.DB.FISHING.SUBLOCATIONS[location[0]][location[1]];
   }
+
+  console.log(sublocationDat);
 
   if (sublocationDat.fish.length == 0) {
     console.warn("Warning, player is fishing somewhere where there are no fish! ["+location[0]+","+location[1],"]");
@@ -125,6 +127,8 @@ let getFish = function (location, time, modifiers) {
 
   // Bias at 1 reduces fail chance to 0
   let noFailBias = getFailMitigation(modifiers);
+
+  console.log(fishList);
 
   // Choose a random fish from the weighted list of fish
   let randomRoll = (Math.random() - noFailBias * (totalWeight - getWeight(justANibble))) * totalWeight;

@@ -29,17 +29,13 @@ function PageHome() {
   const rollExploreLocation = () => {
     if (!unlockedGathering) {
       unlockGathering(true);
-      let modifiedUnlocks = _context.save.sidebar.unlocks;
-      modifiedUnlocks[4] = true;
-      _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
+      _context.refs.sidebar['modifySidebarUnlocks'](4, true);
       return;
     }
     
     if (!unlockedQueen && _context.save.resources.fish > 0) {
       unlockQueen(true);
-      let modifiedUnlocks = _context.save.sidebar.unlocks;
-      modifiedUnlocks[6] = true;
-      _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
+      _context.refs.sidebar['modifySidebarUnlocks'](6, true);
       return;
     }
   }
