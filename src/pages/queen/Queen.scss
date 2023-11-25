@@ -70,19 +70,18 @@
     }
 
     &-name {
+        text-align: left;
         flex-grow: 1;
-        border-left: 1px solid rgba(white, 0.25);
     }
 
     &-amount {
-        border-left: 1px solid rgba(white, 0.25);
+        flex-grow: 1;
     }
 
     &-effect {
-        max-width: unset;
+        text-align: left;
 
         flex-grow: 1;
-        border-left: 1px solid rgba(white, 0.25);
     
         font-size: 16px;
         white-space: break;

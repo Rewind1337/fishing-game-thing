@@ -8,7 +8,6 @@ import LANG_US from '../../context/lang/us';
 import LANG_NL from '../../context/lang/nl';
 
 import '../../components/UI.scss'
-import '../../components/grid/Grid.scss'
 import ActionButton from '../../components/ActionButton';
 
 import { Paper, Stack } from '@mui/material';
@@ -44,6 +43,8 @@ function PageCore({pageID, title, contentClasses, children}) {
   const [selectedLanguage, setSelectedLanguage] = useState(_lang.languageFile.language);
 
   const [loaded, setLoaded] = useState(false)
+
+  const [darkmode, setDarkmode] = useState(false)
 
   const selectLanguage = (languageFile) => {
     _lang.setLanguageFile(languageFile);
@@ -186,7 +187,7 @@ function PageCore({pageID, title, contentClasses, children}) {
 
         {tooltip}
 
-          <div id="content" className={contentClasses}>
+          <div id="content" className={contentClasses + (darkmode ? ' darkmode' : '')}>
             <Grid id="content-top" container spacing={0}>
               <Grid mobile={"auto"}>
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>

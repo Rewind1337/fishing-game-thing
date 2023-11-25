@@ -75,7 +75,7 @@ $color-tutorial-sidebar: #9dd6d0;
     
     > * {filter: drop-shadow(0 0 3px rgba(black, 0.66));}
     
-    &:hover {
+    &:not(.disabled):hover {
         background-color: rgba(255, 255, 255, 0.05) !important;
         border-color: rgba(white, 0.85);
         color: rgb(245, 245, 245);
@@ -84,7 +84,7 @@ $color-tutorial-sidebar: #9dd6d0;
     @if $active-state == "true" {
         cursor: pointer !important;
 
-        &:hover {
+        &:not(.disabled):hover {
             &:active {
                 background-color: rgba(255, 255, 255, 0.15) !important;
                 color: rgb(255, 255, 255); 
@@ -98,12 +98,12 @@ $color-tutorial-sidebar: #9dd6d0;
 
     background-color: rgba($base-color, 0.5) !important;
     
-    &:hover {
+    &:not(.disabled):hover {
         background-color: rgba($base-color, 0.4) !important;
     }
 
     @if $active-state == "true" {
-        &:hover {
+        &:not(.disabled):hover {
             &:active {
                 background-color: rgba($base-color, 0.25) !important;
             }
@@ -116,12 +116,12 @@ $color-tutorial-sidebar: #9dd6d0;
 
     background-color: rgba($base-color, 0.8) !important;
     
-    &:hover {
+    &:not(.disabled):hover {
         background-color: rgba($base-color, 0.7) !important;
     }
 
     @if $active-state == "true" {
-        &:hover {
+        &:not(.disabled):hover {
             &:active {
                 background-color: rgba($base-color, 0.55) !important;
             }

@@ -4,19 +4,21 @@ import PropTypes from 'prop-types';
 import ActionButton from "../../components/ActionButton";
 
 PetCard.propTypes = {
+  id: PropTypes.number,
   srcImg: PropTypes.string,
   name: PropTypes.string,
   hunger: PropTypes.number,
   experience: PropTypes.number,
   effect1: PropTypes.string,
+  onSelect: PropTypes.func,
 };
 
-function PetCard({srcImg, name, hunger, experience, effect1}) {
+function PetCard({id, srcImg, name, hunger, experience, effect1, onSelect = () => {}}) {
 
   const buttons = (
     <div style={{display: "flex", width: "100%"}}>
       <ActionButton color="pets" variant="contained" text="quick feed"/>
-      <ActionButton disabled color="pets" variant="contained" text="mission"/>
+      <ActionButton color="pets" variant="contained" text="select" func={() => {onSelect(id)}}/>
     </div>
   )
 

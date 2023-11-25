@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import format from '../../utility/utility';
+import { format } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 MilestoneCard.propTypes = {
   completed: PropTypes.bool,

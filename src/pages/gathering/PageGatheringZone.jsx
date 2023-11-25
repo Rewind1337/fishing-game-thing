@@ -17,7 +17,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format, arrayWithObjectsHasFieldWithValue } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import aspectHook from '../../utility/aspectHook';
 import FishCollection from '../../components/resources/FishCollection';
@@ -37,13 +37,6 @@ function PageGatheringZone() {
   let _allTimeStamps = useRef(_context.save.pageTimestamps);
   let localTimestamp = useRef(Date.now());
   let ticksDone = useRef(0);
-
-  const arrayWithObjectsHasFieldWithValue = (arr, field, value) => {
-    for (let obj in arr) {
-      if (arr[obj][field] == value) {return true;}
-    }
-    return false;
-  }
 
   const [resources, setResources] = useState(resourceHook(_context));
   const [aspects, ] = useState(aspectHook(_context));

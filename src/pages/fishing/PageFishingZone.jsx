@@ -17,7 +17,7 @@ import { Paper } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import getFish from './getFish';
 

@@ -16,7 +16,7 @@ function BaitCollection({resources}) {
   if (collection.length == 0) {return}
 
   return (
-    <ResourceCollectionCard collection={collection} name={'Bait-ish'} icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
+    <ResourceCollectionCard collection={collection} name={'Bait'} icon={<FontAwesomeIcon icon={"fa-solid fa-worm"} />} iconcolor={"hsl(235deg, 100%, 90%)"} />
   )
 }
 
@@ -28,7 +28,7 @@ let getBaitCollection = function (resources) {
     if (bait.id != 0) {
       if (resources.bait[bait.id] >= 0) {
         collection.push({
-          icon: <FontAwesomeIcon icon={"fa-solid fa-worm"} />,
+          icon: <FontAwesomeIcon icon={bait.icon} />,
           iconcolor: 'hsl(' + ((360/resources.bait.length) * bait.id) + 'deg, 100%, 90%)',
           name: bait.name,
           value: resources.bait[bait.id] || 0,

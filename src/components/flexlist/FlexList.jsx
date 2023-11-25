@@ -63,6 +63,8 @@ function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable 
 
   const headerDefault = (
     <div className={"flexlist-header"} style={{marginTop: gap + "px", backgroundColor: 'rgba(0, 0, 0, 0.4)'}}>
+      {modeState == "list" && <TableRowsIcon sx={{marginInline: "8px"}} />}
+      {modeState == "flex" && <AppsIcon sx={{marginInline: "8px"}} />}
       <h4>{headerText}</h4>
       {switchable && headerModeButtons}
     </div>

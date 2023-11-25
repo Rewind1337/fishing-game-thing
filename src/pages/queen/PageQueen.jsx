@@ -20,7 +20,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format, hasAny, aspectsToList } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 import aspectHook from '../../utility/aspectHook';  // eslint-disable-line no-unused-vars
 import FishCollection from '../../components/resources/FishCollection';
@@ -128,21 +128,6 @@ function PageQueen() {
       milestone: {progress: milestoneProgress, currentMilestoneTier: currentMilestoneTier},
     });
   }, [resources, aspects, milestoneProgress, currentMilestoneTier]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const hasAny = (fishes) => {
-    for (let key in fishes) {
-      if (fishes[key] > 0) {return true;}
-    }
-    return false;
-  }
-
-  const aspectsToList = (aspectDict) => {
-    let output = [];
-    for (let key in aspectDict) {
-      output.push({name:key, aspect:aspectDict[key]});
-    }
-    return output;
-  };
 
   const milestoneProgressTracker = (
     <Paper className='milestone-tracker'>
