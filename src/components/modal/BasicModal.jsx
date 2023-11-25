@@ -19,7 +19,7 @@ function BasicModal({ header, text, icon, onClose, open }) {
   };
 
   return (
-    <Dialog className='basic-dialog' onClose={handleClose} open={open}>
+    <Dialog className='basic-dialog dialog' onClose={handleClose} open={open}>
       <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}>
         <div style={{scale: '3'}}>{icon}</div>
       </DialogTitle>

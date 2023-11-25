@@ -12,6 +12,7 @@ import PageFishingZone from './pages/fishing/PageFishingZone.jsx';
 import PageGatheringZone from './pages/gathering/PageGatheringZone.jsx'
 import PageAdventureZone from './pages/adventure/PageAdventureZone.jsx';
 
+import PageTraders from './pages/traders/PageTraders.jsx';
 import PageQueen from './pages/queen/PageQueen.jsx';
 
 import PageHelp from './pages/help/PageHelp.jsx';
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/gathering' element={<Layout><PageGatheringZone/></Layout>} />
         <Route path='/adventure' element={<Layout><PageAdventureZone/></Layout>} />
         
+        <Route path='/traders' element={<Layout><PageTraders/></Layout>} />
         <Route path='/queen' element={<Layout><PageQueen/></Layout>} />
 
         <Route path='/help' element={<Layout><PageHelp/></Layout>} />

@@ -11,6 +11,7 @@ import PhishingIcon from '@mui/icons-material/Phishing';
 import HikingIcon from '@mui/icons-material/Hiking';
 import GrassIcon from '@mui/icons-material/Grass';
 
+import StoreIcon from '@mui/icons-material/Store';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import AdbIcon from '@mui/icons-material/Adb';
 
@@ -308,11 +309,12 @@ function Sidebar() {
             </SidebarFolder>
             <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
               <SidebarItem isUnlocked={sidebarUnlocks[6]} badgeData={sidebarBadgeData[6]} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor={Theme.palette.queen.sidebarHover} link='/queen'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[7]} badgeData={sidebarBadgeData[7]} bigText='Traders' smallText='T' icon={<StoreIcon/>} hoverColor={Theme.palette.traders.sidebarHover} link='/traders'/>
             </SidebarFolder>
           </div>
           <div className="sidebar-items-bottom">
             <SidebarFolder id={3} flex height={50} text="Other">
-              <SidebarItem isUnlocked={sidebarUnlocks[7]} badgeData={sidebarBadgeData[7]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
+              <SidebarItem isUnlocked={sidebarUnlocks[8]} badgeData={sidebarBadgeData[8]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
             </SidebarFolder>
             <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
           </div>

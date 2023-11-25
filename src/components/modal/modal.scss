@@ -1,6 +1,6 @@
 @import '../../variables.scss';
 
-.picker-dialog, .basic-dialog, .journal-dialog {
+.dialog {
     z-index: 11000 !important;
 }
 
@@ -17,7 +17,7 @@
     }
 }
 
-.basic-dialog *, .picker-dialog *, .journal-dialog * {
+.dialog * {
     white-space: break-spaces;
 }
 
@@ -92,6 +92,18 @@
 
         > * {
            font-size: 16px !important; 
+        }
+    }
+}
+
+.switch {
+    > .MuiSwitch-track {
+        background-color: gray !important;
+    }
+
+    > .MuiSwitch-switchBase.Mui-checked {
+        > .MuiSwitch-thumb {
+            color: white !important;
         }
     }
 }

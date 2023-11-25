@@ -44,6 +44,12 @@ const PALETTE = {
     sidebarHover: '#8770ce',
     contrastText: '#EEEEEE',
   },
+  traders: {
+    main: '#4cad00',
+    dark: ' #419300',
+    sidebarHover: '#94de5a',
+    contrastText: '#EEEEEE',
+  },
   queen: {
     main: '#c53c3c',
     dark: '#d46d6d',

@@ -1,0 +1,40 @@
+@import '../../variables.scss';
+
+.trader-card {
+    @include ui-card-dark;
+    @include flex($direction: row);
+
+    &-icon {
+        padding-left: 8px;
+    }
+
+    &-name {
+        flex-grow: 1;
+    }
+
+    &-button {
+
+    }
+}
+
+.trader-item-card {
+    @include ui-card-dark;
+    @include flex($direction: column);
+
+    &-icon {
+    }
+
+    &-name {
+        flex-grow: 1;
+        white-space: nowrap;
+    }
+
+    &-amount-price {
+    }
+
+    &-button {
+        > * {
+            width: calc(100% - 2px);
+        }
+    }
+}

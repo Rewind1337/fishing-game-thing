@@ -130,8 +130,9 @@ const PAGES = {
     FISHING: 3,
     GATHERING: 4,
     ADVENTURE: 5,
-    QUEEN: 6,
-    HELP: 7,
+    TRADERS: 6,
+    QUEEN: 7,
+    HELP: 8,
 }
 
 const ENUMS = {
