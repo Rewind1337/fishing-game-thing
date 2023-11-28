@@ -17,6 +17,7 @@ import OptionsModal from '../../components/modal/OptionsModal.jsx';
 
 import '../../globals/fa-library.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GLOBALS from '../../globals/Globals.js';
 
 PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
@@ -44,6 +45,7 @@ function PageCore({pageID, title, contentClasses, children}) {
   const [loaded, setLoaded] = useState(false)
 
   const [darkmode, setDarkmode] = useState(false)
+  const [graphicsSetting, setGraphicsSetting] = useState(GLOBALS.ENUMS.SETTINGS.GRAPHICS.BEST)
 
   const coreTick = () => {
     _context.refs.sidebar['checkForBadgeData'](pageID);
@@ -153,11 +155,17 @@ function PageCore({pageID, title, contentClasses, children}) {
     return (
         <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
 
-        <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
+        <BasicModal open={modalOpen} onClose={handleModalClose}
+          header={modalHeader} icon={modalIcon} text={modalText}
+        />
 
         <JournalModal open={journalOpen} onClose={handleJournalClose}/>
 
-        <OptionsModal open={optionsOpen} onClose={handleOptionsClose} selectLanguage={selectLanguage} selectedLanguage={selectedLanguage} setDarkmode={setDarkmode}/>
+        <OptionsModal open={optionsOpen} onClose={handleOptionsClose} 
+          selectLanguage={selectLanguage} selectedLanguage={selectedLanguage} 
+          setDarkmodeSetting={setDarkmode} darkmodeSetting={darkmode}
+          setGraphicsSetting={setGraphicsSetting} graphicsSetting={graphicsSetting}
+        />
 
         {tooltip}
 

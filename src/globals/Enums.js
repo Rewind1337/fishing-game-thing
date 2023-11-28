@@ -135,6 +135,10 @@ const PAGES = {
     HELP: 8,
 }
 
+const SETTINGS = {
+    GRAPHICS: {WORST: 0, DEFAULT: 1, BEST: 2}
+}
+
 const ENUMS = {
     RARITY: RARITY,
     BAIT: BAIT,
@@ -148,6 +152,7 @@ const ENUMS = {
     GATHERINGTYPES: GATHERINGTYPES,
     AUTOMATION: AUTOMATION,
     PAGES: PAGES,
+    SETTINGS
 }
 
 export default ENUMS;

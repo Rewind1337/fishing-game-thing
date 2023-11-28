@@ -25,6 +25,7 @@ import Theme from '../../styles/Theme';
 import { styled } from '@mui/material/styles';
 import { Badge, useMediaQuery } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ActionButton from '../ActionButton';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
@@ -316,7 +317,11 @@ function Sidebar() {
             <SidebarFolder id={3} flex height={50} text="Other">
               <SidebarItem isUnlocked={sidebarUnlocks[8]} badgeData={sidebarBadgeData[8]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
             </SidebarFolder>
-            <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
+            <div className='sidebar-footer'>
+              <Link to="/">
+                Manage&nbsp;Save
+              </Link>
+              </div>
           </div>
         </div>
       </div>

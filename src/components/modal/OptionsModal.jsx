@@ -15,6 +15,9 @@ import Dialog from '@mui/material/Dialog';
 import { Paper, Stack } from '@mui/material';
 import Switch from '@mui/material/Switch';
 
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+
 import ActionButton from '../ActionButton';
 import Accordion from '../Accordion';
 
@@ -22,13 +25,15 @@ import './modal.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FlexList from '../flexlist/FlexList';
 import { useState } from 'react';
+import GLOBALS from '../../globals/Globals';
 
 const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
 const langButtonInactive = {filter: 'blur(1px'}
 
-function OptionsModal({ onClose, open, selectLanguage, selectedLanguage, setDarkmode, darkmode }) {
+function OptionsModal({ onClose, open, selectLanguage, selectedLanguage, setDarkmodeSetting, darkmodeSetting, setGraphicsSetting, graphicsSetting }) {
 
-  const [_darkmode, _setDarkmode] = useState(darkmode)
+  const [_darkmodeSetting, _setDarkmodeSetting] = useState(darkmodeSetting)
+  const [_graphicsSetting, _setGraphicsSetting] = useState(graphicsSetting)
 
   const languagePicker = (
     <Stack direction={'row'} sx={{ gap: '12px' }}>
@@ -44,27 +49,43 @@ function OptionsModal({ onClose, open, selectLanguage, selectedLanguage, setDark
     </Stack>
   );
 
-  const handleChange = () => {
-    _setDarkmode(!_darkmode);
-    setDarkmode(!_darkmode);
+  const handleDarkmodeChange = () => {
+    _setDarkmodeSetting(!_darkmodeSetting);
+    setDarkmodeSetting(!_darkmodeSetting);
+  }
+
+  const handleGraphicsChange = (setting) => {
+    _setGraphicsSetting(setting);
+    setGraphicsSetting(setting);
   }
   
   const optionsContent = (
     <Grid id="options-content" container>
       <FlexList noHeader mode="list">
-        <Accordion headerText='Language Selection' open={true}>
+        <Accordion headerText='Game Language'>
           {languagePicker}
         </Accordion>
-        <Accordion headerText='Interface Options' open={true}>
-          <Switch
-            id="darkmode-switch"
-            className='switch'
-            checked={_darkmode}
-            onChange={() => {handleChange();}}
-            onClick={(e) => {e.stopPropagation();}}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
-          <label htmlFor="darkmode-switch" onClick={(e) => {e.stopPropagation();}}>{(_darkmode ? "Darkmode" : "Lightmode")}</label>
+        <Accordion headerText='Graphics & Performance'>
+          <FlexList noHeader mode="flex">
+            {_graphicsSetting}
+            <ActionButton text="Best Graphics" func={() => {handleGraphicsChange(GLOBALS.ENUMS.SETTINGS.GRAPHICS.BEST)}} />
+            <ActionButton text="Normal" func={() => {handleGraphicsChange(GLOBALS.ENUMS.SETTINGS.GRAPHICS.DEFAULT)}} />
+            <ActionButton text="Best Performance" func={() => {handleGraphicsChange(GLOBALS.ENUMS.SETTINGS.GRAPHICS.WORST)}} />
+          </FlexList>
+        </Accordion>
+        <Accordion headerText='Interface Settings'>
+          <FlexList noHeader mode="list">
+            <div>
+              <label htmlFor="darkmode-switch" onClick={(e) => {e.stopPropagation();}}> Theme</label>
+              <Switch id="darkmode-switch" className='switch' checked={_darkmodeSetting} onChange={() => {handleDarkmodeChange();}} onClick={(e) => {e.stopPropagation();}}/>
+              <label htmlFor="darkmode-switch" onClick={(e) => {e.stopPropagation();}}>{(_darkmodeSetting ? "Darkmode" : "Lightmode")}</label>
+            </div>
+          </FlexList>
+        </Accordion>
+        <Accordion headerText='Encounters, Notifications and Pop-Ups'>
+          <FlexList noHeader mode="list">
+            <div>nothing yet</div>
+          </FlexList>
         </Accordion>
       </FlexList>
     </Grid>
@@ -101,8 +122,10 @@ OptionsModal.propTypes = {
   open: PropTypes.bool.isRequired,
   selectLanguage: PropTypes.func.isRequired,
   selectedLanguage: PropTypes.string.isRequired,
-  setDarkmode: PropTypes.func.isRequired,
-  darkmode: PropTypes.bool.isRequired,
+  setDarkmodeSetting: PropTypes.func.isRequired,
+  darkmodeSetting: PropTypes.bool.isRequired,
+  setGraphicsSetting: PropTypes.func.isRequired,
+  graphicsSetting: PropTypes.number.isRequired,
 };
 
 export default OptionsModal

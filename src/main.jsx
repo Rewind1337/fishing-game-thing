@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Layout from './pages/core/Layout.jsx';
 import RouterWrapper from './RouterWrapper.jsx';
 
+import PageSplash from './pages/splash/PageSplash.jsx'
+
 import PageHome from './pages/home/PageHome.jsx'
 import PageInventory from './pages/inventory/PageInventory.jsx';
 import PagePets from './pages/pets/PagePets.jsx';
@@ -25,7 +27,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <CssBaseline enableColorScheme />
     <Router>
       <Routes>
-        <Route index path='/home' element={<Layout><PageHome/></Layout>} />
+        <Route index path='/' element={<Layout sidebar={false}><PageSplash/></Layout>} />
+
+        <Route path='/home' element={<Layout><PageHome/></Layout>} />
         <Route path='/inventory' element={<Layout><PageInventory/></Layout>} />
         <Route path='/pets' element={<Layout><PagePets/></Layout>} />
 

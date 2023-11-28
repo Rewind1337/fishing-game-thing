@@ -195,8 +195,15 @@
 }
 
 .sidebar-footer {
+    @include flex($direction: row);
+    align-items: center;
     line-height: 20px;
     font-size: 15px;
-    text-align: left;
     text-indent: 2px;
+
+    > * {
+        @include ui-card($active-state: "true");
+        @include blur-hover;
+        margin: auto;
+    }
 }
