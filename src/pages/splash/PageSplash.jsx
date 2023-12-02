@@ -42,7 +42,7 @@ function PageSplash() {
     let save = hasExistingSave();
     if (save != false) {
       setSaveExists(true);
-      setInfoLocalSave({save});
+      setInfoLocalSave(save);
     }
   }, [])
   
