@@ -99,6 +99,13 @@ let data = {
     }
 };
 
+if (localStorage.getItem("game-save") != null) {
+    let _temp = JSON.parse(localStorage.getItem("game-save"));
+    if (_temp.version == _currentVersion) {
+        data.setSave(_temp);
+    }
+}
+
 const SaveContext = createContext(data);
 
 export default SaveContext;

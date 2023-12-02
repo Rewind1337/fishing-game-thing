@@ -55,7 +55,10 @@ function PageSplash() {
     }
   }
 
-  const startFresh = () => {advanceToHomePage();}
+  const startFresh = () => {
+    localStorage.clear();
+    advanceToHomePage();
+  }
 
   const advanceToHomePage = () => {location = "/home"}
 
