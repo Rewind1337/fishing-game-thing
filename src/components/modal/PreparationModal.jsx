@@ -10,7 +10,7 @@ import ActionButton from '../ActionButton';
 import './modal.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import {format} from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
 function PreparationModal ({ options, header, onClose, open }) {
 

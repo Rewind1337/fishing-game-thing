@@ -24,7 +24,10 @@ FlexList.propTypes = {
   minHeight: PropTypes.number,
   maxHeight: PropTypes.number,
   gap: PropTypes.number,
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
 };
   
 function FlexList({id, langpath = "flexlist", dontTranslate = false, switchable = false, collapsible = false, collapsed = false, noHeader = false, headerText = "did you forget noHeader?", mode, minHeight = "auto", maxHeight = "100%", gap = 0, children}) {

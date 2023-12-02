@@ -7,7 +7,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import './Accordion.scss'
 
 Accordion.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ]),
     headerText: PropTypes.string.isRequired,
     open: PropTypes.bool
 }
