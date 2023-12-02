@@ -1,0 +1,79 @@
+@import '../../variables.scss';
+
+#splash-wrapper {
+    width: 100%;
+    height: 100vh;
+    padding-top: 100px;
+    padding-inline: 50px;
+    background: rgba(black, 0.65) linear-gradient(20deg, rgb(34, 66, 195) 0%, rgb(253, 104, 45)100%);
+
+    svg {
+        flex-grow: 1;
+    }
+
+    #splash-content {
+        @include ui-card-transparent;
+        @include blur-hover;
+        @include flex($direction: column);
+        gap: 8px;
+        border-radius: 8px;
+
+        > .splash-header {
+            @include ui-card;
+        }
+
+        .flex-row {
+            @include flex($direction: column);
+            gap: 8px;
+        }
+    }
+}
+
+#splash-new-save, #splash-use-local-save {
+    @include ui-card;
+}
+    
+.splash-header {
+    white-space: nowrap;
+    padding: 8px;
+
+    .splash-colored-text {
+        font-size: 32px;
+    }
+}
+
+.splash-action {
+    width: 100%;
+    padding: 32px;
+    padding-top: 0;
+
+    > button {
+        margin: auto;
+        width: 50%;
+    }
+}
+    
+.splash-subheader {
+    white-space: nowrap;
+    padding: 8px;
+    width: fit-content;
+    margin: auto;
+
+    .splash-colored-text {
+        font-size: 22px;
+    }
+}
+    
+.splash-colored-text {
+    @include flex($direction: row);
+    align-items: center;
+
+    background: rgb(34,193,195);
+    background: linear-gradient(160deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%); 
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.info-local-save {
+    text-align: center;
+}

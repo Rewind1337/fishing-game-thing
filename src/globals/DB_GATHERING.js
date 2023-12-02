@@ -50,8 +50,8 @@ const DB_GATHERING = {
             type: ENUMS.ENCOUNTERTYPES.GATHERING.FIND_SPECIAL,
             source: ENUMS.GATHERINGTYPES.WORMS,
             chance: 0.005,
-            header: "This is not implemented yet",
-            text: "So good luck doing anything with this",
+            header: "You found special $n Bait!",
+            text: "Have these for now: $r $n",
         },
     ]
 }

@@ -19,7 +19,7 @@ function BasicModal({ header, text, icon, onClose, open }) {
   };
 
   return (
-    <Dialog className='basic-dialog' onClose={handleClose} open={open}>
+    <Dialog className='basic-dialog dialog' onClose={handleClose} open={open}>
       <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}>
         <div style={{scale: '3'}}>{icon}</div>
       </DialogTitle>
@@ -30,7 +30,7 @@ function BasicModal({ header, text, icon, onClose, open }) {
         <div className='dialog-text'>{text}</div>
       </Paper>
       <div className='dialog-buttons'>
-        <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Okay"}/>
+        <ActionButton color='tutorial' variant='contained' func={() => {handleListItemClick("close")}} text={"Okay"}/>
       </div>
     </Dialog>
   );

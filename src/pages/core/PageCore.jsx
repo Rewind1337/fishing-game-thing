@@ -3,28 +3,21 @@ import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import SaveContext from '../../context/SaveContext';
 import LanguageContext from '../../context/LanguageContext';
-import LANG_DE from '../../context/lang/de';
-import LANG_US from '../../context/lang/us';
-import LANG_NL from '../../context/lang/nl';
 
 import '../../components/UI.scss'
-import '../../components/grid/Grid.scss'
 import ActionButton from '../../components/ActionButton';
 
 import { Paper, Stack } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import FlagDE from '../../assets/flag-de';
-import FlagNL from '../../assets/flag-nl';
-import FlagUS from '../../assets/flag-us';
+import Grid from '@mui/material/Unstable_Grid2';
 import WeatherClock from '../../components/weatherclock/WeatherClock';
 
-import Grid from '@mui/material/Unstable_Grid2';
 import BasicModal from '../../components/modal/BasicModal';
+import JournalModal from '../../components/modal/JournalModal.jsx';
+import OptionsModal from '../../components/modal/OptionsModal.jsx';
 
 import '../../globals/fa-library.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Journal from '../../components/modal/Journal.jsx';
-import GLOBALS from '../../globals/Globals';
+import GLOBALS from '../../globals/Globals.js';
 
 PageCore.propTypes = {
     pageID: PropTypes.number.isRequired,
@@ -44,12 +37,15 @@ function PageCore({pageID, title, contentClasses, children}) {
 
   const [selectedLanguage, setSelectedLanguage] = useState(_lang.languageFile.language);
 
-  const [loaded, setLoaded] = useState(false)
-
   const selectLanguage = (languageFile) => {
     _lang.setLanguageFile(languageFile);
     setSelectedLanguage(languageFile.language)
   }
+
+  const [loaded, setLoaded] = useState(false)
+
+  const [darkmode, setDarkmode] = useState(false)
+  const [graphicsSetting, setGraphicsSetting] = useState(GLOBALS.ENUMS.SETTINGS.GRAPHICS.BEST)
 
   const coreTick = () => {
     _context.refs.sidebar['clearBadgeDataFor'](pageID);
@@ -73,7 +69,7 @@ function PageCore({pageID, title, contentClasses, children}) {
       _context.refs.sidebar['setMobileSidebarVisible'](false);
     }, 50);
     
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     _context.refs.sidebar['clearBadgeDataFor'](pageID);
@@ -101,6 +97,13 @@ function PageCore({pageID, title, contentClasses, children}) {
     if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
     if (value.value == 'close') { setJournalOpen(false) }
   };
+  
+  const [optionsOpen, setOptionsOpen] = useState(false);
+
+  const handleOptionsClose = (value, reason) => {// eslint-disable-line no-unused-vars
+    if (reason && reason == "backdropClick" || reason == 'escapeKeyDown') { return }
+    if (value.value == 'close') { setOptionsOpen(false) }
+  };
 
   useEffect(() => {
     setRefs({modal: {
@@ -122,70 +125,59 @@ function PageCore({pageID, title, contentClasses, children}) {
   useEffect( () => () => {console.log("unmount", title)}, [] );   // eslint-disable-line react-hooks/exhaustive-deps
   
   const miscButtons = (
-    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
-      <Stack direction={'row'} sx={{ gap: '12px' }}>
-        <ActionButton color="tutorial" variant="contained" text='Journal' sx={{ width: "100%" }} endIcon={<FontAwesomeIcon style={{marginRight: "8px", marginLeft: "-4px"}} icon="fa-solid fa-book" />} func={() => {setJournalOpen(true)}} />
-      </Stack>
-    </Paper>
+    <Stack direction={'row'} sx={{ gap: '12px' }}>
+      <ActionButton color="tutorial" variant="contained" text='Journal' sx={{ width: "100%" }} endIcon={<FontAwesomeIcon style={{marginRight: "8px", marginLeft: "-4px"}} icon="fa-solid fa-book" />} func={() => {setJournalOpen(true)}} />
+    </Stack>
   );
 
   const debugButtons = (
-    <Paper elevation={1} sx={{ display: 'flex !important', flexDirection: 'row', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
-      <Grid container spacing={0.5} mobile={"auto"} sx={{flexGrow: '1', alignItems: "center"}} >
-        <Grid mobile={4}>
-          <ActionButton color="tutorial" variant="contained" text='Sidebar' sx={{ height: "80%", width: "100%" }} func={() => {
-          let modifiedUnlocks = [true, true, true, true, true, true, true, true];
-          _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
-        }} />
-        </Grid>
-        <Grid mobile={4}>
-          <ActionButton color="queen" variant="contained" text='Reset' sx={{ height: "80%", width: "100%" }} func={() => {
-            localStorage.clear();
-            location.reload();
-          }} />
-        </Grid>
-        <Grid mobile={4}>
-          <ActionButton color="inventory" variant="contained" text='Cheat' sx={{ height: "80%", width: "100%" }} func={() => {
-            let oldSave = JSON.parse(localStorage.getItem("game-save"));
-            oldSave.resources.bait = [0, 1000];
-            oldSave.resources.fishes = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000];
-            oldSave.resources.artifacts = 1000;
-            let newSave = JSON.stringify(oldSave);
-            localStorage.setItem("game-save", newSave);
-            location.reload();
-          }} />
-        </Grid>
-      </Grid>
-    </Paper>
+    <Stack direction={'row'} sx={{ gap: '12px' }}>
+      <ActionButton color="tutorial" variant="contained" text='Sidebar' sx={{width: "33%"}} func={() => {
+        let modifiedUnlocks = [true, true, true, true, true, true, true, true];
+        _context.refs.sidebar['setSidebarUnlocks'](modifiedUnlocks);
+      }} />
+      <ActionButton color="queen" variant="contained" text='Reset' sx={{width: "33%"}} func={() => {
+        localStorage.clear();
+        location.reload();
+      }} />
+      <ActionButton color="inventory" variant="contained" text='Cheat' sx={{width: "33%"}} func={() => {
+        let oldSave = JSON.parse(localStorage.getItem("game-save"));
+        oldSave.resources.bait = [0, 1000];
+        oldSave.resources.fishes = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000];
+        oldSave.resources.artifacts = 1000;
+        let newSave = JSON.stringify(oldSave);
+        localStorage.setItem("game-save", newSave);
+        location.reload();
+      }} />
+    </Stack>
   )
-
-  const langButtonActive = {filter: 'blur(0)', outline: '1px solid rgba(255, 255, 255, 0.6)', outlineOffset: '-8px'};
-  const langButtonInactive = {filter: 'blur(1px'}
   
-  const languagePicker = (
-    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', alignItems: "center" }}>
-      <Stack direction={'row'} sx={{ gap: '12px' }}>
-        <IconButton style={(selectedLanguage == 'DE' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_DE); } }>
-          <FlagDE />
-        </IconButton>
-        <IconButton style={(selectedLanguage == 'NL' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_NL); } }>
-          <FlagNL />
-        </IconButton>
-        <IconButton style={(selectedLanguage == 'US' ? langButtonActive : langButtonInactive)} onClick={() => { selectLanguage(LANG_US); } }>
-          <FlagUS />
-        </IconButton>
-      </Stack>
+  const tooltip = (
+    <Paper id='tooltip'>
+      <div className='tooltip-header'>Tooltip</div>
+      <p className='tooltip-text font-tooltips'>This is a test tooltip lmao, please be nice to him</p>
+      <p className='tooltip-footer'></p>
     </Paper>
   );
 
     return (
         <div id="wrapper" className={loaded ? 'fade-in' : 'fade-out'}>
 
-        <BasicModal header={modalHeader} icon={modalIcon} text={modalText} open={modalOpen} onClose={handleModalClose} />
+        <BasicModal open={modalOpen} onClose={handleModalClose}
+          header={modalHeader} icon={modalIcon} text={modalText}
+        />
 
-        <Journal open={journalOpen} onClose={handleJournalClose}/>
+        <JournalModal open={journalOpen} onClose={handleJournalClose}/>
 
-          <div id="content" className={contentClasses}>
+        <OptionsModal open={optionsOpen} onClose={handleOptionsClose} 
+          selectLanguage={selectLanguage} selectedLanguage={selectedLanguage} 
+          setDarkmodeSetting={setDarkmode} darkmodeSetting={darkmode}
+          setGraphicsSetting={setGraphicsSetting} graphicsSetting={graphicsSetting}
+        />
+
+        {tooltip}
+
+          <div id="content" className={contentClasses + (darkmode ? ' darkmode' : '')}>
             <Grid id="content-top" container spacing={0}>
               <Grid mobile={"auto"}>
                 <Paper elevation={1} sx={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
@@ -208,15 +200,17 @@ function PageCore({pageID, title, contentClasses, children}) {
                 {children}
               </Grid>
             </div>
-            <Grid id="content-bottom" className="hide-mobile show-tablet-up" container spacing={0}>
-              <Grid mobile="auto">
+            <Grid id="content-bottom" className="hide-mobile show-tablet-up" container>
+              <Grid mobile={2}>
                 {miscButtons}
               </Grid>
               <Grid mobile={4}>
                 {debugButtons}
               </Grid>
-              <Grid mobile="auto">
-                {languagePicker}
+              <Grid mobile={2}>
+                <Stack direction={'row'} sx={{ gap: '12px' }}>
+                  <ActionButton func={() => {setOptionsOpen(true)}} text="Options" sx={{ width: "100%" }} endIcon={<FontAwesomeIcon icon="fa-solid fa-gears" style={{marginRight: "8px", marginLeft: "-4px"}}/>} variant='contained' color='home'/>
+                </Stack>
               </Grid>
             </Grid>
           </div>

@@ -19,7 +19,7 @@ export default function CircularProgressWithLabel(props) {
         <Box sx={{top: props.textoffsettop, left: 0,bottom: 0,right: 0,fontSize: props.fontSize,
             position: 'absolute',display: 'flex',alignItems: 'center',justifyContent: 'center'}}>
 
-            {Math.round(props.value) + "%"}
+            {props.value.toFixed(2) + " %"}
 
         </Box>
     </Box>

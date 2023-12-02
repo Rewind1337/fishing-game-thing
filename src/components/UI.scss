@@ -13,10 +13,11 @@ $height-bottom: 45px;
 
     animation-duration: 60s;
     animation-name: rainbowScrollbar;
+    animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
 
-html {
+html, #root, #wrapper {
     background-color: rgb(43, 43, 43);
 }
 
@@ -41,14 +42,14 @@ h1, h2, h3, h4, h5, h6,
     font-family: $fontface-mono;
 }
 
-a {text-decoration: none; color: $text-light;}
+a {text-decoration: none; color: white;}
   
 :root {
     line-height: 1.5;
     font-weight: 400;
   
     color-scheme: light dark;
-    color: $text-light;
+    color: white;
   
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -74,14 +75,12 @@ a {text-decoration: none; color: $text-light;}
 }
 
 #root {
-    background-color: rgb(43, 43, 43);
     display: flex;
     flex-direction: row;
     align-items: flex-start;
 }
 
 #wrapper {
-    background-color: rgb(43, 43, 43);
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -95,7 +94,7 @@ a {text-decoration: none; color: $text-light;}
     height: 100vh;
     font-size: 24px;
 
-    color: $text-light;
+    color: white;
 
     padding: 4px;
 
@@ -136,11 +135,6 @@ a {text-decoration: none; color: $text-light;}
 }
 
 .content-row-item {
-    /* visualisation, remove if not needed anymore */
-    border-radius: 4px;
-    border: 1px solid $border-light;
-    /* */
-
     align-items: center;
     display: grid;
 
@@ -160,7 +154,6 @@ a {text-decoration: none; color: $text-light;}
     padding: 0px;
 
     align-items: center;
-    display: grid;
 }
 
 #content-main {
@@ -175,6 +168,42 @@ a {text-decoration: none; color: $text-light;}
     height: 100%;
 }
 
+.content-main {  height: 768px;}
+
+.content-grid {
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+/* Background Stuff? */
+
+$transparent : rgba(black, .85);
+
+#content.home {background: $transparent url('../assets/bg-home.png');}
+#content.inventory {background: $transparent linear-gradient(153deg, rgb(255, 244, 171) 0%, rgb(206, 163, 97) 100%);}
+#content.pets {background: $transparent url('../assets/bg-pets.png');}
+#content.fishing {background: $transparent url('../assets/bg-fishing.png');}
+#content.gathering {background: $transparent url('../assets/bg-gathering.png');}
+#content.adventure {background: $transparent url('../assets/bg-adventure.png');}
+#content.queen {background: $transparent url('../assets/bg-queen.png');}
+#content.help {background: $transparent linear-gradient(153deg, rgba(171,235,255,1) 0%, rgba(148,175,255,1) 100%);}
+
+#content {
+    background-position: center !important;
+    background-origin: border-box !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#content.darkmode {
+    background-blend-mode: darken !important;
+}
+
+.no-flex {display: block !important;}
+
 .svg-flag-wrapper {
     font-size: 0;
 
@@ -184,8 +213,6 @@ a {text-decoration: none; color: $text-light;}
         clip-path: circle(16px);
     }
 }
-
-.MuiPaper-root, .MuiStack-root {margin: 0 auto;}
 
 .unicode {
     aspect-ratio: 1 !important;
@@ -198,27 +225,12 @@ a {text-decoration: none; color: $text-light;}
     position: relative;
 }
 
-
-.standalone-header {
-    z-index: 100;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-basis: calc(100% - 2px);
-    width: calc(100% - 2px);
-    text-align: left;
-    text-indent: 8px;
-    margin: 1px 1px;
-    margin-bottom: 2px;
+.truncate-text {
+    padding: 0 4px;
     white-space: nowrap;
-
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 4px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-
 
 .fade-in {
     opacity: 1 !important;
@@ -226,4 +238,67 @@ a {text-decoration: none; color: $text-light;}
 
 .fade-out {
     opacity: 0 !important;
+}
+
+
+.linear-progress-with-label {
+    .linear-progress {}
+    .linear-progress-label {
+        opacity: 0.8;
+        position: relative;
+        top: -100%;
+        line-height: 1.8;
+    }
+}
+
+*[data-title]::before,
+*[data-title]::after {
+    --scale: 0;
+
+    position: absolute;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0) scale(var(--scale));
+    transform-origin: top left;
+}
+
+*[data-title]::before {
+    @include ui-card-dark;
+    font-size: 12px;
+    white-space: nowrap;
+    content: attr(data-title);
+    transition: background-color 0.15s ease, border 0.15s ease, transform 1s ease, padding 1s ease !important;
+}
+
+*[data-title]:hover::before {
+    --scale: 1;
+}
+
+#tooltip {
+    @include ui-card;
+    z-index: 10000;
+    max-width: 250px;
+    backdrop-filter: blur(6px);
+    position: absolute;
+    top: 14px;
+    right: 215px;
+    transform: translate(-50%, 0);
+
+    opacity: 0.05;
+
+    > .tooltip-header {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    > .tooltip-text {
+        text-align: center;
+        font-size: 13px;
+    }
+
+    > .tooltip-footer {
+        text-align: left;
+        font-size: 12px;
+    }
 }

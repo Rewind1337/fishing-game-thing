@@ -5,14 +5,15 @@ import Sidebar from '../../components/sidebar/Sidebar'
 import Theme from '../../styles/Theme.jsx';
 
 Layout.propTypes = {
+    sidebar: PropTypes.bool,
     children: PropTypes.object,
 };
 
-function Layout({children}) {
+function Layout({sidebar = true, children}) {
     return (
         <>
         <ThemeProvider theme={Theme}>
-            <Sidebar/>
+            {sidebar && <Sidebar/>}
             {children}
         </ThemeProvider>
         </>

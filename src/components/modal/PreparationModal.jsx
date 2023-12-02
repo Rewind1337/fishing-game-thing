@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
 
-function PreparationModal({ options, header, onClose, open }) {
+function PreparationModal ({ options, header, onClose, open }) {
 
   const handleClose = (event, reason) => {
     event['modalType'] = options[0].type;

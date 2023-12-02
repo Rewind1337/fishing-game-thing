@@ -36,6 +36,7 @@ const DB_FISH = [
         baitNeeded: ENUMS.BAIT.WORMS,
         timeOfDay: ENUMS.TIME.NIGHT_FULL,
         flavor: "The Crimson Carp is a nocturnal fish that can be found in rivers and streams. Its vibrant red coloration makes it stand out from other fish.",
+        aspects: {},
     },
     {
         id: 4,
@@ -44,6 +45,7 @@ const DB_FISH = [
         baitNeeded: ENUMS.BAIT.WORMS,
         timeOfDay: ENUMS.TIME.DAY_FULL,
         flavor: "The Golden Grouper is a prized catch among fishermen. Its golden scales and delicious taste make it a favorite for seafood enthusiasts.",
+        aspects: {},
     },
     {
         id: 5,
@@ -52,6 +54,7 @@ const DB_FISH = [
         baitNeeded: ENUMS.BAIT.WORMS,
         timeOfDay: ENUMS.TIME.NIGHT_FULL,
         flavor: "The Jade Jellyfish is a mythical creature that glows in the dark. It is said to bring good luck to those who catch it.",
+        aspects: {},
     },
     {
         id: 6,
@@ -77,7 +80,8 @@ const DB_FISH = [
         rarity: ENUMS.RARITY.RARE, 
         baitNeeded: ENUMS.BAIT.WORMS, 
         timeOfDay: ENUMS.TIME.DAY_FULL, 
-        flavor: "The Glimmering Guppy is a rare fish known for its vibrant colors and shimmering scales. They're sometimes called a Roygbiv because of it."
+        flavor: "The Glimmering Guppy is a rare fish known for its vibrant colors and shimmering scales. They're sometimes called a Roygbiv because of it.",
+        aspects: {},
     },
     {
         id: 9, 
@@ -85,7 +89,8 @@ const DB_FISH = [
         rarity: ENUMS.RARITY.RARE, 
         baitNeeded: ENUMS.BAIT.FISH, 
         timeOfDay: ENUMS.TIME.NIGHT_FULL, 
-        flavor: "The Spectral Skate is a rare elusive 'fish' that only appears during the new moon nights. It is attracted to glow worms and is said to possess mystical powers."
+        flavor: "The Spectral Skate is a rare elusive 'fish' that only appears during the new moon nights. It is attracted to glow worms and is said to possess mystical powers.",
+        aspects: {},
     },
     {
         id: 10,
@@ -94,6 +99,7 @@ const DB_FISH = [
         baitNeeded: ENUMS.BAIT.FISH,
         timeOfDay: ENUMS.TIME.AROUND_NOON,
         flavor: "The Diamond Darter is one of the more valuable fish. Its sparkling diamond scales make it a true treasure for any angler.",
+        aspects: {},
     },
     {
         id: 11,
@@ -102,6 +108,7 @@ const DB_FISH = [
         baitNeeded: ENUMS.BAIT.FISH,
         timeOfDay: ENUMS.TIME.AROUND_MIDNIGHT,
         flavor: "The Amber Angler is a mythical fish that emits a warm amber glow. If you believe the Myth, this Fish will vanish if enough light hits him.",
+        aspects: {},
     },
 ]
 

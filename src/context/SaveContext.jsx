@@ -37,6 +37,7 @@ let data = {
             fishes: [],
             bait: [],
         },
+        milestone: {},
         aspects: {},
         fishing: {},
         fishingTrip: {
@@ -74,10 +75,10 @@ let data = {
         pets: [],
         sidebar: {
             states: [true, true, true],
-            unlocks: [true, false, false, false, true, false, false, true],
-            tripLocks: [false, false, false, false, false, false, false, false],
-            highlights: [false, false, false, false, false, false, false, false],
-            sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0],
+            unlocks: [true, false, false, false, true, false, false, false, true],
+            tripLocks: [false, false, false, false, false, false, false, false, false],
+            highlights: [false, false, false, false, false, false, false, false, false],
+            sidebarBadgeData: [0, 0, 0, 0, 0, 0, 0, 0, 0],
             currentPage: 0,
         }
     },
@@ -97,13 +98,6 @@ let data = {
         if (log) console.log(data.refs);
     }
 };
-
-if (localStorage.getItem("game-save") != null) {
-    let _temp = JSON.parse(localStorage.getItem("game-save"));
-    if (_temp.version == _currentVersion) {
-        data.setSave(_temp);
-    }
-}
 
 const SaveContext = createContext(data);
 

@@ -1,33 +1,23 @@
-.resource-collection-card-wrapper, .resource-card {
-    background-color: rgba(0, 0, 0, 0.1) !important;
-    height: auto;
-}
+@import '../../variables.scss';
 
 .resource-collection-card-wrapper {
+    height: auto;
     width: 100%;
+    padding-top: 1px;
 }
 
 .resource-card {
+    @include ui-card;
+    @include blur-hover($strength: 6px);
     display: flex;
     flex-direction: row;
     padding: 2px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-
-    > * {
-        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.66));
-    }
 
     &.collection {
-        margin: 0;
-        width: 100%;
-        color: rgb(215, 215, 215);
-        background-color: rgba(0, 0, 0, 0.2) !important;
-
-        &:hover {
-            color: rgb(255, 255, 255);
-            background-color: rgba(0, 0, 0, 0.1) !important;
-        }
-        
+        @include ui-card-dark($active-state: "true");
+        @include blur-hover($strength: 0);
+        margin-bottom: 1px;
+        flex-basis: 100% !important;
     }
 
     * {
@@ -50,27 +40,25 @@
         }
     }
 
-    &-name {  
+    &-name {
+        text-align: left;
         white-space: nowrap;
         flex-grow: 1;
-        flex-basis: 128px;
+        flex-basis: 150px;
         font-size: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     &-value {  
         white-space: nowrap;
         text-align: center;
-        flex-basis: 128px;
-        font-size: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
+        flex-basis: 96px;
+        font-size: 14px;
     }
 
     &-persec {
         white-space: nowrap;
         text-align: right;
         flex-basis: 64px;
-        font-size: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
+        font-size: 12px;
     }
 }

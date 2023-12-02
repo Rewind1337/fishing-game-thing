@@ -1,6 +1,4 @@
-// good function
-
-function format(input, seperator = ".", digitsBelowAThousand = 0){
+export const format = (input, seperator = ".", digitsBelowAThousand = 0) => {
 	let suffix = ["", "K", "M", "B", "T", 
 	"Aa", "Ab", "Ac", "Ad", "Ae", "Af", "Ag", "Ah", "Ai", "Aj", "Ak", "Al", "Am", "An", "Ao", "Ap", "Aq", "Ar", "As", "At", "Au", "Av", "Aw", "Ax", "Ay", "Az", 
 	"Ba", "Bb", "Bc", "Bd", "Be", "Bf", "Bg", "Bh", "Bi", "Bj", "Bk", "Bl", "Bm", "Bn", "Bo", "Bp", "Bq", "Br", "Bs", "Bt", "Bu", "Bv", "Bw", "Bx", "By", "Bz", 
@@ -21,4 +19,24 @@ function format(input, seperator = ".", digitsBelowAThousand = 0){
 	return preComma.toString() + seperator + postComma.toString().substr(1) + " " + suffix[logResult];
 }
 
-export default format;
+export const arrayWithObjectsHasFieldWithValue = (arr, field, value) => {
+    for (let obj in arr) {
+      if (arr[obj][field] == value) {return true;}
+    }
+    return false;
+}
+
+export const hasAny = (fishes) => {
+    for (let key in fishes) {
+      if (fishes[key] > 0) {return true;}
+    }
+    return false;
+}
+
+export const aspectsToList = (aspectDict) => {
+    let output = [];
+    for (let key in aspectDict) {
+      output.push({name:key, aspect:aspectDict[key]});
+    }
+    return output;
+};

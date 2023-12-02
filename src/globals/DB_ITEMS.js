@@ -25,6 +25,7 @@ export const DB_RODS = [
 export const DB_BAIT = [
     {
         id: ENUMS.BAIT.NOTHING,
+        icon: "fa-solid fa-xmark",
         name: "Nothing",
         iconName: "fa-xmark",
         size: 69,
@@ -34,6 +35,7 @@ export const DB_BAIT = [
     },
     {
         id: ENUMS.BAIT.WORMS,
+        icon: "fa-solid fa-worm",
         name: "Worms",
         iconName: "fa-worm",
         size: 1,
@@ -43,6 +45,7 @@ export const DB_BAIT = [
     },
     {
         id: ENUMS.BAIT.FISH,
+        icon: "fa-solid fa-fish",
         name: "Fish",
         iconName: "fa-fish",
         size: 10,
@@ -52,6 +55,7 @@ export const DB_BAIT = [
     },
     {
         id: ENUMS.BAIT.INSECTS,
+        icon: "fa-solid fa-locust",
         name: "Insects",
         size: 4,
         fishingLuck: 1.2,
@@ -60,6 +64,7 @@ export const DB_BAIT = [
     },
     {
         id: ENUMS.BAIT.GLOWWORMS,
+        icon: "fa-solid fa-worm",
         name: "Glow Worms",
         size: 2,
         fishingLuck: 1.6,

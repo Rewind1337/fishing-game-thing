@@ -1,10 +1,15 @@
-.picker-dialog, .basic-dialog, .journal-dialog {
+@import '../../variables.scss';
+
+.dialog {
     z-index: 11000 !important;
 }
 
 .MuiDialog-container {
     z-index: 11000 !important;
     > .MuiPaper-root {
+        @include ui-card;
+
+        backdrop-filter: blur(12px);
         z-index: 11000 !important;
         padding: 16px;
         min-width: 600px;
@@ -12,8 +17,12 @@
     }
 }
 
-.basic-dialog *, .picker-dialog *, .journal-dialog * {
+.dialog * {
     white-space: break-spaces;
+}
+
+.MuiTypography-root {
+    filter: drop-shadow(0 0 6px black);
 }
 
 #journal-content {
@@ -38,6 +47,10 @@
     justify-content: center;
     margin-top: 12px;
     gap: 48px;
+
+    > button {
+        min-width: 200px;
+    }
 }
 
 .sacrifice-item {
@@ -148,5 +161,17 @@
     
         font-size: 16px;
         white-space: break;
+    }
+}
+
+.switch {
+    > .MuiSwitch-track {
+        background-color: gray !important;
+    }
+
+    > .MuiSwitch-switchBase.Mui-checked {
+        > .MuiSwitch-thumb {
+            color: white !important;
+        }
     }
 }

@@ -17,7 +17,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format, arrayWithObjectsHasFieldWithValue } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import aspectHook from '../../utility/aspectHook';
 import FishCollection from '../../components/resources/FishCollection';
@@ -28,7 +28,7 @@ import BaitCollection from '../../components/resources/BaitCollection';
 import Farm from './Farm';
 
 import checkForEncounters from '../../utility/encounters/checkForEncounters';
-import generateModalContent from '../../utility/encounters/generateModalContent';
+import generateModalContent from '../../utility/encounters/handleEncounterLogic';
 
 // Route: "/gathering"
 function PageGatheringZone() {
@@ -42,22 +42,22 @@ function PageGatheringZone() {
   const [aspects, ] = useState(aspectHook(_context));
   const [pets, ] = useState(_context.save.pets || []);
 
-  let getWormSpeed = function() {return (1 + (aspects.wormPower < 2 ? aspects.wormPower : 2)) * (1 + (aspects.earthPower < 1 ? aspects.earthPower : 1))};
+  let getWormSpeed = function() {return (1 + (aspects.wormPower < 2 ? aspects.wormPower : 2)) * (1 + (aspects.earthPower < 1 ? aspects.earthPower : 1))}
   const [isDiggingWorms, setDiggingWorms] = useState(_context.save.gathering.isDiggingWorms || false)
   const [wormProgress, setWormProgress] = useState(_context.save.gathering.wormProgress || 0)
   const [canCollectWorms, setCanCollectWorms] = useState(false);
-  const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED * getWormSpeed()) // 1 per tick
-  let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME; // 15s
-  const autoDiggingWormsUnlocked = pets.includes(GLOBALS.ENUMS.PETS.EARTHWORM_JIM);
+  const [wormProgressPerTick, setWormProgressPerTick] = useState(GLOBALS.GATHERING.WORMDIG.SPEED * getWormSpeed())
+  let wormProgressMax = GLOBALS.GATHERING.WORMDIG.TIME
+  const [autoDiggingWormsUnlocked, setAutoDiggingWormsUnlocked] = useState(arrayWithObjectsHasFieldWithValue(pets, "id", GLOBALS.ENUMS.PETS.EARTHWORM_JIM))
 
-  let getArtifactSpeed = function() {return (1 * (1 + (aspects.earthPower/10 < 9 ? aspects.earthPower/10 : 9)))};
+  let getArtifactSpeed = function() {return (1 * (1 + (aspects.earthPower/10 < 9 ? aspects.earthPower/10 : 9)))}
   const [isArtifactsUnlocked, setArtifactsUnlocked] = useState(_context.save.gathering.isArtifactsUnlocked || false)
   const [isDiggingArtifacts, setDiggingArtifacts] = useState(_context.save.gathering.isDiggingArtifacts || false)
   const [artifactProgress, setArtifactProgress] = useState(_context.save.gathering.artifactProgress || 0)
   const [canCollectArtifacts, setCanCollectArtifacts] = useState(false)
   const [artifactProgressPerTick, setArtifactProgressPerTick] = useState(GLOBALS.GATHERING.ARTIFACTDIG.SPEED * getArtifactSpeed())
-  let artifactProgressMax = GLOBALS.GATHERING.ARTIFACTDIG.TIME; // 1m30s
-  const autoDiggingArtifactsUnlocked = pets.includes(GLOBALS.ENUMS.PETS.FLOPPY);
+  let artifactProgressMax = GLOBALS.GATHERING.ARTIFACTDIG.TIME
+  const [autoDiggingArtifactsUnlocked, setAutoDiggingArtifactsUnlocked] = useState(arrayWithObjectsHasFieldWithValue(pets, "id", GLOBALS.ENUMS.PETS.FLOPPY))
 
   let getMiningSpeed = function() {return (1)};
   const [isMiningUnlocked,] = useState(_context.save.gathering.isMiningUnlocked || false)
@@ -65,8 +65,8 @@ function PageGatheringZone() {
   const [miningProgress, setMiningProgress] = useState(_context.save.gathering.miningProgress || 0)
   const [canCollectMining, setCanCollectMining] = useState(false)
   const [miningProgressPerTick, setMiningProgressPerTick] = useState(GLOBALS.GATHERING.ARTIFACTDIG.SPEED * getMiningSpeed())
-  let miningProgressMax = GLOBALS.GATHERING.MINING.TIME; // 12min
-  const autoMiningUnlocked = pets.includes(GLOBALS.ENUMS.PETS.LIL_GEODE);
+  let miningProgressMax = GLOBALS.GATHERING.MINING.TIME
+  const [autoMiningUnlocked, setAutoMiningUnlocked] = useState(arrayWithObjectsHasFieldWithValue(pets, "id", GLOBALS.ENUMS.PETS.LIL_GEODE))
 
   const handleModalOpen = (encounter) => {
     if (generateModalContent(GLOBALS.ENUMS.PAGES.GATHERING, encounter, _context) == true) {
@@ -98,8 +98,8 @@ function PageGatheringZone() {
     _context.refs.sidebar['addBadgeTimer'](4, wormProgressMax / getWormSpeed(), 500);
   }
 
-  const getMinWorms = () => {return 1 + ~~(Math.sqrt(aspects.wormPower));}
-  const getMaxWorms = () => {return 1 + ~~(Math.sqrt(aspects.wormPower) + 2 * (1 + Math.sqrt(aspects.wormPower / 10)));}
+  const getMinWorms = () => {return 1 + ~~(Math.sqrt(aspects.wormPower))}
+  const getMaxWorms = () => {return getMinWorms() + 2 * (1 + Math.sqrt(aspects.wormPower / 10))}
 
   const collectWorms = () => {
     if (wormProgress >= wormProgressMax - 1) {
@@ -112,6 +112,7 @@ function PageGatheringZone() {
       setWormProgress(0)
 
       checkForEncounters(GLOBALS.ENUMS.PAGES.GATHERING, GLOBALS.ENUMS.GATHERINGTYPES.WORMS, _context, handleModalOpen)
+      setAutoDiggingWormsUnlocked(arrayWithObjectsHasFieldWithValue(pets, "id", GLOBALS.ENUMS.PETS.EARTHWORM_JIM))
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Worms");
 
@@ -130,8 +131,8 @@ function PageGatheringZone() {
     _context.refs.sidebar['addBadgeTimer'](4, artifactProgressMax / getArtifactSpeed(), 500);
   }
 
-  const getMinArtifacts = () => {return 1;}
-  const getMaxArtifacts = () => {return 1 + 2;}
+  const getMinArtifacts = () => {return 1}
+  const getMaxArtifacts = () => {return getMinArtifacts() + 2}
 
   const collectArtifacts = () => {
     if (artifactProgress >= artifactProgressMax - 1) {
@@ -142,6 +143,7 @@ function PageGatheringZone() {
       setArtifactProgress(0)
       
       checkForEncounters(GLOBALS.ENUMS.PAGES.GATHERING, GLOBALS.ENUMS.GATHERINGTYPES.ARTIFACTS, _context, handleModalOpen)
+      setAutoDiggingArtifactsUnlocked(arrayWithObjectsHasFieldWithValue(pets, "id", GLOBALS.ENUMS.PETS.FLOPPY))
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + randomGain + " Artifacts");
     }
@@ -154,8 +156,8 @@ function PageGatheringZone() {
     _context.refs.sidebar['addBadgeTimer'](4, GLOBALS.GATHERING.MINING.TIME / getMiningSpeed(), 500);
   }
 
-  const getMinMining = () => {return 1;}
-  const getMaxMining = () => {return 1;}
+  const getMinMining = () => {return 1}
+  const getMaxMining = () => {return getMinMining()}
 
   const collectMining = () => {
     if (miningProgress >= miningProgressMax - 1) {
@@ -164,6 +166,7 @@ function PageGatheringZone() {
       setMiningProgress(0)
       
       checkForEncounters(GLOBALS.ENUMS.PAGES.GATHERING, GLOBALS.ENUMS.GATHERINGTYPES.MINING, _context, handleModalOpen)
+      setAutoMiningUnlocked(arrayWithObjectsHasFieldWithValue(pets, "id", GLOBALS.ENUMS.PETS.LIL_GEODE))
 
       _context.refs.toastmanager['fireToast']("info", "You collected " + 0 + " of anything, you hacker");
     }
@@ -252,7 +255,7 @@ function PageGatheringZone() {
         </FlexList>
 
         <Grid className="hide-mobile show-tablet-up" container mobile={12} tablet={6} desktop={6} maxHeight={{ mobile: 200, tablet: 400 }} overflow={"auto"}>
-          <Farm farmWidth={3} farmHeight={2}/>
+          <Farm unlocked={false} farmWidth={3} farmHeight={2}/>
         </Grid>
 
       </Grid>

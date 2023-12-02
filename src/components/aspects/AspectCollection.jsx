@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import FlexList from '../flexlist/FlexList';
-import AspectCard from '../../pages/queen/AspectCard';
+import AspectCard from './AspectCard';
 import GLOBALS from '../../globals/Globals';
 
 AspectCollectionCard.propTypes = {
@@ -15,24 +15,19 @@ function AspectCollectionCard({collection = []}) {
     return (amount < 1 ? unicodeFrations[~~(1/amount) - 1] : amount || 0);
   }
 
-  const getChar = (aspectKey) => {
-    return aspects[aspectKey].c
-  }
-
-  const getEffect = (aspectKey) => {
-    return aspects[aspectKey].effect
-  }
-
-  const getScale = (aspectKey) => {
-    return aspects[aspectKey].scale
-  }
-
-  const getColor = (aspectKey) => {
-    return aspects[aspectKey].color
+  const _get = (aspectKey, field) => {
+    return aspects[aspectKey][field];
   }
 
   const buildAspectCard = (aspectData) => {
-    return (<AspectCard key={aspectData.name} color={getColor(aspectData.name)} iconscale={getScale(aspectData.name)} amount={conditionalAmount(aspectData.amount)} name={aspectData.name.replace('Power','').toUpperCase()} c={getChar(aspectData.name)} effect={getEffect(aspectData.name)}/>);
+    return (<AspectCard 
+      key={aspectData.name} 
+      color={_get(aspectData.name, "color")} 
+      iconscale={_get(aspectData.name, "scale")} 
+      amount={conditionalAmount(aspectData.amount)} 
+      name={aspectData.name.replace('Power','').toUpperCase()} 
+      c={_get(aspectData.name, "c")} 
+      effect={_get(aspectData.name, "effect")}/>);
   }
 
     return (

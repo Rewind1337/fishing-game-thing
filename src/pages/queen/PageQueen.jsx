@@ -9,7 +9,7 @@ import FlexList from '../../components/flexlist/FlexList';
 import ActionButton from '../../components/ActionButton';  // eslint-disable-line no-unused-vars
 import CircularProgressWithLabel from '../../components/progress/CircularProgressbarWithLabel';
 import MilestoneCard from './MilestoneCard';
-import AspectCard from './AspectCard';
+import AspectCard from '../../components/aspects/AspectCard';
 import SacrificeModal from '../../components/modal/SacrificeModal';
 
 // MUI
@@ -20,7 +20,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format, hasAny, aspectsToList } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 import aspectHook from '../../utility/aspectHook';  // eslint-disable-line no-unused-vars
 import FishCollection from '../../components/resources/FishCollection';
@@ -34,6 +34,14 @@ function PageQueen() {
 
   const _context = useContext(SaveContext);
   _context; // to prevent the no-unused-vars, remove if actually used somewhere else
+
+  const milestoneTiers = [25, 125, 500];
+
+  const milestone = _context.save.milestone;
+
+  const [milestoneProgress, setMilestoneProgress] = useState(milestone.progress || 0)
+  const [currentMilestoneTier, setCurrentMilestoneTier] = useState(milestone.currentMilestoneTier || 0)
+  const [milestoneProgressMax, setMilestoneProgressMax] = useState(milestoneTiers[currentMilestoneTier])
 
   const [resources, setResources] = useState(resourceHook(_context));
   const [aspects, setAspects] = useState(aspectHook(_context));
@@ -66,7 +74,7 @@ function PageQueen() {
 
       if (localFish[fish.id] > 0) {
         options.push({
-          icon: <FontAwesomeIcon icon={"fa-solid fa-fish"}/>,
+          icon: <FontAwesomeIcon icon={"fa-solid fa-fish-fins"}/>,
           itemID: fish.id,
           itemName: fish.name,
           aspects: fish.aspects || undefined,
@@ -119,6 +127,16 @@ function PageQueen() {
         setResources(r => ({...r, fishes: r.fishes = newFishes}));
       }
 
+      // milestone stuff
+      let msRarity = (rarityTable[fishData.rarity] * 0.1 * amount);
+      setMilestoneProgress((old) => (old >= (milestoneProgressMax) ? milestoneProgressMax : old + msRarity))
+      if (milestoneProgress >= milestoneProgressMax - msRarity) {
+        let nextMilestoneTier = currentMilestoneTier + 1;
+        setMilestoneProgress(0);
+        setCurrentMilestoneTier(nextMilestoneTier);
+        setMilestoneProgressMax(milestoneTiers[nextMilestoneTier]);
+      }
+
       _context.refs.toastmanager['fireToast']("success", "Yum!");
     }
   };
@@ -126,8 +144,9 @@ function PageQueen() {
   useEffect(() => {
     _context.setSave({resources: {...resources}});
     _context.setSave({aspects: {...aspects}});
+    _context.setSave({milestone: {progress: milestoneProgress, currentMilestoneTier: currentMilestoneTier}});
     _context.setSave({character: {baitPack: baitPack, fishPack: fishPack}});
-  }, [resources, aspects, baitPack, fishPack]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [resources, aspects, baitPack, fishPack, milestoneProgress, currentMilestoneTier]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const hasAnyFish = () => {
     let fishes = fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? fishPack : resources.fishes;
@@ -146,10 +165,12 @@ function PageQueen() {
     return output;
   };
 
-  const milestoneProgress = (
-    <Paper elevation={1} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.5)', width: '100%', padding: '4px 16px' }}>
+  const milestoneProgressTracker = (
+    <Paper className='milestone-tracker'>
       <h2>Milestone Progress</h2>
-      <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={"fa-solid fa-hurricane"} />} iconscale='1.66' iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={12} />
+      <h5>Current Tier: {currentMilestoneTier}</h5>
+      <CircularProgressWithLabel textsize='33px' icon={<FontAwesomeIcon icon={"fa-solid fa-hurricane"} />} iconOffsetTop={"-10%"} textOffsetTop={"45%"} iconSize={"60px"} iconcolor="hsl(0deg, 100%, 85%)" sx={{ padding: "5px" }} color="queen" size={200} thickness={8} variant="determinate" value={(milestoneProgress / milestoneProgressMax) * 100} />
+      <h5>Current Progress: {milestoneProgress} / {milestoneProgressMax}</h5>
       <div className='action-button-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
         <ActionButton disabled={(hasAnyFish() ? false : true)} color="queen" variant="contained" text={(hasAnyFish() ? "Sacrifice a Fish" : "Disappointing")} func={handlePickerOpen}></ActionButton>
       </div>
@@ -163,30 +184,20 @@ function PageQueen() {
   );
 
   const resourceList = (
-    <FlexList collapsible headerText={"All Resources"} mode="list">
+    <FlexList collapsible switchable headerText={"All Resources"} mode="list">
       <BaitCollection resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack, fishes:fishPack} : resources}/>
       <FishCollection resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack, fishes:fishPack} : resources}/>
     </FlexList>
   );
 
-  const milestoneList = (
-    <FlexList headerText="All Milestones" mode='list'>
-      <MilestoneCard completed id={0} wormsRequired={25} bonus='wow you did it' />
-      <MilestoneCard id={1} wormsRequired={125} bonus='wow you did it' />
-      <MilestoneCard id={2} wormsRequired={500} bonus='wow you did it' />
-      <MilestoneCard id={3} wormsRequired={1000} bonus='wow you did it' />
-      <MilestoneCard id={4} wormsRequired={2500} bonus='wow you did it' />
-      <MilestoneCard id={5} wormsRequired={5000} bonus='wow you did it' />
-      <MilestoneCard id={6} wormsRequired={10000} bonus='wow you did it' />
-      <MilestoneCard id={7} wormsRequired={22500} bonus='wow you did it' />
-      <MilestoneCard id={8} wormsRequired={50000} bonus='wow you did it' />
-      <MilestoneCard id={9} wormsRequired={100000} bonus='wow you did it' />
-      <MilestoneCard id={10} wormsRequired={250000} bonus='wow you did it' />
-      <MilestoneCard id={11} wormsRequired={500000} bonus='wow you did it' />
-      <MilestoneCard id={12} wormsRequired={1000000} bonus='wow you did it' />
-      <MilestoneCard id={13} wormsRequired={2500000} bonus='wow you did it' />
+  const milestoneList = (<>
+    <FlexList headerText="Completed Milestones" collapsible collapsed mode='list'>
+      {milestoneTiers.map((t, i) => {if (i < currentMilestoneTier) return <MilestoneCard key={t} id={i} completed sacrificeRequired={t} bonus='' />})}
     </FlexList>
-  );
+    <FlexList headerText="Remaining Milestones" collapsible mode='list'>
+      {milestoneTiers.map((t, i) => {if (i >= currentMilestoneTier) return <MilestoneCard key={t} id={i} sacrificeRequired={t} bonus='' />})}
+    </FlexList>
+  </>);
   
   return (
     <PageCore pageID={GLOBALS.ENUMS.PAGES.QUEEN} title="Queen of Worms" gridId="grid-queen" contentClasses={'queen'}>
@@ -207,13 +218,13 @@ function PageQueen() {
           {aspectList}
         </Grid>
         <Grid className="show-tablet-down hide-desktop-up" mobile={6} maxHeight={{mobile: 325}} flexGrow={1} overflow={"auto"}>
-          {milestoneProgress}
+          {milestoneProgressTracker}
         </Grid>
         <Grid mobile={6} desktop={6} maxHeight={{mobile: 300, desktop: 325}} flexGrow={1} overflow={"auto"}>
           {milestoneList}
         </Grid>
-        <Grid className="hide-tablet-down show-desktop-up" desktop={6} widescreen={6} maxHeight={{mobile: 300, desktop: 325}} flexGrow={1} spacing={0.5}>
-          {milestoneProgress}
+        <Grid className="hide-tablet-down show-desktop-up" desktop={6} widescreen={6} maxHeight={{mobile: 300, desktop: 375}} flexGrow={1} spacing={0.5}>
+          {milestoneProgressTracker}
         </Grid>
       </Grid>
 

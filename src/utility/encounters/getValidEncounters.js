@@ -8,9 +8,11 @@ const getValidEncounters = (page, source, _context) => {
         let encounter = GLOBALS.DB[pageName].ENCOUNTERS[i];
         if (encounter.source == source || encounter.source == GLOBALS.ENUMS.GATHERINGTYPES.ALL) {
             if (encounter.type == GLOBALS.ENUMS.ENCOUNTERTYPES[pageName].FIND_PET) {
-                if (!_context.save.pets.includes(encounter.reward)) {
-                    validEncounters.push(encounter)
+                let hasPetAlready = false;
+                for (let pet in _context.save.pets) {
+                    if (_context.save.pets[pet].id == encounter.reward) {hasPetAlready = true; break;}
                 }
+                if (!hasPetAlready) {validEncounters.push(encounter)}
             } else {
                 validEncounters.push(encounter)
             }

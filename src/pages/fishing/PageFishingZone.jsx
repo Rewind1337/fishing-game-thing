@@ -21,7 +21,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';
 import getFish from './getFish';
 import tripMoveFunction from './tripMoveFunction';
@@ -570,13 +570,14 @@ function PageFishingZone() {
     <PreparationModal options={fishPickerOptions} header="Bait Preparation" open={fishPickerModalOpen} onClose={handlePickerClose}/>
     <PreparationModal options={baitPickerOptions} header="Bait Selection" open={baitPickerModalOpen} onClose={handlePickerClose}/>
 
-    <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"}>
+    <Grid mobile={12} sx={{flexGrow: '1'}} minHeight={40} spacing={0} height={"auto"} className="linear-progress-with-label">
       <LinearProgress id='fishing-progress' variant="determinate" color={GLOBALS.DB.HOOK[characterEquipment.hook].fishingBarColor(fishProgress, tickRange)} value={(fishProgress / fishProgressMax) * 100} />
+      <div className="linear-progress-label">Fishing Progress</div>
     </Grid>
 
     <Grid container mobile={12} maxHeight={250} overflow={"auto"} flexGrow={1} spacing={0.5}>
       <Grid mobile={6} tablet={6} desktop={4} widescreen={3} maxHeight={240} overflow={"auto"}>
-        <FlexList collapsible headerText={"All Resources"} mode="list">
+        <FlexList collapsible switchable headerText={"All Resources"} mode="list">
           <BaitCollection status={fishingTripStatus} resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {bait:baitPack} : resources}/>
           <FishCollection status={fishingTripStatus} resources={fishingTripStatus == GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE ? {fishes:fishPack} : resources}/>
         </FlexList>

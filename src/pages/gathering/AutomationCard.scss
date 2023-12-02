@@ -1,5 +1,8 @@
+@import '../../variables.scss';
+
 .automation-card {
-    display: flex;
+    @include ui-card-transparent;
+    @include flex;
     justify-content: flex-start;
     align-items: center;
     
@@ -12,9 +15,18 @@
         text-align: left;
         text-indent: 20px;
         flex-grow: 1;
+        font-size: 16px;
     }
 
     &-value {
         padding-right: 4px;
+        font-size: 16px;
+    }
+
+    &-button {
+        > * {
+            font-size: 16px !important;
+            color: white !important;
+        }
     }
 }

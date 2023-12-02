@@ -1,0 +1,45 @@
+@import '../variables.scss';
+
+.accordion {
+    @include ui-card($active-state: "true");
+    
+    text-align: left;
+
+    &.open {
+        @include ui-card-dark($active-state: "true");
+    }
+
+    > .accordion-header {
+        @include ui-card-transparent;
+
+        > svg {
+            scale: 1.2;
+            position: relative;
+            top: 3px;
+        }
+    }
+
+    > .accordion-content {
+        align-items: center;
+
+        > .text {
+            width: 100%;
+            font-size: 16px;
+            text-indent: 16px;
+        }
+
+        > .text::before {
+            content: '• ';
+        }
+
+        > .sub-header {
+            width: 100%;
+            font-size: 24px;
+            text-indent: 8px;
+        }
+
+        > .sub-header::before {
+            content: '* ';
+        }
+    }
+}

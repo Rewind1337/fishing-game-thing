@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function SeedCard({ c, select, onClick }) {
     return (
-      <Paper onClick={onClick} title={c} className='seed-card' elevation={1} sx={{ border: '1px solid rgba(255, 255, 255, 0.4)', backgroundColor: 'rgba(0, 0, 0, 0.1)', borderRadius: '4px', display: 'grid', alignItems: 'center' }}>
+      <Paper data-title={c} onClick={onClick} className='seed-card' elevation={1} sx={{ border: '1px solid rgba(255, 255, 255, 0.4)', backgroundColor: 'rgba(0, 0, 0, 0.1)', borderRadius: '4px', display: 'grid', alignItems: 'center' }}>
         <Unicode c={c} color={select}></Unicode>
       </Paper>);
   }
@@ -126,7 +126,8 @@ function SeedCard({ c, select, onClick }) {
     setGridRowCol: PropTypes.func.isRequired,
   }
 
-  function Farm({farmWidth, farmHeight}) {
+  function Farm({unlocked = false, farmWidth, farmHeight}) {
+
     const _context = useContext(SaveContext)
     const _farm = _context.save.farm
 
@@ -157,8 +158,10 @@ function SeedCard({ c, select, onClick }) {
     }
 
     const seedSelectColor = (seed) => {
-      return selectedSeedRef.current == seed ? "hsl(330, 100%, 50%)" : "pink";
+      return selectedSeedRef.current == seed ? "lime" : "white";
     }
+    
+    if (!unlocked) return;
 
     return (
       <>
@@ -183,6 +186,7 @@ function SeedCard({ c, select, onClick }) {
   }
 
   Farm.propTypes = {
+    unlocked: PropTypes.bool.isRequired,
     farmWidth: PropTypes.number.isRequired,
     farmHeight: PropTypes.number.isRequired,
   }

@@ -12,6 +12,7 @@ import PhishingIcon from '@mui/icons-material/Phishing';
 import HikingIcon from '@mui/icons-material/Hiking';
 import GrassIcon from '@mui/icons-material/Grass';
 
+import StoreIcon from '@mui/icons-material/Store';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import AdbIcon from '@mui/icons-material/Adb';
 
@@ -25,6 +26,7 @@ import Theme from '../../styles/Theme';
 import { styled } from '@mui/material/styles';
 import { Badge, useMediaQuery } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ActionButton from '../ActionButton';
 
 function Sidebar() {
   const _context = useContext(SaveContext);
@@ -243,8 +245,8 @@ function Sidebar() {
     if (status != GLOBALS.ENUMS.TRIPSTATUS.TRIP_ACTIVE) {
 
       let newSidebar = {..._context.save.sidebar};
-      newSidebar.tripLocks = new Array(8).fill(false);
-      newSidebar.highlights = new Array(8).fill(false);
+      newSidebar.tripLocks = new Array(newSidebar.length).fill(false);
+      newSidebar.highlights = new Array(newSidebar.length).fill(false);
 
       setSave({sidebar : newSidebar});
       setTripLocks(newSidebar.tripLocks);
@@ -253,11 +255,11 @@ function Sidebar() {
     } else {
 
       let newSidebar = {..._context.save.sidebar};
-      newSidebar.tripLocks = new Array(8).fill(true);
+      newSidebar.tripLocks = new Array(newSidebar.length).fill(true);
 
-      newSidebar.tripLocks[1] = false;
-      newSidebar.tripLocks[3] = false;
-      newSidebar.tripLocks[7] = false;
+      newSidebar.tripLocks[1] = false; // Inventory
+      newSidebar.tripLocks[3] = false; // Fishing
+      newSidebar.tripLocks[8] = false; // Settings
 
       newSidebar.highlights[3] = true;
 
@@ -391,13 +393,18 @@ function Sidebar() {
             </SidebarFolder>
             <SidebarFolder id={2} isToggled={folderStates[2]} canToggle height={50} text="Special">
               <SidebarItem isUnlocked={unlockedCheck(6)} highlight={highlights[6]} badgeData={sidebarBadgeData[6]} bigText='Queen of Worms' smallText='Q' icon={<StackedLineChartIcon/>} hoverColor={Theme.palette.queen.sidebarHover} link='/queen'/>
+              <SidebarItem isUnlocked={unlockedCheck(7)} highlight={highlights[7]} badgeData={sidebarBadgeData[7]} bigText='Traders' smallText='T' icon={<StoreIcon/>} hoverColor={Theme.palette.traders.sidebarHover} link='/traders'/>
             </SidebarFolder>
           </div>
           <div className="sidebar-items-bottom">
             <SidebarFolder id={3} flex height={50} text="Other">
-              <SidebarItem isUnlocked={unlockedCheck(7)} highlight={highlights[7]} badgeData={sidebarBadgeData[7]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
+              <SidebarItem isUnlocked={unlockedCheck(8)} highlight={highlights[8]} badgeData={sidebarBadgeData[8]} bigText='Help / Tutorial' smallText='?' icon={<AdbIcon/>} hoverColor={Theme.palette.tutorial.sidebarHover} link='/help'/>
             </SidebarFolder>
-            <div className='sidebar-footer'>&copy;&nbsp;dudes</div>
+            <div className='sidebar-footer'>
+              <Link to="/">
+                Manage&nbsp;Save
+              </Link>
+              </div>
           </div>
         </div>
       </div>

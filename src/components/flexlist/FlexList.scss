@@ -1,34 +1,20 @@
+@import '../../variables.scss';
+
 .flexlist {
     display: flex;
     width: 100%;
-    padding-top: 1px;
     border-radius: 4px;
 
     &-header {
-        position: sticky;
-        top: 0px;
-        z-index: 100;
-        display: flex;
-        flex-direction: row;
+        @include ui-card-dark($active-state: "true");
+        @include flex;
         justify-content: flex-start;
         align-items: center;
-        flex-basis: calc(100% - 2px);
-        width: calc(100% - 2px);
-        text-align: left;
-        text-indent: 8px;
-        margin: 1px 1px;
+        width: 100%;
+        font-size: 16px;
+        margin-bottom: 2px;
+        min-height: 43.6px;
         white-space: nowrap;
-
-        color: rgb(215, 215, 215);
-        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.2));
-    
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 4px !important;
-        background-color: rgba(0, 0, 0, 0.3) !important;
-
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.2) !important;
-        }
 
         &-text {
             flex-grow: 1;
@@ -53,56 +39,49 @@
     }
 
     &-wrapper {
-        padding-top: 1px;
-        width: calc(100% - 1px);
-        transition: height 0.5s ease;
-        border-radius: 4px !important;
+        width: 100%;
     }
 
     &-list {
-        flex-direction: column;
+        @include flex($direction: column);
         flex-wrap: nowrap;
-        gap: 2px;
+        gap: 2px !important;
     
         > * {
-            flex-basis: calc(100% - 2px);
-            width: calc(100% - 2px);
+            width: 100%;
             border-radius: 4px;
             height: auto;
         }
     }
 
     &-flex {
-        flex-direction: row;
+        @include flex;
         flex-wrap: wrap;
-        gap: 2px;
+        gap: 2px !important;
     
-        > * {
-            width: calc(50% - 2px);
+        > *:not(.resource-collection-card-wrapper) {
+            width: 220px !important;
             flex-grow: 1;
         }
     }
 
     &-compact {
-        flex-direction: row;
+        @include flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 1px;
-        padding: 2px;
+        gap: 1px !important;
     
-        > * {
+        > *:not(.resource-collection-card-wrapper) {
             width: min-content;
         }
     }
 
     &-tabs {
-        display: flex;
-        flex-direction: row;
+        @include ui-card-dark($active-state: "true");
+        @include flex;
         justify-content: flex-start;
         width: 100%;
         margin-bottom: 2px;
-
-        background-color: rgba(0, 0, 0, 0.2) !important;
 
         > * {
             flex-grow: 1;

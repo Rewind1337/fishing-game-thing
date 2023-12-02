@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import Grid from '@mui/material/Unstable_Grid2';
 
 // JS Utility
-import format from '../../utility/utility';  // eslint-disable-line no-unused-vars
+import { format } from '../../utility/utility';  // eslint-disable-line no-unused-vars
 import resourceHook from '../../utility/resourceHook';  // eslint-disable-line no-unused-vars
 
 import './Adventure.scss'
@@ -130,7 +130,7 @@ function PageAdventureZone() {
             {set.map((node, subKey) => {
               // console.log(node, subKey);
               return (
-                <div key={'node-' + node.id + "-" + subKey} className={'adventure-node ' + node.type} onMouseUp={mouseClick}>
+                <div key={'node-' + node.id + "-" + subKey} className={'adventure-node ' + node.type} onMouseDown={mouseClick}>
                   {node.id}
                 </div>
               )

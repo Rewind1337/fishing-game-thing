@@ -130,8 +130,13 @@ const PAGES = {
     FISHING: 3,
     GATHERING: 4,
     ADVENTURE: 5,
-    QUEEN: 6,
-    HELP: 7,
+    TRADERS: 6,
+    QUEEN: 7,
+    HELP: 8,
+}
+
+const SETTINGS = {
+    GRAPHICS: {WORST: 0, DEFAULT: 1, BEST: 2}
 }
 
 const ENUMS = {
@@ -147,6 +152,7 @@ const ENUMS = {
     GATHERINGTYPES: GATHERINGTYPES,
     AUTOMATION: AUTOMATION,
     PAGES: PAGES,
+    SETTINGS
 }
 
 export default ENUMS;

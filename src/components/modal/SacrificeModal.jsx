@@ -31,7 +31,7 @@ function SacrificeModal({ options, header, onClose, open }) {
   };
 
   return (
-    <Dialog className='picker-dialog' onClose={handleClose} open={open}>
+    <Dialog className='picker-dialog dialog' onClose={handleClose} open={open}>
     <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}>
       <div style={{scale: '3'}}><FontAwesomeIcon icon="fa-solid fa-hurricane"/></div>
     </DialogTitle>
@@ -56,7 +56,7 @@ function SacrificeModal({ options, header, onClose, open }) {
           </FlexList>
         </Paper>
         <div className='dialog-buttons'>
-          <ActionButton color='tutorial' variant='outlined' func={() => {handleListItemClick("close")}} text={"Done"}/>
+          <ActionButton color='tutorial' variant='contained' func={() => {handleListItemClick("close")}} text={"Done"}/>
         </div>
     </Dialog>
   );

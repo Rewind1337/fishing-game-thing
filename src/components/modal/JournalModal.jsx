@@ -33,9 +33,8 @@ const makeFishFancy = (val, index) => {
   )
 }
 
-function Journal({ onClose, open }) {
+function JournalModal({ onClose, open }) {
   const _context = useContext(SaveContext);
-  console.log(_context.save);
 
   const topics = ["Resources", "Fish", "Aspects", "Pets", "Equipment", "Fishing Locations", "Dungeons"]
 
@@ -98,7 +97,7 @@ function Journal({ onClose, open }) {
   };
 
   return (
-    <Dialog className='journal-dialog' onClose={handleClose} open={open}>
+    <Dialog className='journal-dialog dialog' onClose={handleClose} open={open}>
       <DialogTitle style={{textAlign: 'center', width: 'min-content', margin: '0 auto'}}>
         <div style={{scale: '3'}}><FontAwesomeIcon icon="fa-solid fa-book" /></div>
       </DialogTitle>
@@ -115,12 +114,9 @@ function Journal({ onClose, open }) {
   );
 }
 
-Journal.propTypes = {
-  text: PropTypes.string,
-  header: PropTypes.string,
-  icon: PropTypes.element,
+JournalModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
-export default Journal
+export default JournalModal

@@ -1,42 +1,38 @@
+@import '../../variables.scss';
+
+.gathering-module {
+    @include ui-card;
+    height: min-content;
+
+    .automation-container {
+        filter: none;
+    }
+}
+
 .seed-card {
+    @include ui-card($active-state: "true");
     display: grid !important;
     align-items: center !important;
     
     &:hover {
-        cursor: pointer;
-        background-color: rgba(255, 255, 255, 0.2);
-
         &:active {
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(black, 0.8) !important;
         }
     }
 }
 
 .farm-cell {
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 4px !important;
+    @include ui-card($active-state: "true");
+    @include flex($direction: column);
 
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     justify-content: center;
 
     &-name {
         font-size: 18px !important;
-
-        &.hover-effect {
-            height: 100%;
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.3);
-            }
-        }
     }
 
-    &-progress {
-
-    }
+    &-progress {}
     
     &-buttons {
         padding-left: 8px;

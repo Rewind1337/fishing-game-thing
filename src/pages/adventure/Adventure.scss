@@ -1,4 +1,7 @@
+@import '../../variables.scss';
+
 .adventure-map {
+    @include ui-card-dark;
     display: grid;
     align-content: flex-start;
 
@@ -7,8 +10,6 @@
     height: 100%;
     width: 100%;
     padding: 2px;
-
-    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .adventure-layer {
@@ -22,6 +23,7 @@
 }
 
 .adventure-node {
+    @include ui-card;
     display: grid;
     align-content: center;
 
@@ -36,44 +38,18 @@
 
     margin: 0 12px;
 
-    transition: scale 0.2s ease;
-}
-
-.adventure-node {
-    &.random {
-        border-color: rgb(237, 255, 166);
-    }
-
-    &.start, &.end {
-        border-color: rgb(0, 115, 255);
-    }
-
-    &.event {
-        border-color: blueviolet;
-    }
-
-    &.resources {
-        border-color: darkorange;
-    }
-
-    &.battle {
-        border-color: rgb(255, 96, 96);
-    }
-
-    &.miniboss {
-        border-color: rgb(247, 86, 58);
-    }
-
-    &.boss {
-        border-color: rgb(197, 0, 13);
-    }
+    transition: background-color 0.15s ease, border 0.15s ease, scale 0.15s ease !important;
 
     &:hover {
         scale: 1.2;
-        border-width: 3px;
-        box-shadow: 0 0 12px gray;
-        cursor: pointer;
-    
-        transition: scale 0.2s ease;
+        transition: background-color 0.15s ease, border 0.15s ease, scale 0.15s ease !important;
     }
+
+    &.random {border-color: rgb(237, 255, 166);}
+    &.start, &.end {border-color: rgb(0, 115, 255);}
+    &.event {border-color: blueviolet;}
+    &.resources {border-color: darkorange;}
+    &.battle {border-color: rgb(255, 96, 96);}
+    &.miniboss {border-color: rgb(247, 86, 58);}
+    &.boss {border-color: rgb(197, 0, 13);}
 }
