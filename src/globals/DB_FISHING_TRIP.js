@@ -59,7 +59,7 @@ const DB_FISHING_TRIP = {
                 type: ENUMS.ENCOUNTERTYPES.COMBAT.DANGER_FOLIAGE,
                 trigger: [ENUMS.ENCOUNTER_TRIGGER.POST_FISHING],
                 trigger_location: [0],
-                has_followup: {type:"random", options:["chain_reeds2b"]},
+                has_followup: {type:"random", options:["chain_reeds2a", "chain_reeds2b", "chain_reeds2c"]},
                 chance: 1/15,
                 modifier: {risingChance: 0.5},
                 header: "Commotion in The Reeds (West).",
