@@ -62,10 +62,21 @@ const ENCOUNTERTYPES = {
         FLUFF: 200,
         FIND_PET: 201,
         FIND_SPECIAL: 202,
+        DANGER_ENEMY_LOW: 203,
+        DANGER_ENEMY_HIGH: 204,
     },
-    ADVENTURE: {
+    TRIP: {
         FLUFF: 300,
     },
+    ADVENTURE: {
+        FLUFF: 400,
+    },
+    COMBAT: {
+        DANGER_BOSS: 500,
+        DANGER_WATER: 501,
+        DANGER_FOLIAGE: 502,
+        DANGER_ROCK: 503,
+    }
 }
 
 // i hate this but its needed somehow :X
@@ -81,9 +92,19 @@ const ENCOUNTERNAMES = {
         201: "FIND_PET",
         202: "FIND_SPECIAL",
     },
-    ADVENTURE: {
+    TRIP: {
         300: "FLUFF",
+        301: "ENTITY",
     },
+    ADVENTURE: {
+        400: "FLUFF",
+    },
+    COMBAT: {
+        500: "DANGER_BOSS",
+        501: "DANGER_WATER",
+        502: "DANGER_FOLIAGE",
+        503: "DANGER_ROCK",
+    }
 }
 
 // kinda like defaults
@@ -100,10 +121,40 @@ const ENCOUNTERICONS = {
         FIND_PET: "fa-solid fa-heart",
         FIND_SPECIAL: "fa-solid fa-shrimp",
     },
+    TRIP: {
+        FLUFF: "fa-solid fa-person-walking",
+        ENTITY: "fa-solid fa-comment"
+    },
     ADVENTURE: {
         FLUFF: "fa-solid fa-ghost",
     },
+    COMBAT: {
+        DANGER_BOSS: "fa-solid fa-skull",
+        DANGER_WATER: "fa-solid fa-water",
+        DANGER_FOLIAGE: "fa-solid fa-leaf",
+        DANGER_ROCK: "fa-solid fa-hill-rockslide",
+    }
 }
+
+const ENCOUNTER_TRIGGER = {
+    TRIP_MOVE: 1,
+    PRE_GATHERING: 2,
+    POST_GATHERING: 3,
+    PRE_FISHING: 4,
+    POST_FISHING: 5,
+    EVENT_TRIGGER: 6,
+    IDLE: 7,
+};
+const ENCOUNTER_TRIGGER_DATA = [
+    {name:"ERROR"},
+    {name:"TRIP_MOVE"},
+    {name:"PRE_GATHERING"},
+    {name:"POST_GATHERING"},
+    {name:"PRE_FISHING"},
+    {name:"POST_FISHING"},
+    {name:"EVENT_TRIGGER"},
+    {name:"IDLE"},
+];
 
 const GATHERINGTYPES = {
     ALL: 0,
@@ -149,6 +200,8 @@ const ENUMS = {
     ENCOUNTERTYPES: ENCOUNTERTYPES,
     ENCOUNTERNAMES: ENCOUNTERNAMES,
     ENCOUNTERICONS: ENCOUNTERICONS,
+    ENCOUNTER_TRIGGER: ENCOUNTER_TRIGGER,
+    ENCOUNTER_TRIGGER_DATA: ENCOUNTER_TRIGGER_DATA,
     GATHERINGTYPES: GATHERINGTYPES,
     AUTOMATION: AUTOMATION,
     PAGES: PAGES,
